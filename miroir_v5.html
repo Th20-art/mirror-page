@@ -14,8 +14,8 @@
   --safe:env(safe-area-inset-bottom,0px);
   --serif:'Cormorant Garamond',serif;--sans:'DM Sans',sans-serif;
 }
-html,body{height:100%;background:var(--bg);overflow:hidden;font-family:var(--sans);color:var(--ink)}
-.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);opacity:0;pointer-events:none;transform:translateX(24px);transition:opacity .25s,transform .25s}
+html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-family:var(--sans);color:var(--ink)}
+.scr{position:absolute;top:0;left:0;right:0;bottom:0;height:100%;height:100dvh;display:flex;flex-direction:column;background:var(--bg);opacity:0;pointer-events:none;transform:translateX(24px);transition:opacity .25s,transform .25s}
 .scr.A{opacity:1;pointer-events:auto;transform:translateX(0)}
 .scr.L{opacity:0;transform:translateX(-24px);pointer-events:none}
 .sb{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;font-size:13px;font-weight:600;color:var(--muted)}
@@ -416,7 +416,7 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:var(--san
     <div style="font-family:var(--serif);font-size:24px;font-weight:700;line-height:1.25">Enregistre ton engagement</div>
     <div style="font-size:13px;color:var(--muted);line-height:1.5">Parle face caméra. C'est toi qui te parles à toi-même.</div>
   </div>
-  <div id="cam-wrap" style="margin:0 24px;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line);position:relative;flex:1;min-height:120px">
+  <div id="cam-wrap" style="margin:0 24px;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line);position:relative;flex:1;flex-shrink:1;min-height:160px;max-height:calc(100vh - 320px)">
     <video id="cam-vid" autoplay playsinline muted style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)"></video>
     <div class="cam-overlay">
       <div id="cam-timer" style="font-family:var(--serif);font-size:32px;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5);display:none"></div>
@@ -430,7 +430,7 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:var(--san
       <div style="font-size:13px;color:rgba(255,255,255,.6);text-align:center">Autorise l'accès caméra<br>puis appuie sur Enregistrer</div>
     </div>
   </div>
-  <div style="padding:12px 24px calc(24px + var(--safe));display:flex;gap:10px;flex-shrink:0">
+  <div style="padding:12px 24px;padding-bottom:calc(80px + var(--safe));display:flex;gap:10px;flex-shrink:0">
     <button class="btn btn-r" id="btn-rec" onclick="R.toggleRec()" style="flex:1">⏺ Enregistrer</button>
     <button class="btn btn-m" onclick="R.go('s-dash')" style="flex:1">Passer →</button>
   </div>
