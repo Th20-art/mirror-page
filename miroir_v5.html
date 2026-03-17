@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Miroir</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#08060F;--c2:#100E1A;--ink:#EDE9E0;--muted:#6B6475;
+  --line:rgba(255,255,255,.08);--fox:#E8563A;--green:#42C47E;--red:#E85070;
+  --gold:#F5C842;--purple:#A78BFA;
+  --safe:env(safe-area-inset-bottom,0px);
+  --serif:'Cormorant Garamond',serif;--sans:'DM Sans',sans-serif;
+}
+html,body{height:100%;background:var(--bg);overflow:hidden;font-family:var(--sans);color:var(--ink)}
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);opacity:0;pointer-events:none;transform:translateX(24px);transition:opacity .25s,transform .25s}
+.scr.A{opacity:1;pointer-events:auto;transform:translateX(0)}
+.scr.L{opacity:0;transform:translateX(-24px);pointer-events:none}
+.sb{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;font-size:13px;font-weight:600;color:var(--muted)}
+.btn{width:100%;padding:16px;border-radius:14px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font-family:var(--sans);font-size:15px;font-weight:600;cursor:pointer;transition:transform .12s,opacity .12s;letter-spacing:.2px}
+.btn:active{transform:scale(.97);opacity:.85}
+.btn-r{background:var(--fox);border-color:var(--fox);color:#fff}
+.btn-g{background:rgba(66,196,126,.15);border-color:var(--green);color:var(--green)}
+.btn-o{background:rgba(232,86,58,.08);border-color:var(--fox);color:var(--fox)}
+.btn-m{border-color:var(--line);color:var(--muted)}
+.btn-gold{background:rgba(245,200,66,.12);border-color:var(--gold);color:var(--gold)}
+#bnav{position:fixed;bottom:0;left:0;right:0;height:calc(56px + var(--safe));background:rgba(8,6,15,.92);backdrop-filter:blur(20px);border-top:1px solid var(--line);display:none;align-items:center;justify-content:space-around;padding-bottom:var(--safe);z-index:100}
+#bnav.V{display:flex}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;cursor:pointer;opacity:.45;transition:opacity .2s}
+.nb.on{opacity:1}
+.nb-i{font-size:22px;line-height:1}
+.nb-l{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+#toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--c2);border:1px solid var(--line);border-radius:24px;padding:10px 20px;font-size:13px;font-weight:600;white-space:nowrap;z-index:999;opacity:0;transition:all .3s;pointer-events:none}
+#toast.S{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* LEGENDARY MODAL */
+.leg-modal{position:fixed;inset:0;z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px;text-align:center}
+.leg-modal.V{display:flex}
+.leg-bg{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(245,200,66,.18) 0%,rgba(8,6,15,.98) 70%)}
+@keyframes legPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.85}}
+@keyframes starFloat{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(-120px) rotate(360deg);opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes identPop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+
+.evo-modal{position:fixed;inset:0;background:rgba(8,6,15,.95);backdrop-filter:blur(20px);z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:32px}
+.evo-modal.V{display:flex}
+.fp{padding:0 24px;flex-shrink:0}
+.fp .btn{margin-bottom:10px}
+.ik-prog{display:flex;gap:4px;padding:0 24px 14px;flex-shrink:0}
+.ik-d{flex:1;height:3px;border-radius:2px;background:var(--line);transition:background .3s}
+.ik-d.done{background:var(--fox)}
+.ik-d.cur{background:rgba(232,86,58,.4)}
+.ik-body{flex:1;padding:0 24px;display:flex;flex-direction:column;gap:12px;overflow:hidden;min-height:0}
+.ik-orb{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.ik-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--fox)}
+.ik-q{font-family:var(--serif);font-size:26px;font-weight:700;line-height:1.25}
+.ik-hint{font-size:13px;color:var(--muted);line-height:1.5}
+.ik-chips{display:flex;flex-wrap:wrap;gap:8px;overflow-y:auto;padding-bottom:4px}
+.ik-chips::-webkit-scrollbar,.dash-scroll::-webkit-scrollbar,.app-scroll::-webkit-scrollbar{display:none}
+.chip,.ik-chip{padding:9px 14px;border:1.5px solid var(--line);border-radius:20px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px;flex-shrink:0;user-select:none}
+.chip.on,.ik-chip.on{border-color:var(--fox);color:var(--ink);background:rgba(232,86,58,.1)}
+.scene-ta{width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;font-family:var(--sans);font-size:15px;color:var(--ink);resize:none;outline:none;line-height:1.6;transition:border-color .2s}
+.scene-ta:focus{border-color:rgba(232,86,58,.5)}
+.ik5-venn{position:relative;width:210px;height:210px;flex-shrink:0;margin:0 auto}
+.ik-c{position:absolute;width:115px;height:115px;border-radius:50%;mix-blend-mode:screen}
+.ik-c1{top:0;left:50%;transform:translateX(-50%);background:radial-gradient(circle,#FF6B6B88,#FF6B6B33)}
+.ik-c2{top:50%;right:0;transform:translateY(-50%);background:radial-gradient(circle,#4ECDC488,#4ECDC433)}
+.ik-c3{bottom:0;left:50%;transform:translateX(-50%);background:radial-gradient(circle,#FFE66D88,#FFE66D33)}
+.ik-c4{top:50%;left:0;transform:translateY(-50%);background:radial-gradient(circle,#A78BFA88,#A78BFA33)}
+.ik-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:20px;backdrop-filter:blur(8px);z-index:5}
+.ik-lbl{position:absolute;font-size:8px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.55);text-align:center;width:48px}
+.ik-lbl.l1{top:4px;left:50%;transform:translateX(-50%)}
+.ik-lbl.l2{top:50%;right:-4px;transform:translateY(-50%)}
+.ik-lbl.l3{bottom:4px;left:50%;transform:translateX(-50%)}
+.ik-lbl.l4{top:50%;left:-4px;transform:translateY(-50%)}
+.onb-body{flex:1;padding:0 24px;display:flex;flex-direction:column;gap:12px;overflow:hidden;min-height:0}
+.onb-step{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--fox)}
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;overflow-y:auto}
+.comp-card{background:var(--c2);border:2px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;transition:border-color .2s,background .2s;text-align:center}
+.comp-card.on{border-color:var(--fox);background:rgba(232,86,58,.08)}
+.cam-wrap{flex:1;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line);position:relative;min-height:0}
+#cam-vid{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.cam-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:16px;gap:10px}
+.cam-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.dash-header{padding:10px 20px 0;flex-shrink:0}
+.dash-scroll{flex:1;overflow-y:auto;padding:12px 20px calc(68px + var(--safe));display:flex;flex-direction:column;gap:12px}
+.dom-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--line);flex-shrink:0}
+.dom-tabs::-webkit-scrollbar{display:none}
+.dom-tab{padding:10px 16px;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent;cursor:pointer;flex-shrink:0;transition:color .2s}
+.dom-tab.on{color:var(--fox);border-bottom-color:var(--fox)}
+.comp-main{background:var(--c2);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.xp-bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:8px}
+.xp-fill{height:100%;background:var(--fox);border-radius:2px;transition:width .6s}
+.sim-banner{background:var(--c2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .2s}
+.sim-banner:active{border-color:var(--fox)}
+.sec-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.j-item{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+.j-item:last-child{border-bottom:none}
+.j-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.j-dot.r{background:var(--green)}
+.j-dot.s{background:var(--red)}
+.j-dot.i{background:var(--purple)}
+#s-sim{z-index:20}
+.sim-content{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.app-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0}
+#intercept{position:absolute;inset:0;z-index:30;display:none;flex-direction:column;background:rgba(8,6,15,0);backdrop-filter:blur(0px);transition:background .4s,backdrop-filter .4s}
+#intercept.V{background:rgba(8,6,15,.85);backdrop-filter:blur(16px)}
+.int-sheet{margin-top:auto;background:var(--c2);border:1px solid var(--line);border-top:2px solid var(--fox);border-radius:24px 24px 0 0;padding:20px 20px calc(28px + var(--safe));display:flex;flex-direction:column;gap:12px;transform:translateY(100%);transition:transform .4s cubic-bezier(.34,1.2,.64,1)}
+#intercept.V .int-sheet{transform:translateY(0)}
+.ovl-hdr{padding:8px 18px;flex-shrink:0;display:flex;align-items:center;gap:10px}
+.vid-wrap{flex-shrink:0;margin:0 18px;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line);position:relative;height:50vh;max-height:340px}
+.vid-wrap video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.vid-no{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.vid-comp-badge{position:absolute;bottom:-12px;right:10px;z-index:5;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+.ovl-quote{margin:16px 18px 0;background:var(--c2);border-left:3px solid var(--fox);border-radius:0 12px 12px 0;padding:12px 16px}
+.scene-anchor{margin:8px 18px 0;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:10px 14px;font-size:12px;color:rgba(167,139,250,.9);font-style:italic;line-height:1.5;display:none}
+.scene-anchor.V{display:block}
+.btn-fill-wrap{position:relative;overflow:hidden;border-radius:14px}
+.btn-fill-bar{position:absolute;top:0;left:0;height:100%;width:0;background:rgba(232,86,58,.22);pointer-events:none}
+.refl-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:16px 24px}
+.refl-tw{position:relative;width:158px;height:158px;flex-shrink:0}
+.refl-tw svg{position:absolute;inset:0}
+.refl-comp-c{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.refl-cnt{position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);background:var(--fox);color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;min-width:28px;text-align:center}
+.social-norm{background:rgba(66,196,126,.07);border:1px solid rgba(66,196,126,.2);border-radius:12px;padding:10px 14px;font-size:12px;color:rgba(66,196,126,.9);line-height:1.5;flex-shrink:0;margin:0 0 4px}
+.timer-label{font-size:10px;color:var(--muted);text-align:center;letter-spacing:.3px;flex-shrink:0}
+.btn-locked{opacity:.35;pointer-events:none}
+.bu-wrap{position:relative;overflow:hidden;border-radius:14px}
+.bu-bar{position:absolute;top:0;left:0;height:100%;width:0;pointer-events:none}
+.skin-shein{background:#fff;color:#111}
+.skin-uber{background:#f5f0eb;color:#111}
+.skin-amz{background:#EAEDED;color:#111}
+.skin-mcd{background:#f5f5f5;color:#111}
+.skin-insta{background:#fff;color:#111}
+.skin-tiktok{background:#000;color:#fff}
+.skin-bar{background:#1A1008;color:#F5E8D0}
+.skin-sbux{background:#fff;color:#111}
+.app-nav{height:50px;display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0}
+.app-back{width:32px;height:32px;border:none;background:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tk-feed{flex:1;overflow-y:auto;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;min-height:0}
+.tk-feed::-webkit-scrollbar{display:none}
+.tk-vid{height:100vh;scroll-snap-align:start;position:relative;display:flex;align-items:flex-end;flex-shrink:0}
+.ig-stories{display:flex;gap:12px;padding:8px 14px;overflow-x:auto;flex-shrink:0;border-bottom:1px solid #efefef}
+.ig-stories::-webkit-scrollbar{display:none}
+.comp-scr-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px}
+
+/* IDENT WORD SCREEN */
+.ident-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center}
+.ident-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:320px}
+.ident-chip{padding:10px 18px;border:1.5px solid var(--line);border-radius:20px;font-size:14px;color:var(--muted);cursor:pointer;transition:all .2s;user-select:none}
+.ident-chip.on{border-color:var(--purple);color:var(--ink);background:rgba(167,139,250,.1);animation:identPop .3s ease}
+
+/* REWARD TIERS */
+.reward-normal{background:rgba(66,196,126,.15);border-color:var(--green);color:var(--green)}
+.reward-bon{background:rgba(232,86,58,.15);border-color:var(--fox);color:var(--fox)}
+.reward-rare{background:rgba(167,139,250,.15);border-color:var(--purple);color:var(--purple)}
+.streak-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--gold)}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- LEGENDARY MODAL (5% chance) -->
+<div class="leg-modal" id="leg-modal">
+  <div class="leg-bg"></div>
+  <div id="leg-stars" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:16px">
+    <div style="font-size:80px;animation:legPulse 1.5s ease-in-out infinite" id="leg-ico">🦊</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;background:linear-gradient(90deg,#F5C842,#fff,#F5C842);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 2s linear infinite">✦ LÉGENDAIRE ✦</div>
+    <div style="font-family:var(--serif);font-size:28px;font-weight:700;color:#fff;text-align:center;line-height:1.3" id="leg-title">Résistance absolue</div>
+    <div style="font-size:14px;color:rgba(255,255,255,.7);text-align:center;line-height:1.6;max-width:280px" id="leg-msg"></div>
+    <div style="font-size:22px;font-weight:700;color:var(--gold)">+25 xp</div>
+    <button class="btn btn-gold" style="max-width:300px;position:relative;z-index:2" onclick="R.closeLeg()">C'est qui la plus forte ✦</button>
+  </div>
+</div>
+
+<!-- EVO MODAL -->
+<div class="evo-modal" id="evo">
+  <div style="font-size:72px" id="evo-b"></div>
+  <div style="font-size:26px;color:var(--fox)">→</div>
+  <div style="font-size:72px" id="evo-a"></div>
+  <div style="font-family:var(--serif);font-size:22px;font-weight:700;color:var(--fox);text-align:center" id="evo-t"></div>
+  <div style="font-size:14px;color:var(--muted);text-align:center;line-height:1.6" id="evo-s"></div>
+  <button class="btn btn-r" style="max-width:300px" onclick="R.closeEvo()">Magnifique ✦</button>
+</div>
+
+<!-- SPLASH -->
+<div class="scr A" id="s0">
+  <div class="sb"><span id="clk0">22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 32px">
+    <div style="font-size:72px;animation:float 3s ease-in-out infinite">🪞</div>
+    <div style="font-family:var(--serif);font-size:52px;font-weight:700;letter-spacing:-1px">Miroir</div>
+    <div style="font-size:16px;color:var(--muted);text-align:center;line-height:1.6">L'app qui te rappelle<br>à <em style="color:var(--ink)">toi-même</em></div>
+  </div>
+  <div style="padding:0 24px calc(32px + var(--safe));display:flex;flex-direction:column;gap:10px">
+    <button class="btn btn-r" onclick="R.go('s-ik1')">Commencer</button>
+    <button class="btn btn-m" onclick="R.demo()">Démo rapide →</button>
+  </div>
+</div>
+
+<!-- IKIGAI 1 – Passion -->
+<div class="scr" id="s-ik1">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="ik-prog"><div class="ik-d cur"></div><div class="ik-d"></div><div class="ik-d"></div><div class="ik-d"></div><div class="ik-d"></div></div>
+  <div class="ik-body">
+    <div class="ik-orb" style="background:rgba(255,107,107,.15)">❤️</div>
+    <div class="ik-label">Cercle 1 · Passion</div>
+    <div class="ik-q">Qu'est-ce qui te fait vibrer vraiment ?</div>
+    <div class="ik-hint">Pas ce que tu penses devoir aimer — ce qui te fait oublier l'heure.</div>
+    <div class="ik-chips" id="ik1">
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎨</span>Créer des choses</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🌍</span>Explorer le monde</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🤝</span>Aider les autres</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>📚</span>Apprendre</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎵</span>La musique, l'art</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>💬</span>Raconter des histoires</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🌿</span>La nature</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>⚡</span>Résoudre des problèmes</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🏃</span>Bouger, le sport</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔬</span>La science, les idées</div>
+    </div>
+  </div>
+  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
+    <button class="btn btn-r" onclick="R.ikNext(1)">Continuer →</button>
+  </div>
+</div>
+
+<!-- IKIGAI 2 – Force -->
+<div class="scr" id="s-ik2">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="ik-prog"><div class="ik-d done"></div><div class="ik-d cur"></div><div class="ik-d"></div><div class="ik-d"></div><div class="ik-d"></div></div>
+  <div class="ik-body">
+    <div class="ik-orb" style="background:rgba(78,205,196,.15)">💎</div>
+    <div class="ik-label">Cercle 2 · Force</div>
+    <div class="ik-q">Dans quoi les autres te reconnaissent-ils ?</div>
+    <div class="ik-hint">Pas ce que tu voudrais — ce que tu fais naturellement bien.</div>
+    <div class="ik-chips" id="ik2">
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🧠</span>Analyser, réfléchir</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎯</span>Organiser, planifier</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>💡</span>Trouver des idées</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🤗</span>Écouter, empathie</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>✍️</span>Écrire, m'exprimer</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎨</span>Sens esthétique</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔧</span>Réparer, construire</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🗣️</span>Convaincre, fédérer</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>⚡</span>Décider rapidement</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔍</span>Curiosité, recherche</div>
+    </div>
+  </div>
+  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
+    <button class="btn btn-r" onclick="R.ikNext(2)">Continuer →</button>
+  </div>
+</div>
+
+<!-- IKIGAI 3 – Mission -->
+<div class="scr" id="s-ik3">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="ik-prog"><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d cur"></div><div class="ik-d"></div><div class="ik-d"></div></div>
+  <div class="ik-body">
+    <div class="ik-orb" style="background:rgba(255,230,109,.15)">🌱</div>
+    <div class="ik-label">Cercle 3 · Mission</div>
+    <div class="ik-q">Quel monde veux-tu contribuer à construire ?</div>
+    <div class="ik-hint">Même à petite échelle — ce qui compte au-delà de toi.</div>
+    <div class="ik-chips" id="ik3">
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🌿</span>Un monde plus durable</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🤝</span>Plus de solidarité</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎨</span>Plus de beauté, de culture</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>💡</span>Plus d'innovation</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>📚</span>Éducation, transmission</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>❤️</span>Santé, bien-être</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>⚖️</span>Plus de justice</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔗</span>Créer du lien humain</div>
+    </div>
+  </div>
+  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
+    <button class="btn btn-r" onclick="R.ikNext(3)">Continuer →</button>
+  </div>
+</div>
+
+<!-- IKIGAI 4 – Valeurs -->
+<div class="scr" id="s-ik4">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="ik-prog"><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d cur"></div><div class="ik-d"></div></div>
+  <div class="ik-body">
+    <div class="ik-orb" style="background:rgba(167,139,250,.15)">✨</div>
+    <div class="ik-label">Cercle 4 · Valeurs</div>
+    <div class="ik-q">Quels mots décrivent qui tu veux être ?</div>
+    <div class="ik-hint">Pas qui tu es aujourd'hui — qui tu veux incarner.</div>
+    <div class="ik-chips" id="ik4">
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔥</span>Authentique</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>💪</span>Courageux·se</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🌊</span>Libre</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎯</span>Cohérent·e</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🌿</span>Conscient·e</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>❤️</span>Généreux·se</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🧘</span>Serein·e</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>⚡</span>Ambitieux·se</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔍</span>Curieux·se</div>
+      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🤝</span>Présent·e</div>
+    </div>
+  </div>
+  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
+    <button class="btn btn-r" onclick="R.ikNext(4)">Continuer →</button>
+  </div>
+</div>
+
+<!-- IKIGAI 5 – Scène ancrage (NOUVEAU) -->
+<div class="scr" id="s-ik5">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="ik-prog"><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d cur"></div></div>
+  <div class="ik-body" style="justify-content:center">
+    <div class="ik-orb" style="background:rgba(245,200,66,.12)">🌅</div>
+    <div class="ik-label">Ancrage émotionnel</div>
+    <div class="ik-q" style="font-size:22px">Décris un moment où tu te sentais pleinement toi-même.</div>
+    <div class="ik-hint">Une scène précise — où tu étais, ce que tu faisais, ce que tu ressentais. Ce souvenir deviendra ton ancre quand la tentation arrive.</div>
+    <textarea class="scene-ta" id="scene-ta" rows="5" placeholder="Ex : Ce dimanche matin où j'ai cuisiné seule, sans téléphone, en écoutant de la musique. Je me sentais légère, présente, vraiment moi."></textarea>
+    <div style="font-size:11px;color:var(--muted)" id="scene-count">0 / 20 caractères minimum</div>
+  </div>
+  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
+    <button class="btn btn-r" id="btn-scene" onclick="R.ikFinish()" style="opacity:.4;pointer-events:none">Créer mon ikigai →</button>
+  </div>
+</div>
+
+<!-- IKIGAI 6 – Synthèse -->
+<div class="scr" id="s-ik6">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div style="text-align:center;padding:0 24px 10px;flex-shrink:0">
+    <div style="font-size:11px;font-weight:700;letter-spacing:3px;color:var(--fox);text-transform:uppercase">Ton ikigai</div>
+    <div style="font-family:var(--serif);font-size:13px;font-style:italic;color:var(--muted);margin-top:2px">La boussole de qui tu deviens</div>
+  </div>
+  <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;gap:14px;padding:6px 24px">
+    <div class="ik5-venn">
+      <div class="ik-c ik-c1"></div><div class="ik-c ik-c2"></div>
+      <div class="ik-c ik-c3"></div><div class="ik-c ik-c4"></div>
+      <div class="ik-center">✨</div>
+      <div class="ik-lbl l1">Passion</div><div class="ik-lbl l2">Force</div>
+      <div class="ik-lbl l3">Mission</div><div class="ik-lbl l4">Valeurs</div>
+    </div>
+    <div id="ik6-phrase" style="font-family:var(--serif);font-size:19px;font-style:italic;color:var(--ink);line-height:1.55;text-align:center;padding:0 10px"></div>
+    <div id="ik6-vals" style="display:flex;flex-wrap:wrap;gap:7px;justify-content:center"></div>
+    <div style="background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:12px 14px;font-size:12px;color:rgba(167,139,250,.85);font-style:italic;line-height:1.6;width:100%" id="ik6-scene"></div>
+  </div>
+  <div style="padding:12px 24px calc(20px + var(--safe));display:flex;flex-direction:column;gap:10px;flex-shrink:0">
+    <button class="btn btn-r" onclick="R.go('s-onb1')">Choisir mes engagements →</button>
+  </div>
+</div>
+
+<!-- ONB1 – Domaines -->
+<div class="scr" id="s-onb1">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="onb-body">
+    <div class="onb-step">Étape 1 / 3</div>
+    <div style="font-family:var(--serif);font-size:26px;font-weight:700;line-height:1.25">Dans quels domaines veux-tu te retrouver ?</div>
+    <div style="font-size:13px;color:var(--muted)">Choisis 1 à 3 engagements.</div>
+    <div class="ik-chips" id="dom-chips">
+      <div class="ik-chip on" data-k="fashion" onclick="this.classList.toggle('on')"><span>👗</span>Fast fashion</div>
+      <div class="ik-chip on" data-k="delivery" onclick="this.classList.toggle('on')"><span>🛵</span>Livraison</div>
+      <div class="ik-chip on" data-k="shopping" onclick="this.classList.toggle('on')"><span>📦</span>Achats impulsifs</div>
+      <div class="ik-chip" data-k="food" onclick="this.classList.toggle('on')"><span>🍔</span>Alimentation</div>
+      <div class="ik-chip" data-k="social" onclick="this.classList.toggle('on')"><span>📱</span>Réseaux sociaux</div>
+      <div class="ik-chip" data-k="gaming" onclick="this.classList.toggle('on')"><span>🎮</span>Jeux vidéo</div>
+      <div class="ik-chip" data-k="alcohol" onclick="this.classList.toggle('on')"><span>🍷</span>Alcool</div>
+      <div class="ik-chip" data-k="coffee" onclick="this.classList.toggle('on')"><span>☕</span>Café</div>
+    </div>
+  </div>
+  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
+    <button class="btn btn-r" onclick="R.saveDomains()">Continuer →</button>
+  </div>
+</div>
+
+<!-- ONB2 – Compagnon -->
+<div class="scr" id="s-onb2">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="onb-body">
+    <div class="onb-step">Étape 2 / 3</div>
+    <div style="font-family:var(--serif);font-size:26px;font-weight:700;line-height:1.25">Choisis ton compagnon</div>
+    <div style="font-size:13px;color:var(--muted)">Il évoluera avec toi. Il ne te juge jamais.</div>
+    <div class="comp-grid" id="comp-grid">
+      <div class="comp-card on" data-c="renard" onclick="R.pickComp(this)">
+        <div id="cc-renard" style="height:76px;display:flex;align-items:center;justify-content:center"></div>
+        <div style="font-size:13px;font-weight:700">Renard</div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Feu · Instinct</div>
+      </div>
+      <div class="comp-card" data-c="loutre" onclick="R.pickComp(this)">
+        <div id="cc-loutre" style="height:76px;display:flex;align-items:center;justify-content:center"></div>
+        <div style="font-size:13px;font-weight:700">Loutre</div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Eau · Fluidité</div>
+      </div>
+      <div class="comp-card" data-c="cerf" onclick="R.pickComp(this)">
+        <div id="cc-cerf" style="height:76px;display:flex;align-items:center;justify-content:center"></div>
+        <div style="font-size:13px;font-weight:700">Cerf</div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Forêt · Profondeur</div>
+      </div>
+      <div class="comp-card" data-c="loup" onclick="R.pickComp(this)">
+        <div id="cc-loup" style="height:76px;display:flex;align-items:center;justify-content:center"></div>
+        <div style="font-size:13px;font-weight:700">Loup</div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Nuit · Volonté</div>
+      </div>
+    </div>
+  </div>
+  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
+    <button class="btn btn-r" onclick="R.go('s-onb3')">Continuer →</button>
+  </div>
+</div>
+
+<!-- ONB3 – Enregistrement -->
+<div class="scr" id="s-onb3">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="onb-body">
+    <div class="onb-step">Étape 3 / 3</div>
+    <div style="font-family:var(--serif);font-size:26px;font-weight:700;line-height:1.25">Enregistre ton engagement</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.5">Parle face caméra. C'est toi qui te parles à toi-même.</div>
+    <div class="cam-wrap" id="cam-wrap">
+      <video id="cam-vid" autoplay playsinline muted></video>
+      <div class="cam-overlay">
+        <div id="cam-timer" style="font-family:var(--serif);font-size:32px;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5);display:none"></div>
+        <div id="cam-rec" style="display:none;align-items:center;gap:6px;background:rgba(0,0,0,.5);border-radius:20px;padding:6px 14px">
+          <div style="width:8px;height:8px;border-radius:50%;background:#ff3333;animation:blink 1s infinite"></div>
+          <span style="font-size:12px;font-weight:700;color:#fff">REC</span>
+        </div>
+      </div>
+      <div class="cam-ph" id="cam-ph">
+        <div style="font-size:40px">📷</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6);text-align:center">Autorise l'accès caméra<br>puis appuie sur Enregistrer</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-r" id="btn-rec" onclick="R.toggleRec()" style="flex:1">⏺ Enregistrer</button>
+      <button class="btn btn-m" onclick="R.go('s-dash')" style="flex:1">Passer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="scr" id="s-dash">
+  <div class="sb"><span id="clk-d">22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="dash-header">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="font-family:var(--serif);font-size:22px;font-weight:700" id="dash-name">Bonsoir, Léa</div>
+      <div class="streak-badge" id="dash-streak">🔥 8</div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:3px;line-height:1.4" id="dash-phrase"></div>
+    <div style="font-size:11px;color:var(--purple);margin-top:3px;font-weight:600" id="dash-ident-word"></div>
+  </div>
+  <div class="dom-tabs" id="dom-tabs"></div>
+  <div class="dash-scroll">
+    <div class="comp-main" onclick="R.go('s-comp')">
+      <div id="d-comp-svg"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:700;font-size:15px" id="d-comp-name">Renardeau</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="d-comp-stage">Renard · Stade 1</div>
+        <div class="xp-bar"><div class="xp-fill" id="d-xp-fill" style="width:68%"></div></div>
+        <div style="font-size:10px;color:var(--muted);display:flex;justify-content:space-between;margin-top:4px"><span id="d-xp-lbl">68 xp</span><span>100 xp</span></div>
+      </div>
+    </div>
+    <div class="sim-banner" onclick="R.simT()">
+      <div style="font-size:24px" id="d-sim-ico">🛵</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700">Simuler une tentation</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="d-sim-sub">Tu ouvres Uber Eats...</div>
+      </div>
+      <div style="color:var(--fox);font-size:18px">›</div>
+    </div>
+    <div class="sec-title">Historique</div>
+    <div id="j-list"></div>
+  </div>
+</div>
+
+<!-- SIM -->
+<div class="scr" id="s-sim" style="z-index:20">
+  <div class="sim-content" id="sim-inner"></div>
+  <div id="intercept">
+    <div class="int-sheet">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-size:28px">🪞</div>
+        <div>
+          <div style="font-family:var(--serif);font-size:18px;font-weight:700;line-height:1.3" id="int-title">Tu as quelque chose<br>à te dire.</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px" id="int-sub">Tu t'étais engagée il y a 8 jours.</div>
+        </div>
+      </div>
+      <button class="btn btn-r" onclick="R.goOverlay()">Voir mon engagement →</button>
+      <button class="btn btn-m" onclick="R.go('s-dash')">Fermer sans regarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- OVL1 – Vidéo -->
+<div class="scr" id="s-ovl1" style="z-index:9">
+  <div class="sb" style="flex-shrink:0"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="ovl-hdr">
+    <div style="font-size:22px" id="o1-ico">🛵</div>
+    <div>
+      <div style="font-size:14px;font-weight:700" id="o1-app">Uber Eats</div>
+      <div style="font-size:11px;color:var(--fox);font-weight:600">● Intercepté par Miroir</div>
+    </div>
+    <div style="margin-left:auto;font-size:11px;color:var(--muted)">1 / 2</div>
+  </div>
+  <div class="vid-wrap" id="vid-wrap">
+    <div class="vid-no" id="vid-no">
+      <div style="font-size:40px">🎬</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.5);text-align:center">Enregistre ton engagement<br>pour le voir ici</div>
+    </div>
+    <div class="vid-comp-badge" id="vid-comp-badge"></div>
+  </div>
+  <!-- ANCRAGE SCÈNE (nouveau) -->
+  <div class="scene-anchor" id="scene-anchor"></div>
+  <div class="ovl-quote">
+    <div style="font-family:var(--serif);font-size:16px;font-style:italic" id="o1-quote"></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:4px" id="o1-by"></div>
+  </div>
+  <div style="padding:12px 18px calc(20px + var(--safe));flex-shrink:0">
+    <div class="btn-fill-wrap">
+      <div class="btn-fill-bar" id="btn-fill-bar"></div>
+      <button class="btn btn-o" id="btn-continue" onclick="R.tryNext()" style="position:relative;z-index:1">
+        <span id="btn-lbl">Regarde d'abord…</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- OVL2 – Réflexion -->
+<div class="scr" id="s-ovl2" style="z-index:9;background:rgba(4,3,10,.97)">
+  <div class="sb" style="flex-shrink:0"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="ovl-hdr">
+    <div style="font-size:22px" id="o2-ico">🛵</div>
+    <div>
+      <div style="font-size:14px;font-weight:700" id="o2-app">Uber Eats</div>
+      <div style="font-size:11px;color:var(--fox);font-weight:600">● Intercepté par Miroir</div>
+    </div>
+    <div style="margin-left:auto;font-size:11px;color:var(--muted)">2 / 2</div>
+  </div>
+  <div class="refl-body">
+    <div class="refl-tw">
+      <svg width="158" height="158" viewBox="0 0 158 158">
+        <circle cx="79" cy="79" r="70" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="4"/>
+        <circle cx="79" cy="79" r="70" fill="none" stroke="var(--fox)" stroke-width="4"
+          stroke-dasharray="440" stroke-dashoffset="440" stroke-linecap="round"
+          transform="rotate(-90 79 79)" id="refl-ring"
+          style="transition:stroke-dashoffset 1s linear,stroke .5s"/>
+      </svg>
+      <div class="refl-comp-c" id="refl-comp"></div>
+      <div class="refl-cnt" id="refl-cnt">30</div>
+    </div>
+    <div style="font-family:var(--serif);font-size:21px;font-style:italic;color:var(--ink);line-height:1.5" id="refl-msg">Vraiment envie,<br>ou juste habitude ?</div>
+    <!-- NORME SOCIALE CONTEXTUELLE (nouveau) -->
+    <div class="social-norm" id="social-norm"></div>
+    <div class="timer-label" id="timer-label">30 secondes pour te recentrer</div>
+  </div>
+  <div style="padding:10px 18px calc(22px + var(--safe));display:flex;flex-direction:column;gap:10px;flex-shrink:0">
+    <div class="bu-wrap">
+      <div class="bu-bar" id="bu-resist" style="background:rgba(66,196,126,.15)"></div>
+      <button class="btn btn-g btn-locked" id="btn-resist" onclick="R.resist()">✓ Je résiste — fermer l'app</button>
+    </div>
+    <div class="bu-wrap">
+      <div class="bu-bar" id="bu-slip" style="background:rgba(232,86,58,.08)"></div>
+      <button class="btn btn-m btn-locked" id="btn-slip" onclick="R.go('s-slip')">J'y vais quand même…</button>
+    </div>
+  </div>
+</div>
+
+<!-- SLIP -->
+<div class="scr" id="s-slip">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px">
+    <div id="slip-comp"></div>
+    <div style="font-family:var(--serif);font-size:26px;font-weight:700">Ok, Léa.</div>
+    <div style="font-size:14px;color:var(--muted);text-align:center;line-height:1.6">Pas de jugement.<br>Que s'est-il passé ce soir ?</div>
+    <textarea id="slip-note" rows="4" placeholder="Fatigue, stress, ennui… écris ce qui t'a traversée." style="width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;font-family:var(--sans);font-size:15px;color:var(--ink);resize:none;outline:none;line-height:1.5"></textarea>
+    <button class="btn btn-r" style="width:100%" onclick="R.saveSlip()">Enregistrer →</button>
+    <button class="btn btn-m" style="width:100%" onclick="R.go('s-dash')">Passer</button>
+  </div>
+</div>
+
+<!-- IDENTITY CASCADE (nouveau) -->
+<div class="scr" id="s-ident">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="ident-body">
+    <div style="font-size:48px" id="ident-comp-ico">🦊</div>
+    <div style="font-family:var(--serif);font-size:24px;font-weight:700;line-height:1.3">Cette résistance,<br>qu'est-ce qu'elle dit de toi ?</div>
+    <div style="font-size:14px;color:var(--muted);line-height:1.6">Choisis un mot qui décrit<br>ce que tu viens de faire.</div>
+    <div class="ident-chips" id="ident-chips">
+      <div class="ident-chip" onclick="R.pickIdent(this)">Forte</div>
+      <div class="ident-chip" onclick="R.pickIdent(this)">Cohérente</div>
+      <div class="ident-chip" onclick="R.pickIdent(this)">Lucide</div>
+      <div class="ident-chip" onclick="R.pickIdent(this)">Libre</div>
+      <div class="ident-chip" onclick="R.pickIdent(this)">Consciente</div>
+      <div class="ident-chip" onclick="R.pickIdent(this)">Courageuse</div>
+      <div class="ident-chip" onclick="R.pickIdent(this)">Authentique</div>
+      <div class="ident-chip" onclick="R.pickIdent(this)">Présente</div>
+    </div>
+    <button class="btn btn-m" id="btn-ident-skip" onclick="R.go('s-victory')" style="max-width:280px;font-size:13px">Passer →</button>
+  </div>
+</div>
+
+<!-- COMPANION -->
+<div class="scr" id="s-comp">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="comp-scr-body">
+    <div id="c-svg-big"></div>
+    <div style="font-family:var(--serif);font-size:28px;font-weight:700" id="c-name">Renardeau</div>
+    <div style="font-size:12px;color:var(--muted);letter-spacing:.5px" id="c-stage">Renard · Stade 1</div>
+    <div style="font-size:13px;color:var(--fox);font-weight:600" id="c-mood">État : Épanoui</div>
+    <div style="width:100%">
+      <div style="height:6px;background:var(--line);border-radius:3px;overflow:hidden"><div id="c-xpf" style="height:100%;background:var(--fox);border-radius:3px;transition:width .6s"></div></div>
+      <div style="font-size:10px;color:var(--muted);display:flex;justify-content:space-between;margin-top:4px"><span id="c-xpl">68 xp</span><span>100 xp</span></div>
+    </div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;line-height:1.6;max-width:280px" id="c-desc"></div>
+    <!-- Mots identité accumulés -->
+    <div id="c-ident-words" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:280px"></div>
+  </div>
+  <div style="padding:0 24px calc(24px + var(--safe));flex-shrink:0">
+    <button class="btn btn-o" onclick="R.pet()">Caresser ✦</button>
+  </div>
+</div>
+
+<!-- VICTORY -->
+<div class="scr" id="s-victory">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center">
+    <div id="vic-svg"></div>
+    <div style="font-family:var(--serif);font-size:32px;font-weight:700" id="vic-title" style="color:var(--fox)">Tu as résisté ✦</div>
+    <div style="font-size:15px;color:var(--muted)" id="vic-xp">+12 xp</div>
+    <div id="vic-reward-badge" style="padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;display:none"></div>
+    <div style="font-family:var(--serif);font-size:16px;font-style:italic;color:var(--muted);line-height:1.6" id="vic-phrase"></div>
+    <div id="vic-ident" style="font-size:13px;color:var(--purple);font-weight:600;display:none"></div>
+  </div>
+  <div style="padding:0 24px calc(28px + var(--safe));flex-shrink:0">
+    <button class="btn btn-r" onclick="R.go('s-dash')">Continuer →</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bnav">
+  <div class="nb on" id="nb-dash" onclick="R.nav('s-dash','nb-dash')"><div class="nb-i">🏠</div><div class="nb-l">Accueil</div></div>
+  <div class="nb" id="nb-rec" onclick="R.nav('s-onb3','nb-rec')"><div class="nb-i">⏺</div><div class="nb-l">Engager</div></div>
+  <div class="nb" id="nb-comp" onclick="R.nav('s-comp','nb-comp')"><div class="nb-i" id="nb-comp-ico">🦊</div><div class="nb-l">Compagnon</div></div>
+</div>
+
+<script>
+"use strict";
+
+// ── ÉTAT ──
+var ST = {
+  comp:"renard", stage:1, xp:68,
+  domains:["fashion","delivery","shopping"], curD:0, day:8,
+  streak:8, weekResist:3, allTimeResist:12,
+  ikigai:{p:[],f:[],m:[],v:[]}, phrase:"", scene:"",
+  identWords:[], lastIdentWord:"",
+  blobs:{}, recording:false, mediaRecorder:null, chunks:[],
+  lastReward:"normal",
+  journal:[
+    {d:"AUJOURD'HUI · 14:20",t:"r",x:"Shein ouvert 40s. Fermé — juste l'habitude.",w:"Cohérente"},
+    {d:"HIER · 22:47",t:"s",x:"Commandé Uber Eats. Fatigue post-partiels."}
+  ]
+};
+
+var DC = {
+  fashion: {l:"Fast Fashion",e:"👗",a:"Shein",q:"Je m'engage à ne plus commander sur Shein. Je choisis de m'habiller autrement.",sim:"Tu ouvres Shein à 22h47…"},
+  delivery:{l:"Livraison",e:"🛵",a:"Uber Eats",q:"J'arrête Uber Eats. J'ai une cuisine, je sais cuisiner.",sim:"Tu ouvres Uber Eats à 22h47…"},
+  shopping:{l:"Achats impulsifs",e:"📦",a:"Amazon",q:"Avant d'acheter, j'attends 48h. Si j'y pense encore, alors seulement.",sim:"Tu ouvres Amazon à 22h47…"},
+  food:    {l:"Alimentation",e:"🍔",a:"McDo",q:"Un repas cuisiné par jour minimum.",sim:"Tu ouvres l'app McDo…"},
+  social:  {l:"Réseaux sociaux",e:"📱",a:"Instagram",q:"30 min max. Pas le matin, pas le soir.",sim:"Tu ouvres Instagram…"},
+  gaming:  {l:"Jeux vidéo",e:"🎮",a:"TikTok",q:"Plus de jeux après 23h. Le sommeil d'abord.",sim:"Tu ouvres TikTok…"},
+  alcohol: {l:"Alcool",e:"🍷",a:"Bar",q:"L'alcool uniquement en groupe. Jamais seul(e).",sim:"Tu cherches un bar…"},
+  coffee:  {l:"Café",e:"☕",a:"Starbucks",q:"Max 2 cafés par jour, aucun après 14h.",sim:"Tu ouvres l'app café…"}
+};
+
+var STAGES = {
+  renard:["Renardeau","Renard","Renard des bois","Renard Ancien","Renard des Étoiles"],
+  loutre:["Loutreau","Loutre","Loutre Sage","Grande Loutre","Loutre Céleste"],
+  cerf:  ["Faon","Jeune Cerf","Cerf","Grand Cerf","Cerf des Forêts"],
+  loup:  ["Louveton","Jeune Loup","Loup","Loup Alpha","Loup des Neiges"]
+};
+
+// ── RENFORCEMENT VARIABLE ──
+// tiers: normal 60%, bon 25%, rare 10%, légendaire 5%
+function rollReward() {
+  var r = Math.random();
+  if (r < 0.05) return "legendary";
+  if (r < 0.15) return "rare";
+  if (r < 0.40) return "bon";
+  return "normal";
+}
+
+var REWARDS = {
+  normal:   {xp:12, label:"",          color:"var(--green)"},
+  bon:      {xp:15, label:"✦ Bonne résistance",  color:"var(--fox)"},
+  rare:     {xp:20, label:"★ Résistance rare",   color:"var(--purple)"},
+  legendary:{xp:25, label:"✦ LÉGENDAIRE",        color:"var(--gold)"}
+};
+
+// ── FRICTION ADAPTIVE ──
+// Timer diminue avec le streak : 30s jusqu'à streak 3, 25s jusqu'à 6, 20s jusqu'à 10, 15s après
+function getReflTime() {
+  if (ST.streak >= 10) return 15;
+  if (ST.streak >= 6)  return 20;
+  if (ST.streak >= 3)  return 25;
+  return 30;
+}
+
+function getTimerLabel(sec) {
+  if (ST.streak >= 10) return sec + "s — tu connais ce moment, tu sais quoi faire";
+  if (ST.streak >= 6)  return sec + "s — ton habitude se construit";
+  if (ST.streak >= 3)  return sec + "s — prends le temps de te recentrer";
+  return sec + "s pour te recentrer";
+}
+
+// ── NORMES SOCIALES CONTEXTUELLES ──
+function getSocialNorm() {
+  var h = new Date().getHours();
+  var streak = ST.streak;
+  var week = ST.weekResist;
+  var record = ST.allTimeResist;
+  var msgs = [];
+
+  if (streak > 0) msgs.push("🔥 " + streak + " jours de suite sans céder. C'est " + (streak >= 7 ? "exceptionnel" : "bien réel") + ".");
+  if (week >= 3)  msgs.push("📅 " + week + " résistances cette semaine — c'est ta meilleure série.");
+  if (h >= 22)    msgs.push("🌙 Il est " + h + "h. La fatigue rend la tentation plus forte — c'est normal.");
+  if (h >= 0 && h < 6) msgs.push("🌙 Très tard. Ton cerveau cherche une récompense rapide. Tu peux lui en donner une autre.");
+  if (week === record && record > 0) msgs.push("⭐ Tu bats ton propre record cette semaine.");
+  if (msgs.length === 0) msgs.push("Tu t'es engagée il y a " + ST.day + " jours. Ce moment compte.");
+
+  return msgs[Math.floor(Math.random() * msgs.length)];
+}
+
+var NAV_SCREENS = {"s-dash":true,"s-onb3":true,"s-comp":true};
+var cur = "s0";
+var hist = [];
+
+// ── SVG COMPAGNONS ──
+function svg(name, size, happy, tired) {
+  var s = size || 80; var h = !!happy; var t = !!tired;
+  var eye = h ? "M-4,-2 Q0,-6 4,-2" : (t ? "M-4,0 Q0,2 4,0" : "M-4,0 Q0,-3 4,0");
+  var smile = h ? '<path d="M40,60 Q50,67 60,60" stroke-width="2.5" fill="none" stroke-linecap="round"/>' : "";
+  var B = {
+    renard:function(){
+      var c = t?"#A04428":"#E8763A";
+      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
+        +'<polygon points="25,35 15,10 38,28" fill="'+c+'"/>'
+        +'<polygon points="75,35 85,10 62,28" fill="'+c+'"/>'
+        +'<polygon points="25,35 20,14 36,28" fill="#F5C8A0"/>'
+        +'<polygon points="75,35 80,14 64,28" fill="#F5C8A0"/>'
+        +'<ellipse cx="50" cy="65" rx="28" ry="22" fill="'+c+'"/>'
+        +'<circle cx="50" cy="42" r="22" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="52" rx="14" ry="10" fill="#F5C8A0"/>'
+        +'<ellipse cx="50" cy="56" rx="6" ry="4" fill="#E87090"/>'
+        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g stroke="#E87090">'+smile+'</g>'
+        +'</svg>';
+    },
+    loutre:function(){
+      var c = t?"#5A7A6A":"#7AB89A";
+      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
+        +'<ellipse cx="44" cy="35" rx="9" ry="7" fill="'+c+'"/>'
+        +'<ellipse cx="56" cy="35" rx="9" ry="7" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="67" rx="24" ry="18" fill="'+c+'"/>'
+        +'<circle cx="50" cy="42" r="22" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="52" rx="13" ry="9" fill="#C8E8D8"/>'
+        +'<ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#4A3030"/>'
+        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#1a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#1a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g stroke="#4A9070">'+smile+'</g>'
+        +'</svg>';
+    },
+    cerf:function(){
+      var c = t?"#7A5A30":"#A07840";
+      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
+        +'<path d="M30,20 Q20,5 15,2 Q25,8 28,18" fill="'+c+'"/>'
+        +'<path d="M70,20 Q80,5 85,2 Q75,8 72,18" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="67" rx="24" ry="18" fill="'+c+'"/>'
+        +'<circle cx="50" cy="42" r="22" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="52" rx="13" ry="9" fill="#E8D8B0"/>'
+        +'<ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#7A3030"/>'
+        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#2a1a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#2a1a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g stroke="#C09050">'+smile+'</g>'
+        +'</svg>';
+    },
+    loup:function(){
+      var c = t?"#4A4A5A":"#6A6A8A";
+      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
+        +'<polygon points="28,32 18,8 40,26" fill="'+c+'"/>'
+        +'<polygon points="72,32 82,8 60,26" fill="'+c+'"/>'
+        +'<polygon points="28,32 22,12 38,26" fill="#C8C8D8"/>'
+        +'<polygon points="72,32 78,12 62,26" fill="#C8C8D8"/>'
+        +'<ellipse cx="50" cy="67" rx="26" ry="19" fill="'+c+'"/>'
+        +'<circle cx="50" cy="42" r="22" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="53" rx="14" ry="10" fill="#C8C8D8"/>'
+        +'<ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#2A1A2A"/>'
+        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#0a0a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#0a0a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g stroke="#8A8AAA">'+smile+'</g>'
+        +'</svg>';
+    }
+  };
+  return (B[name]||B.renard)();
+}
+
+// ── NAVIGATION ──
+var btnTimerInt=null, btnReady=false;
+var reflTimerInt=null;
+var simScrollInt=null, simInterceptTmr=null;
+var pendingReward=null;
+
+function go(id) {
+  if (!id || id===cur) return;
+  var cEl=document.getElementById(cur);
+  var nEl=document.getElementById(id);
+  if (!cEl||!nEl) return;
+  if (cur==="s-ovl2") stopReflTimer();
+  if (cur==="s-ovl1") stopBtnTimer();
+  if (cur==="s-sim")  clearSimTimers();
+  cEl.classList.remove("A"); cEl.classList.add("L");
+  setTimeout(function(){ cEl.classList.remove("L"); },280);
+  nEl.classList.add("A");
+  hist.push(cur); cur=id;
+  document.getElementById("bnav").classList.toggle("V",!!NAV_SCREENS[id]);
+  if (id==="s-dash")   renderDash();
+  if (id==="s-ovl1")   renderOvl1();
+  if (id==="s-ovl2")   renderOvl2();
+  if (id==="s-slip")   renderSlip();
+  if (id==="s-comp")   renderComp();
+  if (id==="s-ident")  renderIdent();
+  if (id==="s-victory") renderVictory();
+  if (id==="s-onb2")   renderCompGrid();
+  if (id==="s-onb3")   setTimeout(initCam,100);
+}
+
+function nav(id,nbId) {
+  document.querySelectorAll(".nb").forEach(function(n){ n.classList.remove("on"); });
+  var nb=document.getElementById(nbId); if(nb) nb.classList.add("on");
+  go(id);
+}
+
+// ── TOAST ──
+var toastTmr=null;
+function toast(msg) {
+  var el=document.getElementById("toast");
+  el.textContent=msg; el.classList.add("S");
+  clearTimeout(toastTmr);
+  toastTmr=setTimeout(function(){ el.classList.remove("S"); },2500);
+}
+
+// ── UTILS ──
+function getTime() {
+  var d=new Date(); return d.getHours()+":"+String(d.getMinutes()).padStart(2,"0");
+}
+function cap(s){ return s?s.charAt(0).toUpperCase()+s.slice(1):""; }
+function clean(arr){ return (arr||[]).map(function(s){ return s.replace(/^[^\wÀ-ÿ]+/,"").trim().toLowerCase(); }); }
+
+// ── IKIGAI ──
+function ikNext(step) {
+  var maps={1:"ik1",2:"ik2",3:"ik3",4:"ik4"};
+  var keys={1:"p",2:"f",3:"m",4:"v"};
+  var nexts={1:"s-ik2",2:"s-ik3",3:"s-ik4",4:"s-ik5"};
+  var chips=document.querySelectorAll("#"+maps[step]+" .ik-chip.on");
+  ST.ikigai[keys[step]]=[];
+  chips.forEach(function(c){ ST.ikigai[keys[step]].push(c.textContent.trim()); });
+  go(nexts[step]);
+}
+
+function ikFinish() {
+  var ta=document.getElementById("scene-ta");
+  ST.scene=ta?ta.value.trim():"";
+  var val=clean(ST.ikigai.v)[0]||"cohérente";
+  var force=clean(ST.ikigai.f)[0]||"ma créativité";
+  var miss=clean(ST.ikigai.m)[0]||"un monde meilleur";
+  if (miss.indexOf("un ")!==0&&miss.indexOf("plus")!==0) miss="un monde plus "+miss;
+  ST.phrase=val+" · "+force;
+  var ph=document.getElementById("ik6-phrase");
+  if (ph) ph.innerHTML="Je construis une vie <strong style='color:var(--fox);font-style:normal'>"+val+"</strong>"
+    +" en mettant <strong style='color:var(--fox);font-style:normal'>"+force+"</strong>"
+    +" au service de <strong style='color:var(--fox);font-style:normal'>"+miss+"</strong>.";
+  var allV=clean(ST.ikigai.v).concat(clean(ST.ikigai.p)).slice(0,4);
+  var ve=document.getElementById("ik6-vals");
+  if (ve) ve.innerHTML=allV.map(function(v){
+    return "<div style='font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--fox);color:var(--fox);font-weight:600'>"+cap(v)+"</div>";
+  }).join("");
+  var sc=document.getElementById("ik6-scene");
+  if (sc&&ST.scene) sc.textContent="\u201C"+ST.scene+"\u201D";
+  go("s-ik6");
+}
+
+// ── SCÈNE INPUT ──
+function initSceneInput() {
+  var ta=document.getElementById("scene-ta");
+  var btn=document.getElementById("btn-scene");
+  var cnt=document.getElementById("scene-count");
+  if (!ta||!btn||!cnt) return;
+  ta.addEventListener("input",function(){
+    var len=ta.value.trim().length;
+    cnt.textContent=len+" / 20 caractères minimum";
+    if (len>=20){
+      btn.style.opacity="1"; btn.style.pointerEvents="auto";
+      cnt.style.color="var(--green)";
+    } else {
+      btn.style.opacity=".4"; btn.style.pointerEvents="none";
+      cnt.style.color="var(--muted)";
+    }
+  });
+}
+
+// ── ONB ──
+function saveDomains() {
+  var chips=document.querySelectorAll("#dom-chips .ik-chip.on");
+  ST.domains=[];
+  chips.forEach(function(c){ if(c.dataset.k) ST.domains.push(c.dataset.k); });
+  if (!ST.domains.length) ST.domains=["delivery"];
+  ST.curD=0;
+  go("s-onb2");
+}
+
+function pickComp(el) {
+  document.querySelectorAll(".comp-card").forEach(function(c){ c.classList.remove("on"); });
+  el.classList.add("on");
+  ST.comp=el.dataset.c;
+  var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
+  var ico=document.getElementById("nb-comp-ico");
+  if (ico) ico.textContent=icons[ST.comp]||"🦊";
+}
+
+function renderCompGrid(){
+  ["renard","loutre","cerf","loup"].forEach(function(id){
+    var el=document.getElementById("cc-"+id);
+    if (el) el.innerHTML=svg(id,68);
+  });
+}
+
+// ── CAMÉRA ──
+var camStream=null, recTimerInt=null, recSec=0;
+
+function initCam(){
+  if (camStream) return;
+  if (!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) return;
+  navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:true})
+    .then(function(stream){
+      camStream=stream;
+      var v=document.getElementById("cam-vid");
+      if (v){ v.srcObject=stream; v.play(); }
+      var ph=document.getElementById("cam-ph");
+      if (ph) ph.style.display="none";
+    }).catch(function(){});
+}
+
+function toggleRec(){
+  if (!camStream){ initCam(); return; }
+  if (!ST.recording) startRec(); else stopRec();
+}
+
+function startRec(){
+  ST.chunks=[];
+  try{ ST.mediaRecorder=new MediaRecorder(camStream); }catch(e){ return; }
+  ST.mediaRecorder.ondataavailable=function(e){ if(e.data.size>0) ST.chunks.push(e.data); };
+  ST.mediaRecorder.onstop=function(){
+    var blob=new Blob(ST.chunks,{type:"video/webm"});
+    var k=ST.domains[ST.curD]||"delivery";
+    if (ST.blobs[k]) URL.revokeObjectURL(ST.blobs[k]);
+    ST.blobs[k]=URL.createObjectURL(blob);
+    recSec=0; clearInterval(recTimerInt);
+    var timer=document.getElementById("cam-timer");
+    var rec=document.getElementById("cam-rec");
+    if (timer) timer.style.display="none";
+    if (rec)   rec.style.display="none";
+    var btn=document.getElementById("btn-rec");
+    if (btn){ btn.textContent="✓ Enregistré"; btn.style.background="var(--green)"; btn.style.borderColor="var(--green)"; }
+    ST.xp=Math.min(100,ST.xp+10);
+    toast("Engagement enregistré +10 xp");
+    setTimeout(function(){ go("s-dash"); },1200);
+  };
+  ST.mediaRecorder.start(100); ST.recording=true; recSec=0;
+  var timer=document.getElementById("cam-timer");
+  var rec=document.getElementById("cam-rec");
+  if (timer) timer.style.display="block";
+  if (rec)   rec.style.display="flex";
+  var btn=document.getElementById("btn-rec");
+  if (btn){ btn.textContent="⏹ Arrêter"; btn.style.background="var(--red)"; btn.style.borderColor="var(--red)"; }
+  recTimerInt=setInterval(function(){ recSec++; var t=document.getElementById("cam-timer"); if(t) t.textContent=recSec+"s"; },1000);
+}
+
+function stopRec(){
+  if (ST.mediaRecorder&&ST.recording){ ST.mediaRecorder.stop(); ST.recording=false; }
+}
+
+// ── DASHBOARD ──
+function renderDash(){
+  var d=DC[ST.domains[ST.curD]]||DC.delivery;
+  var ph=document.getElementById("dash-phrase");
+  if (ph) ph.textContent=ST.phrase?"\u00AB "+ST.phrase+" \u00BB":"";
+  var diw=document.getElementById("dash-ident-word");
+  if (diw) diw.textContent=ST.lastIdentWord?"Je suis "+ST.lastIdentWord.toLowerCase()+" \u2014 "+ST.identWords.length+" acte"+(ST.identWords.length>1?"s":"")+" d'identit\u00E9":"";
+  var ds=document.getElementById("dash-streak");
+  if (ds) ds.textContent="🔥 "+ST.streak;
+  var cs=document.getElementById("d-comp-svg"); if(cs) cs.innerHTML=svg(ST.comp,72);
+  var cn=document.getElementById("d-comp-name"); if(cn) cn.textContent=STAGES[ST.comp][ST.stage-1]||ST.comp;
+  var cst=document.getElementById("d-comp-stage"); if(cst) cst.textContent=cap(ST.comp)+" · Stade "+ST.stage;
+  var xf=document.getElementById("d-xp-fill"); if(xf) xf.style.width=ST.xp+"%";
+  var xl=document.getElementById("d-xp-lbl"); if(xl) xl.textContent=ST.xp+" xp";
+  var tabs=document.getElementById("dom-tabs");
+  if (tabs) tabs.innerHTML=ST.domains.map(function(k,i){
+    return "<div class='dom-tab"+(i===ST.curD?" on":"")+"' onclick='R.switchD("+i+")'>"+DC[k].e+" "+DC[k].l+"</div>";
+  }).join("");
+  var si=document.getElementById("d-sim-ico"); if(si) si.textContent=d.e;
+  var ss=document.getElementById("d-sim-sub"); if(ss) ss.textContent=d.sim;
+  var jl=document.getElementById("j-list");
+  if (jl) jl.innerHTML=ST.journal.length
+    ?ST.journal.map(function(e){
+      var wTag=e.w?"<span style='font-size:10px;color:var(--purple);font-weight:700;margin-left:6px'>"+e.w+"</span>":"";
+      return "<div class='j-item'><div class='j-dot "+e.t+"'></div><div><div style='font-size:10px;color:var(--muted);margin-bottom:3px;font-weight:600;letter-spacing:.5px'>"+e.d+"</div><div style='font-size:13px;color:var(--ink);line-height:1.4'>"+e.x+wTag+"</div></div></div>";
+    }).join("")
+    :"<div style='font-size:13px;color:var(--muted);text-align:center;padding:20px'>Pas encore d'historique</div>";
+}
+
+function switchD(i){ ST.curD=i; renderDash(); }
+
+// ── SIMULATION ──
+function clearSimTimers(){
+  clearInterval(simScrollInt); clearTimeout(simInterceptTmr);
+}
+
+function simT(){
+  var k=ST.domains[ST.curD]||"delivery";
+  var d=DC[k];
+  ["o1-ico","o2-ico"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent=d.e; });
+  ["o1-app","o2-app"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent=d.a; });
+  var oq=document.getElementById("o1-quote"); if(oq) oq.textContent="\u00AB "+d.q+" \u00BB";
+  var ob=document.getElementById("o1-by"); if(ob) ob.textContent="\u2014 Toi, il y a "+ST.day+" jours";
+  var is=document.getElementById("int-sub"); if(is) is.textContent="Tu t'\u00E9tais engag\u00E9e il y a "+ST.day+" jours.";
+  // ANCRAGE SCÈNE dans ovl1
+  var sa=document.getElementById("scene-anchor");
+  if (sa){
+    if (ST.scene){
+      sa.textContent="Ton ancre : \u201C"+ST.scene.substring(0,80)+(ST.scene.length>80?"\u2026":"")+"\u201D";
+      sa.classList.add("V");
+    } else {
+      sa.classList.remove("V");
+    }
+  }
+  document.getElementById("sim-inner").innerHTML=buildSim(k);
+  var ic=document.getElementById("intercept");
+  ic.style.display="none"; ic.classList.remove("V");
+  go("s-sim");
+  clearSimTimers();
+  if (k!=="gaming"){
+    var sc=document.getElementById("sim-scroll-el");
+    if (sc){
+      var moved=0;
+      simScrollInt=setInterval(function(){
+        if (!sc) return;
+        sc.scrollTop+=1.5; moved+=1.5;
+        if (moved>260) clearInterval(simScrollInt);
+      },16);
+    }
+  }
+  simInterceptTmr=setTimeout(function(){
+    var ic2=document.getElementById("intercept");
+    if (ic2){ ic2.style.display="flex"; ic2.offsetHeight; ic2.classList.add("V"); }
+  },2600);
+}
+
+function goOverlay(){
+  var ic=document.getElementById("intercept");
+  if (ic) ic.classList.remove("V");
+  setTimeout(function(){ go("s-ovl1"); },380);
+}
+
+// ── SIM BUILDERS ──
+function buildSim(k){
+  var back="onclick=\"R.go('s-dash')\"";
+  var S={
+    fashion:function(){
+      var grid=[
+        ["#F5D0C5","👗","<span style='background:#E8563A'>-71%</span>","6,99€","24€","Robe fleurie manches bouffantes"],
+        ["#C8D8E8","👕","<span style='background:#111'>NOUVEAU</span>","12,99€","39€","Crop top côtelé sans manches"],
+        ["#5B7FA6","👖","<span style='background:#E8563A'>-66%</span>","9,49€","28€","Jeans taille haute skinny"],
+        ["#D4C8E8","🧥","<span style='background:#E8563A'>FLASH</span>","4,99€","18€","Crop hoodie oversize pastel"],
+        ["#F0E0B0","🧣","<span style='background:#E8563A'>-64%</span>","7,99€","22€","Mini jupe plissée tendance"],
+        ["#C8E8C8","👚","<span style='background:#111'>TOP</span>","3,49€","14€","Débardeur basique stretch"]
+      ].map(function(it){
+        return "<div style='background:#fff'><div style='aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;position:relative;background:"+it[0]+"'><span style='font-size:48px'>"+it[1]+"</span><div style='position:absolute;top:7px;left:7px;color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px'>"+it[2]+"</div><div style='position:absolute;top:7px;right:7px;font-size:15px'>🤍</div></div><div style='padding:6px 8px 9px'><span style='font-size:13px;font-weight:700;color:#E8563A'>"+it[3]+"</span><span style='font-size:10px;color:#aaa;text-decoration:line-through;margin-left:3px'>"+it[4]+"</span><div style='font-size:11px;color:#555;margin-top:2px;line-height:1.3'>"+it[5]+"</div></div></div>";
+      }).join("");
+      return "<div class='sim-content skin-shein'><div class='app-nav' style='border-bottom:1px solid #eee'><button class='app-back' style='color:#111' "+back+">←</button><div style='font-size:20px;font-weight:900;color:#E8563A;letter-spacing:-1px;flex:1;text-align:center'>SHEIN</div><span style='font-size:18px;position:relative'>🛒<span style='position:absolute;top:-4px;right:-6px;background:#E8563A;color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:8px'>3</span></span></div><div style='margin:4px 14px 6px;background:#f5f5f5;border-radius:20px;height:34px;display:flex;align-items:center;padding:0 12px;gap:7px;font-size:13px;color:#999;flex-shrink:0'>🔍 <span>robe été tendance</span></div><div style='display:flex;gap:0;padding:0 10px;border-bottom:1px solid #eee;flex-shrink:0;overflow-x:auto'><div style='padding:8px 12px;font-size:12px;color:#E8563A;border-bottom:2px solid #E8563A;font-weight:600;white-space:nowrap'>Pour toi</div><div style='padding:8px 12px;font-size:12px;color:#888;white-space:nowrap'>Nouveautés</div><div style='padding:8px 12px;font-size:12px;color:#888;white-space:nowrap'>Robes</div><div style='padding:8px 12px;font-size:12px;color:#888;white-space:nowrap'>Tops</div></div><div class='app-scroll' id='sim-scroll-el'><div style='display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#eee'>"+grid+"</div></div></div>";
+    },
+    delivery:function(){
+      var cards=[["🍕","#FFF3E0","Pizza Napoli","★ 4.8 · 18-28 min · Livraison 0€"],["🍔","#FFF8E1","Burger District","★ 4.6 · 22-32 min · Livraison 1,99€"],["🍜","#F3E5F5","Wok and Noodles","★ 4.7 · 25-35 min · Livraison 0€"],["🌮","#E8F5E9","Tacos Bros","★ 4.5 · 20-30 min · Livraison 0,99€"]].map(function(it){
+        return "<div style='margin:0 14px 10px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.07)'><div style='height:100px;display:flex;align-items:center;justify-content:center;font-size:50px;background:"+it[1]+"'>"+it[0]+"</div><div style='padding:10px 12px'><div style='font-size:14px;font-weight:700'>"+it[2]+"</div><div style='font-size:11px;color:#777;margin-top:3px'>"+it[3]+"</div></div></div>";
+      }).join("");
+      return "<div class='sim-content skin-uber'><div class='app-nav'><button class='app-back' style='color:#000' "+back+">←</button><div style='font-size:17px;font-weight:900;color:#000;flex:1;letter-spacing:-.5px'>Uber Eats</div><span style='font-size:16px'>👤</span></div><div style='margin:0 14px 8px;background:#fff;border-radius:10px;height:40px;display:flex;align-items:center;padding:0 14px;gap:9px;font-size:13px;color:#888;box-shadow:0 1px 6px rgba(0,0,0,.08);flex-shrink:0'>🔍 <span>Restaurants près de chez toi</span></div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'><div style='margin:0 14px 10px;background:#000;border-radius:12px;padding:12px 14px;flex-shrink:0'><div style='font-size:13px;font-weight:700;color:#fff'>🚀 Livraison gratuite ce soir</div><div style='font-size:11px;color:rgba(255,255,255,.7);margin-top:2px'>Commandes +15€</div></div><div style='padding:6px 14px 4px;font-size:13px;font-weight:700'>Rapide et proche</div>"+cards+"</div></div>";
+    },
+    shopping:function(){
+      var items=[["🎧","#f5f5f5","Casque Bluetooth Premium","★★★★☆ 2 847 avis","24,99€"],["💡","#fffde7","Pack 3 ampoules LED","★★★★★ 1 203 avis","19,99€"],["📚","#e3f2fd","Livre: Atomic Habits","★★★★★ 8 412 avis","14,90€"],["🧴","#f3e5f5","Serum Vitamine C","★★★★☆ 934 avis","27,99€"]].map(function(it){
+        return "<div style='background:#fff;display:flex;gap:12px;padding:12px 14px;border-bottom:1px solid #eee'><div style='width:76px;height:76px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;background:"+it[1]+"'>"+it[0]+"</div><div style='flex:1;min-width:0'><div style='font-size:12px;color:#0F1111;line-height:1.4'>"+it[2]+"</div><div style='color:#FF9900;font-size:11px'>"+it[3]+"</div><div style='font-size:15px;font-weight:700;color:#B12704'>"+it[4]+"</div><div style='font-size:9px;color:#00A8E1;font-weight:700;border:1px solid #00A8E1;border-radius:2px;padding:1px 4px;display:inline-block;margin-top:2px'>prime</div></div></div>";
+      }).join("");
+      return "<div class='sim-content skin-amz'><div style='background:#131921;height:50px;display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0'><button class='app-back' style='color:#fff;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='flex:1;background:#fff;border-radius:6px;height:32px;display:flex;align-items:center;padding:0 10px;gap:6px;font-size:12px;color:#888;margin:0 4px'>🔍 Rechercher</div><span style='font-size:18px;color:#FF9900'>🛒</span></div><div class='app-scroll' id='sim-scroll-el'><div style='background:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #eee'><span style='font-size:14px;font-weight:700;color:#00A8E1'>prime</span><span style='font-size:12px;color:#555'>Livraison GRATUITE demain</span></div><div style='padding:6px 14px 4px;font-size:13px;font-weight:700;background:#fff;border-bottom:1px solid #eee'>Vos meilleures ventes</div>"+items+"</div></div>";
+    },
+    food:function(){
+      var items=[["🍔","Big Mac","2 steaks, sauce secrète, salade","7,40€"],["🌯","McWrap Croustillant","Poulet, salade, tomate","6,50€"],["🍟","Menu Best Of","Burger + frites + boisson","10,90€"],["🥤","McFlurry Oreo","Glace aux éclats d'Oreo","3,20€"]].map(function(it){
+        return "<div style='margin:0 14px 10px;background:#fff;border-radius:12px;overflow:hidden;display:flex;box-shadow:0 1px 6px rgba(0,0,0,.06)'><div style='width:88px;height:88px;display:flex;align-items:center;justify-content:center;font-size:42px;background:#fff8e1;flex-shrink:0'>"+it[0]+"</div><div style='flex:1;padding:10px 12px'><div style='font-size:13px;font-weight:700'>"+it[1]+"</div><div style='font-size:11px;color:#777;margin-top:2px'>"+it[2]+"</div><div style='font-size:14px;font-weight:700;color:#DA0010;margin-top:5px'>"+it[3]+"</div></div></div>";
+      }).join("");
+      return "<div class='sim-content skin-mcd'><div style='background:#DA0010;height:50px;display:flex;align-items:center;padding:0 14px;flex-shrink:0'><button class='app-back' style='color:#FFC72C;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='color:#FFC72C;font-size:22px;font-weight:900;flex:1;text-align:center'>M</div><span style='font-size:16px;color:#FFC72C'>🛒</span></div><div style='background:#DA0010;padding:12px 16px 16px;flex-shrink:0'><div style='font-size:15px;font-weight:700;color:#FFC72C'>Bonsoir ! 😊</div><div style='font-size:12px;color:rgba(255,255,255,.7);margin-top:2px'>Lyon Bellecour · Ouvert jusqu'à 1h00</div></div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'>"+items+"</div></div>";
+    },
+    social:function(){
+      var stories=[["👤","Ma story",false],["🌍","lea.voyage",false],["🎨","art.studio",false],["🐈","chatounette",true],["🌿","green.life",false]].map(function(it){
+        var ring=it[2]?"background:#ccc":"background:linear-gradient(45deg,#f09433,#dc2743,#bc1888)";
+        return "<div style='display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0'><div style='width:54px;height:54px;border-radius:50%;padding:2px;"+ring+"'><div style='width:100%;height:100%;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f0f0f0'>"+it[0]+"</div></div><div style='font-size:10px;max-width:54px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+it[1]+"</div></div>";
+      }).join("");
+      var posts=[["🌍","lea.voyage","🗼","54 829","Une journée magique à Paris ✨ #paris #travel"],["🎨","art.studio","🎨","12 043","Nouvelle collection printemps 🌸 Que pensez-vous ?"]].map(function(it){
+        return "<div style='border-bottom:1px solid #efefef'><div style='display:flex;align-items:center;gap:10px;padding:10px 14px'><div style='width:32px;height:32px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:18px'>"+it[0]+"</div><div style='font-size:12px;font-weight:600'>"+it[1]+"</div><span style='margin-left:auto;font-size:18px'>···</span></div><div style='width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:72px;background:#fafafa'>"+it[2]+"</div><div style='padding:8px 14px;font-size:20px'>❤️ 💬 📤</div><div style='font-size:12px;font-weight:600;padding:0 14px'>"+it[3]+" mentions</div><div style='font-size:12px;padding:3px 14px 10px;border-bottom:1px solid #efefef'><span style='font-weight:600'>"+it[1]+"</span> "+it[4]+"</div></div>";
+      }).join("");
+      return "<div class='sim-content skin-insta'><div class='app-nav' style='border-bottom:1px solid #efefef'><button class='app-back' style='color:#111' "+back+">←</button><div style='font-size:15px;font-weight:700;color:#111;flex:1;text-align:center;font-family:Georgia,serif'>Instagram</div><span style='font-size:18px'>❤️</span><span style='font-size:18px'>💬</span></div><div class='ig-stories'>"+stories+"</div><div class='app-scroll' id='sim-scroll-el'>"+posts+"</div></div>";
+    },
+    gaming:function(){
+      var vids=[["#1a0a2e","🌌","@astro.vibes","Quand tu réalises que tu scrolles depuis 2h 😅 #nuit"],["#0a1a10","🌿","@nature.zen","La forêt la nuit, son calme incroyable... #asmr #zen"],["#1a1000","🔥","@gaming.clips","Ce moment impossible en ranked 😱 #gaming"]].map(function(it){
+        return "<div style='height:100vh;scroll-snap-align:start;position:relative;display:flex;align-items:flex-end;flex-shrink:0;background:"+it[0]+"'><div style='position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:90px'>"+it[1]+"</div><div style='position:relative;z-index:1;padding:14px 56px 14px 14px;width:100%'><div style='font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px'>"+it[2]+" <span style='background:#FE2C55;border-radius:4px;font-size:10px;padding:2px 7px;cursor:pointer'>Suivre</span></div><div style='font-size:12px;color:rgba(255,255,255,.9)'>"+it[3]+"</div></div><div style='position:absolute;right:10px;bottom:20px;display:flex;flex-direction:column;gap:14px;align-items:center;z-index:2'><div style='display:flex;flex-direction:column;align-items:center;gap:2px'><span style='font-size:24px'>❤️</span><span style='font-size:10px;color:#fff'>245k</span></div><div style='display:flex;flex-direction:column;align-items:center;gap:2px'><span style='font-size:24px'>💬</span><span style='font-size:10px;color:#fff'>18k</span></div></div></div>";
+      }).join("");
+      return "<div class='sim-content skin-tiktok'><div style='position:absolute;top:0;left:0;right:0;z-index:5;height:50px;display:flex;align-items:center;padding:0 14px;gap:10px'><button class='app-back' style='color:#fff;background:rgba(0,0,0,.3);border-radius:50%;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='font-size:16px;font-weight:700;color:#fff;flex:1;text-align:center'>TikTok</div><span style='font-size:16px'>🔴</span></div><div class='tk-feed' id='sim-scroll-el'>"+vids+"</div></div>";
+    },
+    alcohol:function(){
+      var bars=[["🍸","Le Comptoir des Cocktails","Ouvert","120m","★ 4.8"],["🍺","Brasserie du Vieux Lyon","Ouvert","350m","★ 4.6"],["🍷","Cave et Wine Bar","Ouvert","200m","★ 4.9"],["🎵","Le Jazz Club","Ouvert","500m","★ 4.7"]].map(function(it){
+        return "<div style='margin:0 14px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden'><div style='height:70px;display:flex;align-items:center;justify-content:center;font-size:40px;background:rgba(245,200,66,.06)'>"+it[0]+"</div><div style='padding:10px 13px'><div style='display:flex;justify-content:space-between'><span style='font-size:14px;font-weight:700'>"+it[1]+"</span><span style='color:#F5C842;font-size:12px'>"+it[4]+"</span></div><div style='font-size:11px;margin-top:3px'><span style='color:#42C47E;font-weight:600'>"+it[2]+"</span> <span style='color:rgba(245,232,208,.4)'>"+it[3]+"</span></div></div></div>";
+      }).join("");
+      return "<div class='sim-content skin-bar'><div class='app-nav' style='border-bottom:1px solid rgba(255,255,255,.08)'><button class='app-back' style='color:#F5C842;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='font-size:15px;font-weight:700;color:#F5C842;flex:1;text-align:center'>The Fork · Bars</div><span style='font-size:16px'>🔔</span></div><div style='margin:8px 14px;background:rgba(245,200,66,.1);border-radius:10px;padding:9px 12px;font-size:12px;color:#F5C842;flex-shrink:0'>📍 Lyon 2ème · 14 bars ouverts</div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'>"+bars+"</div></div>";
+    },
+    coffee:function(){
+      var items=[["☕","Flat White","Espresso corsé, mousse veloutée","4,95€"],["🧊","Iced Caramel Macchiato","Vanille, lait, expresso, caramel","5,45€"],["🍵","Matcha Latte","Matcha premium, lait vapeur","5,25€"],["🎃","Pumpkin Spice Latte","Edition limitée automne","5,75€"]].map(function(it){
+        return "<div style='margin:0 14px 10px;background:#fff;border:1px solid #eee;border-radius:14px;overflow:hidden;display:flex;box-shadow:0 1px 4px rgba(0,0,0,.05)'><div style='width:78px;height:78px;display:flex;align-items:center;justify-content:center;font-size:34px;background:#f0faf5;flex-shrink:0'>"+it[0]+"</div><div style='flex:1;padding:10px 12px'><div style='font-size:13px;font-weight:600'>"+it[1]+"</div><div style='font-size:10px;color:#888;margin-top:1px'>"+it[2]+"</div><div style='font-size:14px;font-weight:700;color:#006241;margin-top:4px'>"+it[3]+"</div></div></div>";
+      }).join("");
+      return "<div class='sim-content skin-sbux'><div style='background:#006241;height:50px;display:flex;align-items:center;padding:0 14px;flex-shrink:0'><button class='app-back' style='color:#fff;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='color:#fff;font-size:15px;font-weight:700;flex:1;text-align:center;letter-spacing:.5px'>Starbucks</div><span style='font-size:18px;color:#fff'>⭐</span></div><div style='background:#006241;padding:12px 16px 18px;flex-shrink:0'><div style='font-size:15px;font-weight:700;color:#fff'>Bonsoir, Léa ☕</div><div style='font-size:11px;color:rgba(255,255,255,.7);margin-top:2px'>340 étoiles disponibles</div></div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'>"+items+"</div></div>";
+    }
+  };
+  return (S[k]||S.delivery)();
+}
+
+// ── OVERLAY 1 ──
+function renderOvl1(){
+  btnReady=false; stopBtnTimer();
+  var bar=document.getElementById("btn-fill-bar");
+  var lbl=document.getElementById("btn-lbl");
+  if (bar){ bar.style.width="0"; bar.style.transition="none"; }
+  if (lbl) lbl.textContent="Regarde d'abord\u2026";
+  var k=ST.domains[ST.curD]||"delivery";
+  var blobURL=ST.blobs[k]||ST.blobs[Object.keys(ST.blobs)[0]]||null;
+  var wrap=document.getElementById("vid-wrap");
+  var noVid=document.getElementById("vid-no");
+  var cb=document.getElementById("vid-comp-badge");
+  if (cb) cb.innerHTML=svg(ST.comp,70,true);
+  if (blobURL&&wrap){
+    if (noVid) noVid.style.display="none";
+    var old=wrap.querySelector("video.pb"); if(old) old.remove();
+    var v=document.createElement("video");
+    v.className="pb"; v.src=blobURL;
+    v.setAttribute("playsinline",""); v.muted=false;
+    v.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)";
+    wrap.appendChild(v);
+    v.play().catch(function(){ v.muted=true; v.play(); });
+    v.addEventListener("loadedmetadata",function(){
+      var dur=Math.max(Math.ceil(v.duration)||3,2);
+      startBtnTimer(dur);
+    });
+    setTimeout(function(){ if (!btnReady) startBtnTimer(3); },900);
+  } else {
+    if (noVid) noVid.style.display="flex";
+    if (wrap){ var pv=wrap.querySelector("video.pb"); if(pv) pv.remove(); }
+    startBtnTimer(3);
+  }
+}
+
+function startBtnTimer(totalSec){
+  if (btnReady) return;
+  stopBtnTimer();
+  var elapsed=0; var step=60;
+  btnTimerInt=setInterval(function(){
+    elapsed+=step;
+    var pct=Math.min(elapsed/(totalSec*1000)*100,100);
+    var bar=document.getElementById("btn-fill-bar");
+    var lbl=document.getElementById("btn-lbl");
+    if (bar) bar.style.width=pct+"%";
+    var rem=Math.max(Math.ceil((totalSec*1000-elapsed)/1000),0);
+    if (lbl&&rem>0) lbl.textContent="Prendre "+getReflTime()+"s pour r\u00E9fl\u00E9chir ("+rem+"s)";
+    if (pct>=100){
+      stopBtnTimer(); btnReady=true;
+      if (bar) bar.style.background="rgba(232,86,58,.35)";
+      if (lbl) lbl.textContent="Prendre "+getReflTime()+"s pour r\u00E9fl\u00E9chir \u2192";
+    }
+  },step);
+}
+
+function stopBtnTimer(){ clearInterval(btnTimerInt); }
+function tryNext(){ if (btnReady) go("s-ovl2"); }
+
+// ── OVERLAY 2 ──
+function renderOvl2(){
+  var reflSec=getReflTime();
+  var rc=document.getElementById("refl-comp"); if(rc) rc.innerHTML=svg(ST.comp,88);
+  var msg=document.getElementById("refl-msg"); if(msg) msg.innerHTML="Vraiment envie,<br>ou juste habitude ?";
+  var sn=document.getElementById("social-norm"); if(sn) sn.textContent=getSocialNorm();
+  var tl=document.getElementById("timer-label"); if(tl) tl.textContent=getTimerLabel(reflSec);
+  var br=document.getElementById("btn-resist"); if(br) br.classList.add("btn-locked");
+  var bs=document.getElementById("btn-slip");   if(bs) bs.classList.add("btn-locked");
+  var bur=document.getElementById("bu-resist"); if(bur){ bur.style.width="0"; bur.style.transition="none"; }
+  var bus=document.getElementById("bu-slip");   if(bus){ bus.style.width="0"; bus.style.transition="none"; }
+  var ring=document.getElementById("refl-ring"); if(ring){ ring.style.strokeDashoffset="440"; ring.style.stroke="var(--fox)"; }
+  var cnt=document.getElementById("refl-cnt");   if(cnt){ cnt.textContent=reflSec; cnt.style.background="var(--fox)"; }
+  startReflTimer(reflSec);
+}
+
+function startReflTimer(totalSec){
+  stopReflTimer();
+  var elapsed=0; var step=60; var total=totalSec*1000;
+  reflTimerInt=setInterval(function(){
+    elapsed+=step;
+    var pct=Math.min(elapsed/total,1);
+    var offset=440*(1-pct);
+    var sec=Math.max(totalSec-Math.floor(elapsed/1000),0);
+    var ring=document.getElementById("refl-ring");
+    var cnt=document.getElementById("refl-cnt");
+    var bur=document.getElementById("bu-resist");
+    var bus=document.getElementById("bu-slip");
+    if (ring) ring.style.strokeDashoffset=offset;
+    if (cnt)  cnt.textContent=sec;
+    if (sec<=Math.floor(totalSec*0.33)){ if(ring) ring.style.stroke="var(--green)"; if(cnt) cnt.style.background="var(--green)"; }
+    if (bur) bur.style.width=(pct*100)+"%";
+    if (bus) bus.style.width=(pct*100)+"%";
+    if (pct>=1){
+      stopReflTimer();
+      var br=document.getElementById("btn-resist"); if(br) br.classList.remove("btn-locked");
+      var bsl=document.getElementById("btn-slip");  if(bsl) bsl.classList.remove("btn-locked");
+      if (bur) bur.style.width="0";
+      if (bus) bus.style.width="0";
+      var msg=document.getElementById("refl-msg"); if(msg) msg.textContent="Tu as pris le temps de te poser la question.";
+      var tl=document.getElementById("timer-label"); if(tl) tl.textContent="C'est maintenant ton choix.";
+    }
+  },step);
+}
+
+function stopReflTimer(){ clearInterval(reflTimerInt); }
+
+// ── RESIST – RENFORCEMENT VARIABLE ──
+function resist(){
+  stopReflTimer();
+  pendingReward=rollReward();
+  var rw=REWARDS[pendingReward];
+  ST.xp=Math.min(100,ST.xp+rw.xp);
+  ST.streak++;
+  ST.weekResist++;
+  ST.allTimeResist++;
+  var d=DC[ST.domains[ST.curD]||"delivery"];
+  ST.journal.unshift({d:"MAINTENANT · "+getTime(),t:"r",x:"R\u00E9sist\u00E9 \u00E0 "+d.a+". +"+rw.xp+" xp."+(pendingReward!=="normal"?" "+rw.label:"")});
+  checkEvo();
+  if (pendingReward==="legendary"){
+    showLegendary();
+  } else {
+    go("s-ident");
+  }
+}
+
+// ── LEGENDARY MODAL ──
+function showLegendary(){
+  var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
+  var ico=document.getElementById("leg-ico"); if(ico) ico.textContent=icons[ST.comp]||"🦊";
+  var msgs=[
+    "Une résistance sur 20 atteint ce niveau. C'est toi, ce soir.",
+    "Tu as changé quelque chose en toi. Pas juste dans l'app.",
+    "Ce moment compte vraiment. Ton "+ST.comp+" le sait."
+  ];
+  var lm=document.getElementById("leg-msg"); if(lm) lm.textContent=msgs[Math.floor(Math.random()*msgs.length)];
+  var stars=document.getElementById("leg-stars");
+  if (stars){
+    stars.innerHTML="";
+    for (var i=0;i<18;i++){
+      var s=document.createElement("div");
+      s.style.cssText="position:absolute;font-size:"+(10+Math.random()*14)+"px;left:"+(Math.random()*100)+"%;top:"+(Math.random()*100)+"%;animation:starFloat "+(1.5+Math.random()*2)+"s "+(Math.random()*2)+"s infinite";
+      s.textContent=["✦","★","·"][Math.floor(Math.random()*3)];
+      s.style.color=Math.random()>0.5?"#F5C842":"rgba(255,255,255,.6)";
+      stars.appendChild(s);
+    }
+  }
+  var lm2=document.getElementById("leg-modal"); if(lm2) lm2.classList.add("V");
+}
+
+function closeLeg(){
+  var lm=document.getElementById("leg-modal"); if(lm) lm.classList.remove("V");
+  go("s-ident");
+}
+
+// ── CASCADE IDENTITAIRE ──
+function renderIdent(){
+  var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
+  var ico=document.getElementById("ident-comp-ico"); if(ico) ico.textContent=icons[ST.comp]||"🦊";
+  document.querySelectorAll(".ident-chip").forEach(function(c){ c.classList.remove("on"); });
+}
+
+function pickIdent(el){
+  document.querySelectorAll(".ident-chip").forEach(function(c){ c.classList.remove("on"); });
+  el.classList.add("on");
+  ST.lastIdentWord=el.textContent.trim();
+  ST.identWords.push(ST.lastIdentWord);
+  // Met à jour la phrase ikigai pour réinjecter le mot
+  if (ST.phrase&&ST.lastIdentWord){
+    var parts=ST.phrase.split(" · ");
+    parts[0]=ST.lastIdentWord.toLowerCase();
+    ST.phrase=parts.join(" · ");
+  }
+  ST.journal.unshift({d:"MAINTENANT · "+getTime(),t:"i",x:"Acte d'identit\u00E9 : je suis "+ST.lastIdentWord.toLowerCase()+"."});
+  setTimeout(function(){ go("s-victory"); },600);
+}
+
+// ── SLIP ──
+function renderSlip(){
+  var sc=document.getElementById("slip-comp"); if(sc) sc.innerHTML=svg(ST.comp,80,false,true);
+  var note=document.getElementById("slip-note"); if(note) note.value="";
+}
+
+function saveSlip(){
+  var note=document.getElementById("slip-note");
+  var text=note?note.value.trim():"";
+  var d=DC[ST.domains[ST.curD]||"delivery"];
+  ST.journal.unshift({d:"MAINTENANT · "+getTime(),t:"s",x:"Glissement "+d.a+(text?" \u2014 "+text:"")});
+  ST.xp=Math.min(100,ST.xp+3);
+  toast("Note enregistr\u00E9e +3 xp"); go("s-dash");
+}
+
+// ── COMPANION ──
+function renderComp(){
+  var big=document.getElementById("c-svg-big"); if(big) big.innerHTML=svg(ST.comp,120,true);
+  var sn=STAGES[ST.comp][ST.stage-1]||ST.comp;
+  var cn=document.getElementById("c-name");  if(cn)  cn.textContent=sn;
+  var cs=document.getElementById("c-stage"); if(cs)  cs.textContent=cap(ST.comp)+" · Stade "+ST.stage;
+  var cm=document.getElementById("c-mood");  if(cm)  cm.textContent="État : "+(ST.xp>70?"Épanoui":ST.xp>40?"Tranquille":"Fatigué");
+  var cf=document.getElementById("c-xpf");   if(cf)  cf.style.width=ST.xp+"%";
+  var cl=document.getElementById("c-xpl");   if(cl)  cl.textContent=ST.xp+" xp";
+  var cd=document.getElementById("c-desc");  if(cd)  cd.textContent="Ton "+ST.comp+" grandit avec chaque résistance. Il n'oublie jamais tes victoires.";
+  // Mots identité
+  var ciw=document.getElementById("c-ident-words");
+  if (ciw) ciw.innerHTML=ST.identWords.slice(-6).map(function(w){
+    return "<div style='font-size:11px;padding:3px 10px;border-radius:14px;border:1px solid rgba(167,139,250,.3);color:var(--purple);font-weight:600'>"+w+"</div>";
+  }).join("");
+}
+
+function pet(){
+  var big=document.getElementById("c-svg-big"); if(big) big.innerHTML=svg(ST.comp,120,true);
+  toast("✦ "+cap(ST.comp)+" est heureux !");
+  setTimeout(function(){ var b=document.getElementById("c-svg-big"); if(b) b.innerHTML=svg(ST.comp,120); },1800);
+}
+
+// ── VICTORY ──
+function renderVictory(){
+  var rw=pendingReward?REWARDS[pendingReward]:REWARDS.normal;
+  var vs=document.getElementById("vic-svg"); if(vs) vs.innerHTML=svg(ST.comp,110,true);
+  var vt=document.getElementById("vic-title");
+  if (vt){
+    if (pendingReward==="rare") { vt.textContent="Résistance rare ★"; vt.style.color="var(--purple)"; }
+    else if (pendingReward==="bon") { vt.textContent="Bonne résistance ✦"; vt.style.color="var(--fox)"; }
+    else { vt.textContent="Tu as résisté ✦"; vt.style.color="var(--fox)"; }
+  }
+  var vx=document.getElementById("vic-xp"); if(vx) vx.textContent="+"+rw.xp+" xp · "+ST.xp+" / 100";
+  var vb=document.getElementById("vic-reward-badge");
+  if (vb){
+    if (pendingReward!=="normal"&&pendingReward!=="legendary"){
+      vb.style.display="inline-flex"; vb.textContent=rw.label;
+      vb.style.background=pendingReward==="rare"?"rgba(167,139,250,.15)":"rgba(232,86,58,.12)";
+      vb.style.border="1px solid "+rw.color; vb.style.color=rw.color;
+    } else { vb.style.display="none"; }
+  }
+  var vp=document.getElementById("vic-phrase"); if(vp) vp.textContent=ST.phrase?"\u00AB "+ST.phrase+" \u00BB":"";
+  var vi=document.getElementById("vic-ident");
+  if (vi){
+    if (ST.lastIdentWord){ vi.style.display="block"; vi.textContent="Je suis "+ST.lastIdentWord.toLowerCase()+" \u2014 c'est moi qui l'ai choisi."; }
+    else { vi.style.display="none"; }
+  }
+}
+
+// ── EVO ──
+function checkEvo(){
+  if (ST.xp>=100&&ST.stage<5){
+    var before=STAGES[ST.comp][ST.stage-1];
+    ST.stage++; ST.xp=10;
+    var after=STAGES[ST.comp][ST.stage-1];
+    var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
+    var ico=icons[ST.comp]||"🦊";
+    var eb=document.getElementById("evo-b"); if(eb) eb.textContent=ico;
+    var ea=document.getElementById("evo-a"); if(ea) ea.textContent="✨"+ico;
+    var et=document.getElementById("evo-t"); if(et) et.textContent=before+" \u2192 "+after;
+    var es=document.getElementById("evo-s"); if(es) es.textContent="Ton compagnon a évolué grâce à ta constance.";
+    var evo=document.getElementById("evo"); if(evo) evo.classList.add("V");
+  }
+}
+
+function closeEvo(){ var e=document.getElementById("evo"); if(e) e.classList.remove("V"); }
+
+// ── DEMO ──
+function demo(){
+  ST.domains=["fashion","delivery","shopping"]; ST.curD=0;
+  ST.comp="renard"; ST.stage=1; ST.xp=68;
+  ST.streak=8; ST.weekResist=3; ST.allTimeResist=12;
+  ST.phrase="cohérente · ma créativité";
+  ST.scene="Ce dimanche matin où j'ai cuisiné seule, sans téléphone, en écoutant de la musique.";
+  ST.lastIdentWord="Cohérente";
+  ST.identWords=["Forte","Lucide","Cohérente"];
+  go("s-dash");
+  document.getElementById("bnav").classList.add("V");
+  document.querySelectorAll(".nb").forEach(function(n){ n.classList.remove("on"); });
+  var nb=document.getElementById("nb-dash"); if(nb) nb.classList.add("on");
+}
+
+// ── HORLOGE ──
+function clocks(){
+  var t=getTime();
+  ["clk0","clk-d"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent=t; });
+}
+clocks(); setInterval(clocks,30000);
+
+// ── SCÈNE INPUT INIT ──
+initSceneInput();
+
+// ── API PUBLIQUE ──
+var R={
+  go:go, nav:nav, demo:demo,
+  ikNext:ikNext, ikFinish:ikFinish,
+  saveDomains:saveDomains, pickComp:pickComp,
+  toggleRec:toggleRec,
+  simT:simT, goOverlay:goOverlay,
+  tryNext:tryNext, resist:resist,
+  saveSlip:saveSlip, pet:pet,
+  switchD:switchD, closeEvo:closeEvo,
+  pickIdent:pickIdent, closeLeg:closeLeg
+};
+
+// ── SCROLL BLOCKER ──
+document.addEventListener("touchmove",function(e){
+  var ok=e.target.closest(".app-scroll")||
+    e.target.closest(".ik-chips")||
+    e.target.closest(".ik-body")||
+    e.target.closest(".comp-grid")||
+    e.target.closest(".dash-scroll")||
+    e.target.closest(".dom-tabs")||
+    e.target.closest(".tk-feed")||
+    e.target.closest(".ig-stories")||
+    e.target.closest(".ident-chips")||
+    e.target.closest(".scene-ta");
+  if (!ok) e.preventDefault();
+},{passive:false});
+</script>
+</body>
+</html>
