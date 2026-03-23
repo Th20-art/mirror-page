@@ -1753,6 +1753,26 @@ var R={
   closeEvo:closeEvo, closeLeg:closeLeg
 };
 
+// 1. La fonction magique qui dit à l'extension de se fermer
+function fermerMiroir() {
+    window.parent.postMessage("closeMiroir", "*");
+}
+
+// 2. À appliquer sur tes boutons (vérifie bien les classes ou ID de tes boutons)
+// Dans ton code actuel, ce sont probablement ces sélecteurs :
+document.addEventListener('DOMContentLoaded', () => {
+    // Bouton "Fermer sans regarder"
+    const btnResister = document.querySelector('.btn-close-action'); 
+    if(btnResister) btnResister.addEventListener('click', fermerMiroir);
+
+    // Bouton "Je résiste — c'est mon choix" à la fin
+    const btnFinal = document.querySelector('.btn-final-resist');
+    if(btnFinal) btnFinal.addEventListener('click', fermerMiroir);
+    
+    // Si tu as d'autres boutons pour quitter, ajoute-les ici
+});
+
+
 // ── TOUCHMOVE ──
 document.addEventListener("touchmove",function(e){
   var ok=e.target.closest(".app-scroll")||
