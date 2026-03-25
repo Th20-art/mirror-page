@@ -1741,6 +1741,32 @@ function demo(){
 function clocks(){ var t=getTime(); ["clk0","clk-d"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent=t; }); }
 clocks(); setInterval(clocks,30000);
 
+// ── MODE INTERCEPT (param URL ?intercept) ──
+// Utilisé par l'extension Chrome : ouvre directement l'écran vidéo d'engagement
+function interceptMode(){
+  ST.comp="renard"; ST.stage=1; ST.xp=68;
+  ST.streak=8; ST.weekResist=3;
+  ST.ambitions=["epargne","voyage","ecologie"];
+  ST.goals={epargne:200,voyage:1500,projet:0,formation:0,sante:0,logement:0,impact:0};
+  ST.weekSaved=47; ST.totalSaved=124;
+  ST.lifePhrase="Je veux voyager au Japon l\u2019ann\u00E9e prochaine et \u00EAtre quelqu\u2019un qui choisit o\u00F9 va son argent.";
+  var suggested={};
+  ST.ambitions.forEach(function(a){
+    (AMB_DOMAINS[a]||[]).forEach(function(d){ suggested[d]=(suggested[d]||0)+1; });
+  });
+  var pool=Object.keys(suggested);
+  var picked=pool[Math.floor(Math.random()*pool.length)]||"fashion";
+  ST.domains=pool.length?pool:["fashion","delivery","shopping"];
+  ST.curD=ST.domains.indexOf(picked);
+  if (ST.curD<0){ ST.domains.unshift(picked); ST.curD=0; }
+  document.getElementById("bnav").classList.add("V");
+  go("s-ovl1");
+}
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  if(params.has("intercept")) setTimeout(interceptMode,80);
+})();
+
 // ── API ──
 var R={
   go:go, nav:nav, demo:demo,
@@ -1752,26 +1778,6 @@ var R={
   resist:resist, saveSlip:saveSlip, pet:pet,
   closeEvo:closeEvo, closeLeg:closeLeg
 };
-
-// 1. La fonction magique qui dit à l'extension de se fermer
-function fermerMiroir() {
-    window.parent.postMessage("closeMiroir", "*");
-}
-
-// 2. À appliquer sur tes boutons (vérifie bien les classes ou ID de tes boutons)
-// Dans ton code actuel, ce sont probablement ces sélecteurs :
-document.addEventListener('DOMContentLoaded', () => {
-    // Bouton "Fermer sans regarder"
-    const btnResister = document.querySelector('.btn-close-action'); 
-    if(btnResister) btnResister.addEventListener('click', fermerMiroir);
-
-    // Bouton "Je résiste — c'est mon choix" à la fin
-    const btnFinal = document.querySelector('.btn-final-resist');
-    if(btnFinal) btnFinal.addEventListener('click', fermerMiroir);
-    
-    // Si tu as d'autres boutons pour quitter, ajoute-les ici
-});
-
 
 // ── TOUCHMOVE ──
 document.addEventListener("touchmove",function(e){
