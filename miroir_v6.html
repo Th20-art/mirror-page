@@ -10,7 +10,7 @@
 :root{
   --bg:#08060F;--c2:#100E1A;--ink:#EDE9E0;--muted:#6B6475;
   --line:rgba(255,255,255,.08);--fox:#E8563A;--green:#42C47E;--red:#E85070;
-  --gold:#F5C842;--purple:#A78BFA;
+  --gold:#F5C842;--purple:#A78BFA;--teal:#38BDF8;
   --safe:env(safe-area-inset-bottom,0px);
   --serif:'Cormorant Garamond',serif;--sans:'DM Sans',sans-serif;
 }
@@ -25,7 +25,6 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
 .btn-g{background:rgba(66,196,126,.15);border-color:var(--green);color:var(--green)}
 .btn-o{background:rgba(232,86,58,.08);border-color:var(--fox);color:var(--fox)}
 .btn-m{border-color:var(--line);color:var(--muted)}
-.btn-gold{background:rgba(245,200,66,.12);border-color:var(--gold);color:var(--gold)}
 #bnav{position:fixed;bottom:0;left:0;right:0;height:calc(56px + var(--safe));background:rgba(8,6,15,.92);backdrop-filter:blur(20px);border-top:1px solid var(--line);display:none;align-items:center;justify-content:space-around;padding-bottom:var(--safe);z-index:100}
 #bnav.V{display:flex}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;cursor:pointer;opacity:.45;transition:opacity .2s}
@@ -35,102 +34,130 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
 #toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--c2);border:1px solid var(--line);border-radius:24px;padding:10px 20px;font-size:13px;font-weight:600;white-space:nowrap;z-index:999;opacity:0;transition:all .3s;pointer-events:none}
 #toast.S{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* LEGENDARY MODAL */
+/* LEGENDARY */
 .leg-modal{position:fixed;inset:0;z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px;text-align:center}
 .leg-modal.V{display:flex}
 .leg-bg{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(245,200,66,.18) 0%,rgba(8,6,15,.98) 70%)}
-@keyframes legPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.85}}
+@keyframes legPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 @keyframes starFloat{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(-120px) rotate(360deg);opacity:0}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
-@keyframes identPop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@keyframes countUp{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
 
+/* EVO */
 .evo-modal{position:fixed;inset:0;background:rgba(8,6,15,.95);backdrop-filter:blur(20px);z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:32px}
 .evo-modal.V{display:flex}
-.fp{padding:0 24px;flex-shrink:0}
-.fp .btn{margin-bottom:10px}
-.ik-prog{display:flex;gap:4px;padding:0 24px 14px;flex-shrink:0}
-.ik-d{flex:1;height:3px;border-radius:2px;background:var(--line);transition:background .3s}
-.ik-d.done{background:var(--fox)}
-.ik-d.cur{background:rgba(232,86,58,.4)}
-.ik-body{flex:1;padding:0 24px;display:flex;flex-direction:column;gap:12px;overflow:hidden;min-height:0}
-.ik-orb{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
-.ik-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--fox)}
-.ik-q{font-family:var(--serif);font-size:26px;font-weight:700;line-height:1.25}
-.ik-hint{font-size:13px;color:var(--muted);line-height:1.5}
-.ik-chips{display:flex;flex-wrap:wrap;gap:8px;overflow-y:auto;padding-bottom:4px}
-.ik-chips::-webkit-scrollbar,.dash-scroll::-webkit-scrollbar,.app-scroll::-webkit-scrollbar{display:none}
-.chip,.ik-chip{padding:9px 14px;border:1.5px solid var(--line);border-radius:20px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px;flex-shrink:0;user-select:none}
-.chip.on,.ik-chip.on{border-color:var(--fox);color:var(--ink);background:rgba(232,86,58,.1)}
-.scene-ta{width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;font-family:var(--sans);font-size:15px;color:var(--ink);resize:none;outline:none;line-height:1.6;transition:border-color .2s}
-.scene-ta:focus{border-color:rgba(232,86,58,.5)}
-.ik5-venn{position:relative;width:210px;height:210px;flex-shrink:0;margin:0 auto}
-.ik-c{position:absolute;width:115px;height:115px;border-radius:50%;mix-blend-mode:screen}
-.ik-c1{top:0;left:50%;transform:translateX(-50%);background:radial-gradient(circle,#FF6B6B88,#FF6B6B33)}
-.ik-c2{top:50%;right:0;transform:translateY(-50%);background:radial-gradient(circle,#4ECDC488,#4ECDC433)}
-.ik-c3{bottom:0;left:50%;transform:translateX(-50%);background:radial-gradient(circle,#FFE66D88,#FFE66D33)}
-.ik-c4{top:50%;left:0;transform:translateY(-50%);background:radial-gradient(circle,#A78BFA88,#A78BFA33)}
-.ik-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:20px;backdrop-filter:blur(8px);z-index:5}
-.ik-lbl{position:absolute;font-size:8px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.55);text-align:center;width:48px}
-.ik-lbl.l1{top:4px;left:50%;transform:translateX(-50%)}
-.ik-lbl.l2{top:50%;right:-4px;transform:translateY(-50%)}
-.ik-lbl.l3{bottom:4px;left:50%;transform:translateX(-50%)}
-.ik-lbl.l4{top:50%;left:-4px;transform:translateY(-50%)}
-.onb-body{flex:1;padding:0 24px;display:flex;flex-direction:column;gap:12px;overflow:hidden;min-height:0}
-.onb-step{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--fox)}
+
+/* CHIPS */
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px;overflow-y:auto;padding-bottom:4px}
+.chip-grid::-webkit-scrollbar{display:none}
 .comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;overflow-y:auto}
 .comp-card{background:var(--c2);border:2px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;transition:border-color .2s,background .2s;text-align:center}
 .comp-card.on{border-color:var(--fox);background:rgba(232,86,58,.08)}
-.cam-wrap{flex:1;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line);position:relative;min-height:0}
-#cam-vid{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
-.cam-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:16px;gap:10px}
-.cam-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
-.dash-header{padding:10px 20px 0;flex-shrink:0}
+.amb-chip{padding:10px 16px;border:1.5px solid var(--line);border-radius:20px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px;user-select:none}
+.amb-chip.on{border-color:var(--fox);color:var(--ink);background:rgba(232,86,58,.1)}
+
+/* SLIDER */
+.slider-wrap{width:100%}
+.slider-lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
+.slider-val{font-size:18px;font-weight:700;color:var(--fox);text-align:center;margin-bottom:12px}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--line);border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--fox);cursor:pointer;box-shadow:0 0 12px rgba(232,86,58,.4)}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px}
+
+/* TEXT INPUT */
+.txt-input{width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;font-family:var(--sans);font-size:15px;color:var(--ink);outline:none;transition:border-color .2s}
+.txt-input:focus{border-color:rgba(232,86,58,.5)}
+.txt-input::placeholder{color:var(--muted)}
+
+/* ONBOARDING */
+.onb-scroll{flex:1;overflow-y:auto;padding:0 24px;display:flex;flex-direction:column;gap:14px;min-height:0}
+.onb-scroll::-webkit-scrollbar{display:none}
+.onb-prog{display:flex;gap:4px;padding:0 24px 14px;flex-shrink:0}
+.onb-d{flex:1;height:3px;border-radius:2px;background:var(--line);transition:background .3s}
+.onb-d.done{background:var(--fox)}
+.onb-d.cur{background:rgba(232,86,58,.4)}
+.onb-kicker{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--fox)}
+.onb-title{font-family:var(--serif);font-size:26px;font-weight:700;line-height:1.25}
+.onb-hint{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* DASHBOARD */
 .dash-scroll{flex:1;overflow-y:auto;padding:12px 20px calc(68px + var(--safe));display:flex;flex-direction:column;gap:12px}
+.dash-scroll::-webkit-scrollbar{display:none}
 .dom-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--line);flex-shrink:0}
 .dom-tabs::-webkit-scrollbar{display:none}
 .dom-tab{padding:10px 16px;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent;cursor:pointer;flex-shrink:0;transition:color .2s}
 .dom-tab.on{color:var(--fox);border-bottom-color:var(--fox)}
-.comp-main{background:var(--c2);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer}
-.xp-bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:8px}
-.xp-fill{height:100%;background:var(--fox);border-radius:2px;transition:width .6s}
-.sim-banner{background:var(--c2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .2s}
-.sim-banner:active{border-color:var(--fox)}
 .sec-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 .j-item{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
 .j-item:last-child{border-bottom:none}
 .j-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
 .j-dot.r{background:var(--green)}
 .j-dot.s{background:var(--red)}
-.j-dot.i{background:var(--purple)}
-#s-sim{z-index:20}
-.sim-content{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.xp-bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:8px}
+.xp-fill{height:100%;background:var(--fox);border-radius:2px;transition:width .6s}
+.amb-card{background:var(--c2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.amb-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.amb-progress{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:4px}
+.amb-fill{height:100%;border-radius:2px;transition:width .8s}
+.streak-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--gold)}
+
+/* SIM */
 .app-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0}
+.app-scroll::-webkit-scrollbar{display:none}
 #intercept{position:absolute;inset:0;z-index:30;display:none;flex-direction:column;background:rgba(8,6,15,0);backdrop-filter:blur(0px);transition:background .4s,backdrop-filter .4s}
-#intercept.V{background:rgba(8,6,15,.85);backdrop-filter:blur(16px)}
+#intercept.V{background:rgba(8,6,15,.88);backdrop-filter:blur(16px)}
 .int-sheet{margin-top:auto;background:var(--c2);border:1px solid var(--line);border-top:2px solid var(--fox);border-radius:24px 24px 0 0;padding:20px 20px calc(28px + var(--safe));display:flex;flex-direction:column;gap:12px;transform:translateY(100%);transition:transform .4s cubic-bezier(.34,1.2,.64,1)}
 #intercept.V .int-sheet{transform:translateY(0)}
+
+/* OVL */
 .ovl-hdr{padding:8px 18px;flex-shrink:0;display:flex;align-items:center;gap:10px}
-.vid-wrap{flex-shrink:0;margin:0 18px;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line);position:relative;height:50vh;max-height:340px}
-.vid-wrap video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
-.vid-no{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
-.vid-comp-badge{position:absolute;bottom:-12px;right:10px;z-index:5;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
-.ovl-quote{margin:16px 18px 0;background:var(--c2);border-left:3px solid var(--fox);border-radius:0 12px 12px 0;padding:12px 16px}
-.scene-anchor{margin:8px 18px 0;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:10px 14px;font-size:12px;color:rgba(167,139,250,.9);font-style:italic;line-height:1.5;display:none}
-.scene-anchor.V{display:block}
-.btn-fill-wrap{position:relative;overflow:hidden;border-radius:14px}
-.btn-fill-bar{position:absolute;top:0;left:0;height:100%;width:0;background:rgba(232,86,58,.22);pointer-events:none}
+.cost-card{margin:0 18px;background:var(--c2);border:1px solid var(--line);border-radius:16px;overflow:hidden;flex-shrink:0}
+.cost-header{padding:14px 16px 12px;border-bottom:1px solid var(--line)}
+.cost-amount{font-family:var(--serif);font-size:36px;font-weight:700;color:var(--fox);line-height:1}
+.cost-label{font-size:12px;color:var(--muted);margin-top:2px}
+.cost-alts{padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.cost-alt{display:flex;align-items:center;gap:12px}
+.cost-alt-ico{font-size:22px;flex-shrink:0;width:32px;text-align:center}
+.cost-alt-body{flex:1;min-width:0}
+.cost-alt-title{font-size:13px;font-weight:600;line-height:1.2}
+.cost-alt-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.cost-eco{margin:0 18px;background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:10px 14px;font-size:12px;color:rgba(56,189,248,.9);line-height:1.5;flex-shrink:0;display:none}
+.cost-eco.V{display:block}
+.emotion-bar{margin:8px 18px 0;flex-shrink:0}
+.emotion-q{font-size:13px;font-weight:600;margin-bottom:8px}
+.emotion-chips{display:flex;gap:8px;flex-wrap:wrap}
+.emo-chip{padding:7px 14px;border:1.5px solid var(--line);border-radius:20px;font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s;user-select:none}
+.emo-chip.on{border-color:var(--purple);color:var(--ink);background:rgba(167,139,250,.1)}
+
+/* Grande chips émoji — écran émotion */
+.emo-big-chip{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:rgba(255,255,255,.04);border:1.5px solid var(--line);border-radius:14px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.emo-big-chip:active{transform:scale(.93);opacity:.8}
+.emo-big-chip.on{border-color:var(--purple);background:rgba(167,139,250,.12)}
+.emo-big-ico{font-size:28px;line-height:1}
+.emo-big-lbl{font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:.3px;text-align:center}
+.emo-inline{position:absolute;bottom:0;left:0;right:0;z-index:6;padding:10px 12px 12px;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 100%)}
+.emo-inline-q{font-size:10px;font-family:var(--mono);color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.emo-slider{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
+.emo-slider::-webkit-scrollbar{display:none}
+.emo-s-chip{flex-shrink:0;padding:6px 13px;border:1px solid rgba(255,255,255,.2);border-radius:20px;font-size:11px;color:rgba(255,255,255,.65);background:rgba(0,0,0,.4);backdrop-filter:blur(8px);cursor:pointer;transition:all .2s;user-select:none;-webkit-user-select:none;touch-action:pan-x}
+.emo-s-chip.on{border-color:var(--purple);color:#fff;background:rgba(167,139,250,.25)}
+
+/* REFL */
 .refl-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:16px 24px}
 .refl-tw{position:relative;width:158px;height:158px;flex-shrink:0}
 .refl-tw svg{position:absolute;inset:0}
 .refl-comp-c{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .refl-cnt{position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);background:var(--fox);color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;min-width:28px;text-align:center}
-.social-norm{background:rgba(66,196,126,.07);border:1px solid rgba(66,196,126,.2);border-radius:12px;padding:10px 14px;font-size:12px;color:rgba(66,196,126,.9);line-height:1.5;flex-shrink:0;margin:0 0 4px}
-.timer-label{font-size:10px;color:var(--muted);text-align:center;letter-spacing:.3px;flex-shrink:0}
 .btn-locked{opacity:.35;pointer-events:none}
 .bu-wrap{position:relative;overflow:hidden;border-radius:14px}
 .bu-bar{position:absolute;top:0;left:0;height:100%;width:0;pointer-events:none}
+.timer-label{font-size:10px;color:var(--muted);text-align:center;letter-spacing:.3px;flex-shrink:0}
+
+/* SLIP */
+/* COMP */
+/* VICTORY */
 .skin-shein{background:#fff;color:#111}
 .skin-uber{background:#f5f0eb;color:#111}
 .skin-amz{background:#EAEDED;color:#111}
@@ -141,31 +168,17 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
 .skin-sbux{background:#fff;color:#111}
 .app-nav{height:50px;display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0}
 .app-back{width:32px;height:32px;border:none;background:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.tk-feed{flex:1;overflow-y:auto;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;min-height:0}
-.tk-feed::-webkit-scrollbar{display:none}
-.tk-vid{height:100vh;scroll-snap-align:start;position:relative;display:flex;align-items:flex-end;flex-shrink:0}
 .ig-stories{display:flex;gap:12px;padding:8px 14px;overflow-x:auto;flex-shrink:0;border-bottom:1px solid #efefef}
 .ig-stories::-webkit-scrollbar{display:none}
-.comp-scr-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px}
-
-/* IDENT WORD SCREEN */
-.ident-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center}
-.ident-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:320px}
-.ident-chip{padding:10px 18px;border:1.5px solid var(--line);border-radius:20px;font-size:14px;color:var(--muted);cursor:pointer;transition:all .2s;user-select:none}
-.ident-chip.on{border-color:var(--purple);color:var(--ink);background:rgba(167,139,250,.1);animation:identPop .3s ease}
-
-/* REWARD TIERS */
-.reward-normal{background:rgba(66,196,126,.15);border-color:var(--green);color:var(--green)}
-.reward-bon{background:rgba(232,86,58,.15);border-color:var(--fox);color:var(--fox)}
-.reward-rare{background:rgba(167,139,250,.15);border-color:var(--purple);color:var(--purple)}
-.streak-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--gold)}
+.tk-feed{flex:1;overflow-y:auto;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;min-height:0}
+.tk-feed::-webkit-scrollbar{display:none}
 </style>
 </head>
 <body>
 
 <div id="toast"></div>
 
-<!-- LEGENDARY MODAL (5% chance) -->
+<!-- LEGENDARY -->
 <div class="leg-modal" id="leg-modal">
   <div class="leg-bg"></div>
   <div id="leg-stars" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
@@ -175,11 +188,11 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
     <div style="font-family:var(--serif);font-size:28px;font-weight:700;color:#fff;text-align:center;line-height:1.3" id="leg-title">Résistance absolue</div>
     <div style="font-size:14px;color:rgba(255,255,255,.7);text-align:center;line-height:1.6;max-width:280px" id="leg-msg"></div>
     <div style="font-size:22px;font-weight:700;color:var(--gold)">+25 xp</div>
-    <button class="btn btn-gold" style="max-width:300px;position:relative;z-index:2" onclick="R.closeLeg()">C'est qui la plus forte ✦</button>
+    <button class="btn btn-r" style="max-width:300px" onclick="R.closeLeg()">C'est qui la plus forte ✦</button>
   </div>
 </div>
 
-<!-- EVO MODAL -->
+<!-- EVO -->
 <div class="evo-modal" id="evo">
   <div style="font-size:72px" id="evo-b"></div>
   <div style="font-size:26px;color:var(--fox)">→</div>
@@ -195,191 +208,88 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 32px">
     <div style="font-size:72px;animation:float 3s ease-in-out infinite">🪞</div>
     <div style="font-family:var(--serif);font-size:52px;font-weight:700;letter-spacing:-1px">Miroir</div>
-    <div style="font-size:16px;color:var(--muted);text-align:center;line-height:1.6">L'app qui te rappelle<br>à <em style="color:var(--ink)">toi-même</em></div>
+    <div style="font-size:16px;color:var(--muted);text-align:center;line-height:1.6">Chaque euro que tu dépenses<br>est un <em style="color:var(--ink)">choix de vie</em></div>
   </div>
   <div style="padding:0 24px calc(32px + var(--safe));display:flex;flex-direction:column;gap:10px">
-    <button class="btn btn-r" onclick="R.go('s-ik1')">Commencer</button>
+    <button class="btn btn-r" onclick="R.go('s-onb1')">Commencer</button>
     <button class="btn btn-m" onclick="R.demo()">Démo rapide →</button>
   </div>
 </div>
 
-<!-- IKIGAI 1 – Passion -->
-<div class="scr" id="s-ik1">
-  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div class="ik-prog"><div class="ik-d cur"></div><div class="ik-d"></div><div class="ik-d"></div><div class="ik-d"></div><div class="ik-d"></div></div>
-  <div class="ik-body">
-    <div class="ik-orb" style="background:rgba(255,107,107,.15)">❤️</div>
-    <div class="ik-label">Cercle 1 · Passion</div>
-    <div class="ik-q">Qu'est-ce qui te fait vibrer vraiment ?</div>
-    <div class="ik-hint">Pas ce que tu penses devoir aimer — ce qui te fait oublier l'heure.</div>
-    <div class="ik-chips" id="ik1">
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎨</span>Créer des choses</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🌍</span>Explorer le monde</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🤝</span>Aider les autres</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>📚</span>Apprendre</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎵</span>La musique, l'art</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>💬</span>Raconter des histoires</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🌿</span>La nature</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>⚡</span>Résoudre des problèmes</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🏃</span>Bouger, le sport</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔬</span>La science, les idées</div>
-    </div>
-  </div>
-  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
-    <button class="btn btn-r" onclick="R.ikNext(1)">Continuer →</button>
-  </div>
-</div>
-
-<!-- IKIGAI 2 – Force -->
-<div class="scr" id="s-ik2">
-  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div class="ik-prog"><div class="ik-d done"></div><div class="ik-d cur"></div><div class="ik-d"></div><div class="ik-d"></div><div class="ik-d"></div></div>
-  <div class="ik-body">
-    <div class="ik-orb" style="background:rgba(78,205,196,.15)">💎</div>
-    <div class="ik-label">Cercle 2 · Force</div>
-    <div class="ik-q">Dans quoi les autres te reconnaissent-ils ?</div>
-    <div class="ik-hint">Pas ce que tu voudrais — ce que tu fais naturellement bien.</div>
-    <div class="ik-chips" id="ik2">
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🧠</span>Analyser, réfléchir</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎯</span>Organiser, planifier</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>💡</span>Trouver des idées</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🤗</span>Écouter, empathie</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>✍️</span>Écrire, m'exprimer</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎨</span>Sens esthétique</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔧</span>Réparer, construire</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🗣️</span>Convaincre, fédérer</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>⚡</span>Décider rapidement</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔍</span>Curiosité, recherche</div>
-    </div>
-  </div>
-  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
-    <button class="btn btn-r" onclick="R.ikNext(2)">Continuer →</button>
-  </div>
-</div>
-
-<!-- IKIGAI 3 – Mission -->
-<div class="scr" id="s-ik3">
-  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div class="ik-prog"><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d cur"></div><div class="ik-d"></div><div class="ik-d"></div></div>
-  <div class="ik-body">
-    <div class="ik-orb" style="background:rgba(255,230,109,.15)">🌱</div>
-    <div class="ik-label">Cercle 3 · Mission</div>
-    <div class="ik-q">Quel monde veux-tu contribuer à construire ?</div>
-    <div class="ik-hint">Même à petite échelle — ce qui compte au-delà de toi.</div>
-    <div class="ik-chips" id="ik3">
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🌿</span>Un monde plus durable</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🤝</span>Plus de solidarité</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎨</span>Plus de beauté, de culture</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>💡</span>Plus d'innovation</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>📚</span>Éducation, transmission</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>❤️</span>Santé, bien-être</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>⚖️</span>Plus de justice</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔗</span>Créer du lien humain</div>
-    </div>
-  </div>
-  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
-    <button class="btn btn-r" onclick="R.ikNext(3)">Continuer →</button>
-  </div>
-</div>
-
-<!-- IKIGAI 4 – Valeurs -->
-<div class="scr" id="s-ik4">
-  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div class="ik-prog"><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d cur"></div><div class="ik-d"></div></div>
-  <div class="ik-body">
-    <div class="ik-orb" style="background:rgba(167,139,250,.15)">✨</div>
-    <div class="ik-label">Cercle 4 · Valeurs</div>
-    <div class="ik-q">Quels mots décrivent qui tu veux être ?</div>
-    <div class="ik-hint">Pas qui tu es aujourd'hui — qui tu veux incarner.</div>
-    <div class="ik-chips" id="ik4">
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔥</span>Authentique</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>💪</span>Courageux·se</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🌊</span>Libre</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🎯</span>Cohérent·e</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🌿</span>Conscient·e</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>❤️</span>Généreux·se</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🧘</span>Serein·e</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>⚡</span>Ambitieux·se</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🔍</span>Curieux·se</div>
-      <div class="ik-chip" onclick="this.classList.toggle('on')"><span>🤝</span>Présent·e</div>
-    </div>
-  </div>
-  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
-    <button class="btn btn-r" onclick="R.ikNext(4)">Continuer →</button>
-  </div>
-</div>
-
-<!-- IKIGAI 5 – Scène ancrage (NOUVEAU) -->
-<div class="scr" id="s-ik5">
-  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div class="ik-prog"><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d done"></div><div class="ik-d cur"></div></div>
-  <div class="ik-body" style="justify-content:center">
-    <div class="ik-orb" style="background:rgba(245,200,66,.12)">🌅</div>
-    <div class="ik-label">Ancrage émotionnel</div>
-    <div class="ik-q" style="font-size:22px">Décris un moment où tu te sentais pleinement toi-même.</div>
-    <div class="ik-hint">Une scène précise — où tu étais, ce que tu faisais, ce que tu ressentais. Ce souvenir deviendra ton ancre quand la tentation arrive.</div>
-    <textarea class="scene-ta" id="scene-ta" rows="5" placeholder="Ex : Ce dimanche matin où j'ai cuisiné seule, sans téléphone, en écoutant de la musique. Je me sentais légère, présente, vraiment moi."></textarea>
-    <div style="font-size:11px;color:var(--muted)" id="scene-count">0 / 20 caractères minimum</div>
-  </div>
-  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
-    <button class="btn btn-r" id="btn-scene" onclick="R.ikFinish()" style="opacity:.4;pointer-events:none">Créer mon ikigai →</button>
-  </div>
-</div>
-
-<!-- IKIGAI 6 – Synthèse -->
-<div class="scr" id="s-ik6">
-  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div style="text-align:center;padding:0 24px 10px;flex-shrink:0">
-    <div style="font-size:11px;font-weight:700;letter-spacing:3px;color:var(--fox);text-transform:uppercase">Ton ikigai</div>
-    <div style="font-family:var(--serif);font-size:13px;font-style:italic;color:var(--muted);margin-top:2px">La boussole de qui tu deviens</div>
-  </div>
-  <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;gap:14px;padding:6px 24px">
-    <div class="ik5-venn">
-      <div class="ik-c ik-c1"></div><div class="ik-c ik-c2"></div>
-      <div class="ik-c ik-c3"></div><div class="ik-c ik-c4"></div>
-      <div class="ik-center">✨</div>
-      <div class="ik-lbl l1">Passion</div><div class="ik-lbl l2">Force</div>
-      <div class="ik-lbl l3">Mission</div><div class="ik-lbl l4">Valeurs</div>
-    </div>
-    <div id="ik6-phrase" style="font-family:var(--serif);font-size:19px;font-style:italic;color:var(--ink);line-height:1.55;text-align:center;padding:0 10px"></div>
-    <div id="ik6-vals" style="display:flex;flex-wrap:wrap;gap:7px;justify-content:center"></div>
-    <div style="background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:12px 14px;font-size:12px;color:rgba(167,139,250,.85);font-style:italic;line-height:1.6;width:100%" id="ik6-scene"></div>
-  </div>
-  <div style="padding:12px 24px calc(20px + var(--safe));display:flex;flex-direction:column;gap:10px;flex-shrink:0">
-    <button class="btn btn-r" onclick="R.go('s-onb1')">Choisir mes engagements →</button>
-  </div>
-</div>
-
-<!-- ONB1 – Domaines -->
+<!-- ONB1 — Ambitions -->
 <div class="scr" id="s-onb1">
   <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div class="onb-body">
-    <div class="onb-step">Étape 1 / 3</div>
-    <div style="font-family:var(--serif);font-size:26px;font-weight:700;line-height:1.25">Dans quels domaines veux-tu te retrouver ?</div>
-    <div style="font-size:13px;color:var(--muted)">Choisis 1 à 3 engagements.</div>
-    <div class="ik-chips" id="dom-chips">
-      <div class="ik-chip on" data-k="fashion" onclick="this.classList.toggle('on')"><span>👗</span>Fast fashion</div>
-      <div class="ik-chip on" data-k="delivery" onclick="this.classList.toggle('on')"><span>🛵</span>Livraison</div>
-      <div class="ik-chip on" data-k="shopping" onclick="this.classList.toggle('on')"><span>📦</span>Achats impulsifs</div>
-      <div class="ik-chip" data-k="food" onclick="this.classList.toggle('on')"><span>🍔</span>Alimentation</div>
-      <div class="ik-chip" data-k="social" onclick="this.classList.toggle('on')"><span>📱</span>Réseaux sociaux</div>
-      <div class="ik-chip" data-k="gaming" onclick="this.classList.toggle('on')"><span>🎮</span>Jeux vidéo</div>
-      <div class="ik-chip" data-k="alcohol" onclick="this.classList.toggle('on')"><span>🍷</span>Alcool</div>
-      <div class="ik-chip" data-k="coffee" onclick="this.classList.toggle('on')"><span>☕</span>Café</div>
+  <div class="onb-prog"><div class="onb-d cur"></div><div class="onb-d"></div><div class="onb-d"></div></div>
+  <div class="onb-scroll">
+    <div class="onb-kicker">Étape 1 · Tes ambitions</div>
+    <div class="onb-title">Qu'est-ce que tu veux construire ?</div>
+    <div class="onb-hint">Miroir va recadrer chaque tentation par rapport à ce qui compte vraiment pour toi.</div>
+    <div class="chip-grid" id="amb-chips">
+      <div class="amb-chip" data-a="epargne" onclick="this.classList.toggle('on')"><span>💰</span>Liberté financière</div>
+      <div class="amb-chip" data-a="voyage" onclick="this.classList.toggle('on')"><span>🗺️</span>Voyager</div>
+      <div class="amb-chip" data-a="ecologie" onclick="this.classList.toggle('on')"><span>🌱</span>Réduire mon impact</div>
+      <div class="amb-chip" data-a="projet" onclick="this.classList.toggle('on')"><span>🚀</span>Lancer un projet</div>
+      <div class="amb-chip" data-a="formation" onclick="this.classList.toggle('on')"><span>📚</span>Me former</div>
+      <div class="amb-chip" data-a="sante" onclick="this.classList.toggle('on')"><span>💪</span>Prendre soin de moi</div>
+      <div class="amb-chip" data-a="logement" onclick="this.classList.toggle('on')"><span>🏠</span>Mon logement</div>
+      <div class="amb-chip" data-a="impact" onclick="this.classList.toggle('on')"><span>🤝</span>Avoir un impact</div>
     </div>
   </div>
-  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
+  <div style="padding:12px 24px calc(20px + var(--safe));flex-shrink:0">
+    <button class="btn btn-r" onclick="R.saveAmb()">Continuer →</button>
+  </div>
+</div>
+
+<!-- ONB2 — Chiffres -->
+<div class="scr" id="s-onb2">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="onb-prog"><div class="onb-d done"></div><div class="onb-d cur"></div><div class="onb-d"></div></div>
+  <div class="onb-scroll" id="onb2-body">
+    <div class="onb-kicker">Étape 2 · Le chiffre qui compte</div>
+    <div class="onb-title" id="onb2-title">Donne-leur un chiffre</div>
+    <div class="onb-hint" id="onb2-hint">Pour que Miroir puisse tout traduire en concret.</div>
+    <!-- Contenu dynamique injecté selon ambitions -->
+  </div>
+  <div style="padding:12px 24px calc(20px + var(--safe));flex-shrink:0">
+    <button class="btn btn-r" onclick="R.saveGoals()">Continuer →</button>
+  </div>
+</div>
+
+<!-- ONB3 — Domaines -->
+<div class="scr" id="s-onb3">
+  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="onb-prog"><div class="onb-d done"></div><div class="onb-d done"></div><div class="onb-d cur"></div><div class="onb-d"></div><div class="onb-d"></div></div>
+  <div class="onb-scroll">
+    <div class="onb-kicker">Étape 3 · Ce que Miroir va surveiller</div>
+    <div class="onb-title">On a tout compris.</div>
+    <div id="onb3-watch-list" style="display:flex;flex-direction:column;gap:10px"></div>
+    <div id="onb3-toggle" onclick="R.toggleDomChips()" style="font-size:12px;color:var(--muted);text-decoration:underline;cursor:pointer;padding:4px 0">Ajuster manuellement →</div>
+    <div id="dom-chips-wrap" style="display:none">
+      <div class="chip-grid" id="dom-chips">
+        <div class="amb-chip" data-k="fashion" onclick="this.classList.toggle('on')"><span>👗</span>Fast fashion</div>
+        <div class="amb-chip" data-k="delivery" onclick="this.classList.toggle('on')"><span>🛵</span>Livraison</div>
+        <div class="amb-chip" data-k="shopping" onclick="this.classList.toggle('on')"><span>📦</span>Achats impulsifs</div>
+        <div class="amb-chip" data-k="food" onclick="this.classList.toggle('on')"><span>🍔</span>Fast food</div>
+        <div class="amb-chip" data-k="social" onclick="this.classList.toggle('on')"><span>📱</span>Réseaux sociaux</div>
+        <div class="amb-chip" data-k="gaming" onclick="this.classList.toggle('on')"><span>🎮</span>TikTok / Gaming</div>
+        <div class="amb-chip" data-k="alcohol" onclick="this.classList.toggle('on')"><span>🍷</span>Alcool</div>
+        <div class="amb-chip" data-k="coffee" onclick="this.classList.toggle('on')"><span>☕</span>Café</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:12px 24px calc(20px + var(--safe));flex-shrink:0">
     <button class="btn btn-r" onclick="R.saveDomains()">Continuer →</button>
   </div>
 </div>
 
-<!-- ONB2 – Compagnon -->
-<div class="scr" id="s-onb2">
+<!-- ONB4 — Compagnon -->
+<div class="scr" id="s-onb4-comp">
   <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div class="onb-body">
-    <div class="onb-step">Étape 2 / 3</div>
-    <div style="font-family:var(--serif);font-size:26px;font-weight:700;line-height:1.25">Choisis ton compagnon</div>
-    <div style="font-size:13px;color:var(--muted)">Il évoluera avec toi. Il ne te juge jamais.</div>
+  <div class="onb-prog"><div class="onb-d done"></div><div class="onb-d done"></div><div class="onb-d done"></div><div class="onb-d cur"></div><div class="onb-d"></div></div>
+  <div class="onb-scroll">
+    <div class="onb-kicker">Étape 4 · Ton compagnon</div>
+    <div class="onb-title">Choisis ton compagnon</div>
+    <div class="onb-hint">Il évoluera avec toi à chaque résistance. Il ne te juge jamais.</div>
     <div class="comp-grid" id="comp-grid">
       <div class="comp-card on" data-c="renard" onclick="R.pickComp(this)">
         <div id="cc-renard" style="height:76px;display:flex;align-items:center;justify-content:center"></div>
@@ -403,53 +313,57 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
       </div>
     </div>
   </div>
-  <div class="fp" style="padding-bottom:calc(20px + var(--safe))">
-    <button class="btn btn-r" onclick="R.go('s-onb3')">Continuer →</button>
+  <div style="padding:12px 24px calc(20px + var(--safe));flex-shrink:0">
+    <button class="btn btn-r" onclick="R.go('s-onb5')">Continuer →</button>
   </div>
 </div>
 
-<!-- ONB3 – Enregistrement -->
-<div class="scr" id="s-onb3" style="display:flex;flex-direction:column">
+<!-- ONB5 — Enregistrement vidéo -->
+<div class="scr" id="s-onb5" style="display:flex;flex-direction:column">
   <div class="sb" style="flex-shrink:0"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div style="padding:0 24px 8px;flex-shrink:0;display:flex;flex-direction:column;gap:6px">
-    <div class="onb-step">Étape 3 / 3</div>
-    <div style="font-family:var(--serif);font-size:24px;font-weight:700;line-height:1.25">Enregistre ton engagement</div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.5">Parle face caméra. C'est toi qui te parles à toi-même.</div>
+  <div class="onb-prog" style="flex-shrink:0"><div class="onb-d done"></div><div class="onb-d done"></div><div class="onb-d done"></div><div class="onb-d done"></div><div class="onb-d cur"></div></div>
+  <div style="padding:0 24px 10px;flex-shrink:0;display:flex;flex-direction:column;gap:6px">
+    <div class="onb-kicker">Étape 5 · Ton engagement</div>
+    <div class="onb-title" style="font-size:22px">Dis-toi qui tu veux devenir.</div>
+    <div class="onb-hint">Parle face caméra. Dis ton objectif de vie, ton projet, la personne que tu construis. Cette vidéo sera ton miroir au moment de la tentation.</div>
+    <!-- Suggestion selon ambitions -->
+    <div id="onb4-suggest" style="background:rgba(232,86,58,.06);border:1px solid rgba(232,86,58,.15);border-radius:10px;padding:10px 14px;font-size:12px;font-style:italic;color:rgba(232,86,58,.9);line-height:1.5"></div>
   </div>
-  <div id="cam-wrap" style="margin:0 24px;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line);position:relative;flex:1;flex-shrink:1;min-height:160px;max-height:calc(100vh - 320px)">
+  <div id="cam-wrap" style="margin:0 24px;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line);position:relative;flex:1;flex-shrink:1;min-height:180px;max-height:60dvh">
     <video id="cam-vid" autoplay playsinline muted style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)"></video>
-    <div class="cam-overlay">
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:16px;gap:10px">
       <div id="cam-timer" style="font-family:var(--serif);font-size:32px;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5);display:none"></div>
       <div id="cam-rec" style="display:none;align-items:center;gap:6px;background:rgba(0,0,0,.5);border-radius:20px;padding:6px 14px">
         <div style="width:8px;height:8px;border-radius:50%;background:#ff3333;animation:blink 1s infinite"></div>
         <span style="font-size:12px;font-weight:700;color:#fff">REC</span>
       </div>
     </div>
-    <div class="cam-ph" id="cam-ph">
+    <div id="cam-ph" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
       <div style="font-size:40px">📷</div>
       <div style="font-size:13px;color:rgba(255,255,255,.6);text-align:center">Autorise l'accès caméra<br>puis appuie sur Enregistrer</div>
     </div>
   </div>
-  <div style="padding:12px 24px;padding-bottom:calc(80px + var(--safe));display:flex;gap:10px;flex-shrink:0">
+  <div style="padding:12px 24px calc(20px + var(--safe));display:flex;gap:10px;flex-shrink:0">
     <button class="btn btn-r" id="btn-rec" onclick="R.toggleRec()" style="flex:1">⏺ Enregistrer</button>
-    <button class="btn btn-m" onclick="R.go('s-dash')" style="flex:1">Passer →</button>
+    <button class="btn btn-m" onclick="R.startApp()" style="flex:1">Passer →</button>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div class="scr" id="s-dash">
   <div class="sb"><span id="clk-d">22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div class="dash-header">
+  <div style="padding:6px 20px 0;flex-shrink:0">
     <div style="display:flex;align-items:center;gap:10px">
       <div style="font-family:var(--serif);font-size:22px;font-weight:700" id="dash-name">Bonsoir, Léa</div>
       <div class="streak-badge" id="dash-streak">🔥 8</div>
     </div>
-    <div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:3px;line-height:1.4" id="dash-phrase"></div>
-    <div style="font-size:11px;color:var(--purple);margin-top:3px;font-weight:600" id="dash-ident-word"></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:2px" id="dash-sub"></div>
   </div>
-  <div class="dom-tabs" id="dom-tabs"></div>
   <div class="dash-scroll">
-    <div class="comp-main" onclick="R.go('s-comp')">
+    <!-- Ambitions dynamiques injectées ici -->
+    <div id="dash-amb"></div>
+    <!-- Compagnon -->
+    <div style="background:var(--c2);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer" onclick="R.go('s-comp')">
       <div id="d-comp-svg"></div>
       <div style="flex:1;min-width:0">
         <div style="font-weight:700;font-size:15px" id="d-comp-name">Renardeau</div>
@@ -458,11 +372,12 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
         <div style="font-size:10px;color:var(--muted);display:flex;justify-content:space-between;margin-top:4px"><span id="d-xp-lbl">68 xp</span><span>100 xp</span></div>
       </div>
     </div>
-    <div class="sim-banner" onclick="R.simT()">
-      <div style="font-size:24px" id="d-sim-ico">🛵</div>
+    <!-- Sim banner -->
+    <div style="background:var(--c2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="R.simT()">
+      <div style="font-size:24px">🎲</div>
       <div style="flex:1">
         <div style="font-size:13px;font-weight:700">Simuler une tentation</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="d-sim-sub">Tu ouvres Uber Eats...</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Une app au hasard parmi tes tentations…</div>
       </div>
       <div style="color:var(--fox);font-size:18px">›</div>
     </div>
@@ -473,66 +388,133 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
 
 <!-- SIM -->
 <div class="scr" id="s-sim" style="z-index:20">
-  <div class="sim-content" id="sim-inner"></div>
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0" id="sim-inner"></div>
   <div id="intercept">
     <div class="int-sheet">
       <div style="display:flex;align-items:center;gap:12px">
         <div style="font-size:28px">🪞</div>
         <div>
-          <div style="font-family:var(--serif);font-size:18px;font-weight:700;line-height:1.3" id="int-title">Tu as quelque chose<br>à te dire.</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px" id="int-sub">Tu t'étais engagée il y a 8 jours.</div>
+          <div style="font-family:var(--serif);font-size:18px;font-weight:700;line-height:1.3">Avant de continuer.</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px" id="int-sub">Ça vaut vraiment le coup ?</div>
         </div>
       </div>
-      <button class="btn btn-r" onclick="R.goOverlay()">Voir mon engagement →</button>
-      <button class="btn btn-m" onclick="R.go('s-dash')">Fermer sans regarder</button>
+      <button class="btn btn-r" onclick="R.goOverlay()">Voir ce que ça représente →</button>
+      <button class="btn btn-g" onclick="R.resist()">✓ Fermer sans regarder — je résiste</button>
     </div>
   </div>
 </div>
 
-<!-- OVL1 – Vidéo -->
+<!-- OVL1 — Coût d'opportunité -->
 <div class="scr" id="s-ovl1" style="z-index:9">
-  <div class="sb" style="flex-shrink:0"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div class="ovl-hdr">
+  <div class="sb" style="flex-shrink:0"><span>22:47</span></div>
+  <div class="ovl-hdr" style="flex-shrink:0">
     <div style="font-size:22px" id="o1-ico">🛵</div>
     <div>
       <div style="font-size:14px;font-weight:700" id="o1-app">Uber Eats</div>
       <div style="font-size:11px;color:var(--fox);font-weight:600">● Intercepté par Miroir</div>
     </div>
-    <div style="margin-left:auto;font-size:11px;color:var(--muted)">1 / 2</div>
+    <div style="margin-left:auto;font-size:11px;color:var(--muted)">1 / 3</div>
   </div>
-  <div class="vid-wrap" id="vid-wrap">
-    <div class="vid-no" id="vid-no">
-      <div style="font-size:40px">🎬</div>
-      <div style="font-size:12px;color:rgba(255,255,255,.5);text-align:center">Enregistre ton engagement<br>pour le voir ici</div>
+
+  <!-- Vidéo — disparaît après lecture -->
+  <div id="vid-wrap" style="flex:1;min-height:0;margin:0 18px;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line);position:relative;transition:flex .5s ease,opacity .4s ease,margin .5s ease">
+    <div id="vid-no" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+      <div style="font-size:52px;opacity:.5">🪞</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.35);text-align:center;line-height:1.5">Enregistre ton engagement<br>pour le voir ici</div>
     </div>
-    <div class="vid-comp-badge" id="vid-comp-badge"></div>
+    <div id="vid-comp-badge" style="position:absolute;top:12px;right:12px;z-index:5;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))"></div>
+    <div style="position:absolute;bottom:0;left:0;right:0;z-index:6;padding:32px 14px 14px;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 100%)">
+      <div style="font-family:var(--serif);font-size:14px;font-style:italic;color:rgba(255,255,255,.9);line-height:1.45" id="o1-quote">Parle-toi de qui tu veux devenir.</div>
+    </div>
   </div>
-  <!-- ANCRAGE SCÈNE (nouveau) -->
-  <div class="scene-anchor" id="scene-anchor"></div>
-  <div class="ovl-quote">
-    <div style="font-family:var(--serif);font-size:16px;font-style:italic" id="o1-quote"></div>
-    <div style="font-size:11px;color:var(--muted);margin-top:4px" id="o1-by"></div>
+
+  <!-- Carte coût — cachée jusqu'à fin de vidéo -->
+  <div id="cost-reveal" style="flex-shrink:0;display:flex;flex-direction:column;gap:8px;padding:0 18px;max-height:0;overflow:hidden;opacity:0;transition:max-height .5s ease,opacity .4s ease .2s,padding .5s ease">
+    <div class="cost-card">
+      <div class="cost-header">
+        <div class="cost-amount" id="cost-amount">~18€</div>
+        <div class="cost-label" id="cost-label">Commande Uber Eats moyenne</div>
+      </div>
+      <div class="cost-alts" id="cost-alts"></div>
+    </div>
+    <div class="cost-eco" id="cost-eco" style="margin:0"></div>
   </div>
-  <div style="padding:12px 18px calc(20px + var(--safe));flex-shrink:0">
-    <div class="btn-fill-wrap">
-      <div class="btn-fill-bar" id="btn-fill-bar"></div>
+
+  <!-- Boutons -->
+  <div style="flex-shrink:0;padding:10px 18px calc(20px + var(--safe));display:flex;flex-direction:column;gap:8px">
+    <div style="position:relative;overflow:hidden;border-radius:14px">
+      <div id="btn-fill-bar" style="position:absolute;top:0;left:0;height:100%;width:0;background:rgba(232,86,58,.22);pointer-events:none"></div>
       <button class="btn btn-o" id="btn-continue" onclick="R.tryNext()" style="position:relative;z-index:1">
         <span id="btn-lbl">Regarde d'abord…</span>
       </button>
     </div>
+    <button class="btn btn-g" onclick="R.resist()" style="font-size:13px;padding:12px">✓ Fermer l'app — je résiste</button>
+  </div>
+</div>
+<!-- OVL-EMO — Question émotionnelle -->
+<div class="scr" id="s-ovl-emo" style="z-index:9;background:rgba(4,3,10,.97)">
+  <div class="sb" style="flex-shrink:0"><span>22:47</span></div>
+  <div class="ovl-hdr" style="flex-shrink:0">
+    <div style="font-size:22px" id="oe-ico">🛵</div>
+    <div>
+      <div style="font-size:14px;font-weight:700" id="oe-app">Uber Eats</div>
+      <div style="font-size:11px;color:var(--fox);font-weight:600">● Intercepté par Miroir</div>
+    </div>
+    <div style="margin-left:auto;font-size:11px;color:var(--muted)">2 / 3</div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:24px">
+    <div style="font-family:var(--serif);font-size:28px;font-weight:400;text-align:center;line-height:1.3">Comment tu<br>te sens là ?</div>
+    <div style="font-size:12px;color:var(--muted);text-align:center">Appuie sur ce qui te correspond</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%;max-width:320px">
+      <div class="emo-big-chip" onclick="R.pickEmoScreen(this)" data-emo="Stressée">
+        <div class="emo-big-ico">😤</div>
+        <div class="emo-big-lbl">Stressée</div>
+      </div>
+      <div class="emo-big-chip" onclick="R.pickEmoScreen(this)" data-emo="Fatiguée">
+        <div class="emo-big-ico">😴</div>
+        <div class="emo-big-lbl">Fatiguée</div>
+      </div>
+      <div class="emo-big-chip" onclick="R.pickEmoScreen(this)" data-emo="Ennuyée">
+        <div class="emo-big-ico">😑</div>
+        <div class="emo-big-lbl">Ennuyée</div>
+      </div>
+      <div class="emo-big-chip" onclick="R.pickEmoScreen(this)" data-emo="Seule">
+        <div class="emo-big-ico">😔</div>
+        <div class="emo-big-lbl">Seule</div>
+      </div>
+      <div class="emo-big-chip" onclick="R.pickEmoScreen(this)" data-emo="Vraiment faim">
+        <div class="emo-big-ico">😋</div>
+        <div class="emo-big-lbl">Faim</div>
+      </div>
+      <div class="emo-big-chip" onclick="R.pickEmoScreen(this)" data-emo="Anxieuse">
+        <div class="emo-big-ico">😰</div>
+        <div class="emo-big-lbl">Anxieuse</div>
+      </div>
+      <div class="emo-big-chip" onclick="R.pickEmoScreen(this)" data-emo="Épuisée">
+        <div class="emo-big-ico">😮‍💨</div>
+        <div class="emo-big-lbl">Épuisée</div>
+      </div>
+      <div class="emo-big-chip" onclick="R.pickEmoScreen(this)" data-emo="Bien">
+        <div class="emo-big-ico">🙂</div>
+        <div class="emo-big-lbl">Bien</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:0 24px calc(24px + var(--safe));flex-shrink:0">
+    <button class="btn btn-m" onclick="R.go('s-ovl2')" style="font-size:13px">Passer →</button>
   </div>
 </div>
 
-<!-- OVL2 – Réflexion -->
+<!-- OVL2 — Réflexion -->
 <div class="scr" id="s-ovl2" style="z-index:9;background:rgba(4,3,10,.97)">
-  <div class="sb" style="flex-shrink:0"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="sb" style="flex-shrink:0"><span>22:47</span></div>
   <div class="ovl-hdr">
     <div style="font-size:22px" id="o2-ico">🛵</div>
     <div>
       <div style="font-size:14px;font-weight:700" id="o2-app">Uber Eats</div>
       <div style="font-size:11px;color:var(--fox);font-weight:600">● Intercepté par Miroir</div>
     </div>
-    <div style="margin-left:auto;font-size:11px;color:var(--muted)">2 / 2</div>
+    <div style="margin-left:auto;font-size:11px;color:var(--muted)">3 / 3</div>
   </div>
   <div class="refl-body">
     <div class="refl-tw">
@@ -546,15 +528,14 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
       <div class="refl-comp-c" id="refl-comp"></div>
       <div class="refl-cnt" id="refl-cnt">30</div>
     </div>
-    <div style="font-family:var(--serif);font-size:21px;font-style:italic;color:var(--ink);line-height:1.5" id="refl-msg">Vraiment envie,<br>ou juste habitude ?</div>
-    <!-- NORME SOCIALE CONTEXTUELLE (nouveau) -->
-    <div class="social-norm" id="social-norm"></div>
+    <div style="font-family:var(--serif);font-size:21px;font-style:italic;color:var(--ink);line-height:1.5" id="refl-msg">Est-ce que ça t'amène<br>là où tu veux aller ?</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.6;max-width:280px" id="refl-sub"></div>
     <div class="timer-label" id="timer-label">30 secondes pour te recentrer</div>
   </div>
   <div style="padding:10px 18px calc(22px + var(--safe));display:flex;flex-direction:column;gap:10px;flex-shrink:0">
     <div class="bu-wrap">
       <div class="bu-bar" id="bu-resist" style="background:rgba(66,196,126,.15)"></div>
-      <button class="btn btn-g btn-locked" id="btn-resist" onclick="R.resist()">✓ Je résiste — fermer l'app</button>
+      <button class="btn btn-g btn-locked" id="btn-resist" onclick="R.resist()">✓ Je résiste — c'est mon choix</button>
     </div>
     <div class="bu-wrap">
       <div class="bu-bar" id="bu-slip" style="background:rgba(232,86,58,.08)"></div>
@@ -565,42 +546,21 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
 
 <!-- SLIP -->
 <div class="scr" id="s-slip">
-  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="sb"><span>22:47</span></div>
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px">
     <div id="slip-comp"></div>
     <div style="font-family:var(--serif);font-size:26px;font-weight:700">Ok, Léa.</div>
-    <div style="font-size:14px;color:var(--muted);text-align:center;line-height:1.6">Pas de jugement.<br>Que s'est-il passé ce soir ?</div>
+    <div style="font-size:14px;color:var(--muted);text-align:center;line-height:1.6">Pas de jugement.<br>Qu'est-ce qui s'est passé ?</div>
     <textarea id="slip-note" rows="4" placeholder="Fatigue, stress, ennui… écris ce qui t'a traversée." style="width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;font-family:var(--sans);font-size:15px;color:var(--ink);resize:none;outline:none;line-height:1.5"></textarea>
     <button class="btn btn-r" style="width:100%" onclick="R.saveSlip()">Enregistrer →</button>
     <button class="btn btn-m" style="width:100%" onclick="R.go('s-dash')">Passer</button>
   </div>
 </div>
 
-<!-- IDENTITY CASCADE (nouveau) -->
-<div class="scr" id="s-ident">
-  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div class="ident-body">
-    <div style="font-size:48px" id="ident-comp-ico">🦊</div>
-    <div style="font-family:var(--serif);font-size:24px;font-weight:700;line-height:1.3">Cette résistance,<br>qu'est-ce qu'elle dit de toi ?</div>
-    <div style="font-size:14px;color:var(--muted);line-height:1.6">Choisis un mot qui décrit<br>ce que tu viens de faire.</div>
-    <div class="ident-chips" id="ident-chips">
-      <div class="ident-chip" onclick="R.pickIdent(this)">Forte</div>
-      <div class="ident-chip" onclick="R.pickIdent(this)">Cohérente</div>
-      <div class="ident-chip" onclick="R.pickIdent(this)">Lucide</div>
-      <div class="ident-chip" onclick="R.pickIdent(this)">Libre</div>
-      <div class="ident-chip" onclick="R.pickIdent(this)">Consciente</div>
-      <div class="ident-chip" onclick="R.pickIdent(this)">Courageuse</div>
-      <div class="ident-chip" onclick="R.pickIdent(this)">Authentique</div>
-      <div class="ident-chip" onclick="R.pickIdent(this)">Présente</div>
-    </div>
-    <button class="btn btn-m" id="btn-ident-skip" onclick="R.go('s-victory')" style="max-width:280px;font-size:13px">Passer →</button>
-  </div>
-</div>
-
 <!-- COMPANION -->
 <div class="scr" id="s-comp">
-  <div class="sb" style="flex-shrink:0"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
-  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px 24px 16px;min-height:0">
+  <div class="sb" style="flex-shrink:0"><span>22:47</span></div>
+  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px 24px;min-height:0">
     <div id="c-svg-big"></div>
     <div style="font-family:var(--serif);font-size:28px;font-weight:700;text-align:center" id="c-name">Renardeau</div>
     <div style="font-size:12px;color:var(--muted);letter-spacing:.5px;text-align:center" id="c-stage">Renard · Stade 1</div>
@@ -610,7 +570,6 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
       <div style="font-size:10px;color:var(--muted);display:flex;justify-content:space-between;margin-top:4px"><span id="c-xpl">68 xp</span><span>100 xp</span></div>
     </div>
     <div style="font-size:13px;color:var(--muted);text-align:center;line-height:1.6;max-width:280px" id="c-desc"></div>
-    <div id="c-ident-words" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:280px;padding-bottom:4px"></div>
   </div>
   <div style="padding:10px 24px;padding-bottom:calc(68px + var(--safe));flex-shrink:0">
     <button class="btn btn-o" onclick="R.pet()">Caresser ✦</button>
@@ -619,14 +578,13 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
 
 <!-- VICTORY -->
 <div class="scr" id="s-victory">
-  <div class="sb"><span>22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="sb"><span>22:47</span></div>
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center">
     <div id="vic-svg"></div>
-    <div style="font-family:var(--serif);font-size:32px;font-weight:700" id="vic-title" style="color:var(--fox)">Tu as résisté ✦</div>
+    <div style="font-family:var(--serif);font-size:32px;font-weight:700;color:var(--fox)" id="vic-title">Tu as résisté ✦</div>
     <div style="font-size:15px;color:var(--muted)" id="vic-xp">+12 xp</div>
-    <div id="vic-reward-badge" style="padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;display:none"></div>
-    <div style="font-family:var(--serif);font-size:16px;font-style:italic;color:var(--muted);line-height:1.6" id="vic-phrase"></div>
-    <div id="vic-ident" style="font-size:13px;color:var(--purple);font-weight:600;display:none"></div>
+    <div id="vic-saved" style="background:rgba(66,196,126,.1);border:1px solid rgba(66,196,126,.25);border-radius:12px;padding:12px 20px;font-size:14px;font-weight:600;color:var(--green);display:none"></div>
+    <div style="font-family:var(--serif);font-size:15px;font-style:italic;color:var(--muted);line-height:1.6;max-width:280px" id="vic-toward"></div>
   </div>
   <div style="padding:0 24px calc(28px + var(--safe));flex-shrink:0">
     <button class="btn btn-r" onclick="R.go('s-dash')">Continuer →</button>
@@ -636,7 +594,7 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
 <!-- BOTTOM NAV -->
 <div id="bnav">
   <div class="nb on" id="nb-dash" onclick="R.nav('s-dash','nb-dash')"><div class="nb-i">🏠</div><div class="nb-l">Accueil</div></div>
-  <div class="nb" id="nb-rec" onclick="R.nav('s-onb3','nb-rec')"><div class="nb-i">⏺</div><div class="nb-l">Engager</div></div>
+  <div class="nb" id="nb-sim" onclick="R.nav('s-sim','nb-sim');R.simT()"><div class="nb-i">▶</div><div class="nb-l">Simuler</div></div>
   <div class="nb" id="nb-comp" onclick="R.nav('s-comp','nb-comp')"><div class="nb-i" id="nb-comp-ico">🦊</div><div class="nb-l">Compagnon</div></div>
 </div>
 
@@ -646,169 +604,56 @@ html,body{height:100%;height:100dvh;background:var(--bg);overflow:hidden;font-fa
 // ── ÉTAT ──
 var ST = {
   comp:"renard", stage:1, xp:68,
-  domains:["fashion","delivery","shopping"], curD:0, day:8,
-  streak:8, weekResist:3, allTimeResist:12,
-  ikigai:{p:[],f:[],m:[],v:[]}, phrase:"", scene:"",
-  identWords:[], lastIdentWord:"",
+  domains:["fashion","delivery","shopping"], curD:0,
+  streak:8, weekResist:3,
+  ambitions:["epargne","voyage","ecologie"],
+  goals:{ epargne:200, voyage:1500, projet:0, formation:0, sante:0, logement:0, impact:0 },
+  goalNames:{ epargne:"Liberté financière", voyage:"Voyage", projet:"Mon projet", formation:"Formation", sante:"Santé", logement:"Logement", impact:"Impact" },
+  weekSaved:47, totalSaved:124,
+  lifePhrase:"Je veux voyager au Japon l'année prochaine et être quelqu'un qui choisit où va son argent.",
   blobs:{}, recording:false, mediaRecorder:null, chunks:[],
-  lastReward:"normal",
   journal:[
-    {d:"AUJOURD'HUI · 14:20",t:"r",x:"Shein ouvert 40s. Fermé — juste l'habitude.",w:"Cohérente"},
-    {d:"HIER · 22:47",t:"s",x:"Commandé Uber Eats. Fatigue post-partiels."}
-  ]
+    {d:"AUJOURD'HUI · 14:20",t:"r",x:"Résisté à Shein — 34€ épargnés.",saved:34},
+    {d:"HIER · 22:47",t:"s",x:"Commandé Uber Eats. Fatigue."}
+  ],
+  selectedEmo:"", lastReward:"normal"
 };
 
 var DC = {
-  fashion: {l:"Fast Fashion",e:"👗",a:"Shein",q:"Je m'engage à ne plus commander sur Shein. Je choisis de m'habiller autrement.",sim:"Tu ouvres Shein à 22h47…"},
-  delivery:{l:"Livraison",e:"🛵",a:"Uber Eats",q:"J'arrête Uber Eats. J'ai une cuisine, je sais cuisiner.",sim:"Tu ouvres Uber Eats à 22h47…"},
-  shopping:{l:"Achats impulsifs",e:"📦",a:"Amazon",q:"Avant d'acheter, j'attends 48h. Si j'y pense encore, alors seulement.",sim:"Tu ouvres Amazon à 22h47…"},
-  food:    {l:"Alimentation",e:"🍔",a:"McDo",q:"Un repas cuisiné par jour minimum.",sim:"Tu ouvres l'app McDo…"},
-  social:  {l:"Réseaux sociaux",e:"📱",a:"Instagram",q:"30 min max. Pas le matin, pas le soir.",sim:"Tu ouvres Instagram…"},
-  gaming:  {l:"Jeux vidéo",e:"🎮",a:"TikTok",q:"Plus de jeux après 23h. Le sommeil d'abord.",sim:"Tu ouvres TikTok…"},
-  alcohol: {l:"Alcool",e:"🍷",a:"Bar",q:"L'alcool uniquement en groupe. Jamais seul(e).",sim:"Tu cherches un bar…"},
-  coffee:  {l:"Café",e:"☕",a:"Starbucks",q:"Max 2 cafés par jour, aucun après 14h.",sim:"Tu ouvres l'app café…"}
+  fashion: {l:"Fast Fashion",e:"👗",a:"Shein",avg:34,co2:28,sim:"Tu ouvres Shein à 22h47…"},
+  delivery:{l:"Livraison",e:"🛵",a:"Uber Eats",avg:18,co2:4,sim:"Tu ouvres Uber Eats à 22h47…"},
+  shopping:{l:"Achats impulsifs",e:"📦",a:"Amazon",avg:42,co2:6,sim:"Tu ouvres Amazon à 22h47…"},
+  food:    {l:"Fast food",e:"🍔",a:"McDo",avg:12,co2:3,sim:"Tu ouvres l'app McDo…"},
+  social:  {l:"Réseaux sociaux",e:"📱",a:"Instagram",avg:0,co2:0,sim:"Tu ouvres Instagram…"},
+  gaming:  {l:"TikTok / Gaming",e:"🎮",a:"TikTok",avg:0,co2:0,sim:"Tu ouvres TikTok…"},
+  alcohol: {l:"Alcool",e:"🍷",a:"Bar",avg:25,co2:2,sim:"Tu cherches un bar…"},
+  coffee:  {l:"Café",e:"☕",a:"Starbucks",avg:5,co2:1,sim:"Tu ouvres l'app Starbucks…"}
 };
 
-var STAGES = {
+var STAGES={
   renard:["Renardeau","Renard","Renard des bois","Renard Ancien","Renard des Étoiles"],
   loutre:["Loutreau","Loutre","Loutre Sage","Grande Loutre","Loutre Céleste"],
   cerf:  ["Faon","Jeune Cerf","Cerf","Grand Cerf","Cerf des Forêts"],
   loup:  ["Louveton","Jeune Loup","Loup","Loup Alpha","Loup des Neiges"]
 };
 
-// ── RENFORCEMENT VARIABLE ──
-// tiers: normal 60%, bon 25%, rare 10%, légendaire 5%
-function rollReward() {
-  var r = Math.random();
-  if (r < 0.05) return "legendary";
-  if (r < 0.15) return "rare";
-  if (r < 0.40) return "bon";
-  return "normal";
-}
-
-var REWARDS = {
-  normal:   {xp:12, label:"",          color:"var(--green)"},
-  bon:      {xp:15, label:"✦ Bonne résistance",  color:"var(--fox)"},
-  rare:     {xp:20, label:"★ Résistance rare",   color:"var(--purple)"},
-  legendary:{xp:25, label:"✦ LÉGENDAIRE",        color:"var(--gold)"}
+var REWARDS={
+  normal:   {xp:12},
+  bon:      {xp:15},
+  rare:     {xp:20},
+  legendary:{xp:25}
 };
 
-// ── FRICTION ADAPTIVE ──
-// Timer diminue avec le streak : 30s jusqu'à streak 3, 25s jusqu'à 6, 20s jusqu'à 10, 15s après
-function getReflTime() {
-  if (ST.streak >= 10) return 15;
-  if (ST.streak >= 6)  return 20;
-  if (ST.streak >= 3)  return 25;
-  return 30;
-}
-
-function getTimerLabel(sec) {
-  if (ST.streak >= 10) return sec + "s — tu connais ce moment, tu sais quoi faire";
-  if (ST.streak >= 6)  return sec + "s — ton habitude se construit";
-  if (ST.streak >= 3)  return sec + "s — prends le temps de te recentrer";
-  return sec + "s pour te recentrer";
-}
-
-// ── NORMES SOCIALES CONTEXTUELLES ──
-function getSocialNorm() {
-  var h = new Date().getHours();
-  var streak = ST.streak;
-  var week = ST.weekResist;
-  var record = ST.allTimeResist;
-  var msgs = [];
-
-  if (streak > 0) msgs.push("🔥 " + streak + " jours de suite sans céder. C'est " + (streak >= 7 ? "exceptionnel" : "bien réel") + ".");
-  if (week >= 3)  msgs.push("📅 " + week + " résistances cette semaine — c'est ta meilleure série.");
-  if (h >= 22)    msgs.push("🌙 Il est " + h + "h. La fatigue rend la tentation plus forte — c'est normal.");
-  if (h >= 0 && h < 6) msgs.push("🌙 Très tard. Ton cerveau cherche une récompense rapide. Tu peux lui en donner une autre.");
-  if (week === record && record > 0) msgs.push("⭐ Tu bats ton propre record cette semaine.");
-  if (msgs.length === 0) msgs.push("Tu t'es engagée il y a " + ST.day + " jours. Ce moment compte.");
-
-  return msgs[Math.floor(Math.random() * msgs.length)];
-}
-
-var NAV_SCREENS = {"s-dash":true,"s-onb3":true,"s-comp":true};
-var cur = "s0";
-var hist = [];
-
-// ── SVG COMPAGNONS ──
-function svg(name, size, happy, tired) {
-  var s = size || 80; var h = !!happy; var t = !!tired;
-  var eye = h ? "M-4,-2 Q0,-6 4,-2" : (t ? "M-4,0 Q0,2 4,0" : "M-4,0 Q0,-3 4,0");
-  var smile = h ? '<path d="M40,60 Q50,67 60,60" stroke-width="2.5" fill="none" stroke-linecap="round"/>' : "";
-  var B = {
-    renard:function(){
-      var c = t?"#A04428":"#E8763A";
-      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
-        +'<polygon points="25,35 15,10 38,28" fill="'+c+'"/>'
-        +'<polygon points="75,35 85,10 62,28" fill="'+c+'"/>'
-        +'<polygon points="25,35 20,14 36,28" fill="#F5C8A0"/>'
-        +'<polygon points="75,35 80,14 64,28" fill="#F5C8A0"/>'
-        +'<ellipse cx="50" cy="65" rx="28" ry="22" fill="'+c+'"/>'
-        +'<circle cx="50" cy="42" r="22" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="52" rx="14" ry="10" fill="#F5C8A0"/>'
-        +'<ellipse cx="50" cy="56" rx="6" ry="4" fill="#E87090"/>'
-        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g stroke="#E87090">'+smile+'</g>'
-        +'</svg>';
-    },
-    loutre:function(){
-      var c = t?"#5A7A6A":"#7AB89A";
-      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
-        +'<ellipse cx="44" cy="35" rx="9" ry="7" fill="'+c+'"/>'
-        +'<ellipse cx="56" cy="35" rx="9" ry="7" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="67" rx="24" ry="18" fill="'+c+'"/>'
-        +'<circle cx="50" cy="42" r="22" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="52" rx="13" ry="9" fill="#C8E8D8"/>'
-        +'<ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#4A3030"/>'
-        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#1a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#1a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g stroke="#4A9070">'+smile+'</g>'
-        +'</svg>';
-    },
-    cerf:function(){
-      var c = t?"#7A5A30":"#A07840";
-      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
-        +'<path d="M30,20 Q20,5 15,2 Q25,8 28,18" fill="'+c+'"/>'
-        +'<path d="M70,20 Q80,5 85,2 Q75,8 72,18" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="67" rx="24" ry="18" fill="'+c+'"/>'
-        +'<circle cx="50" cy="42" r="22" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="52" rx="13" ry="9" fill="#E8D8B0"/>'
-        +'<ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#7A3030"/>'
-        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#2a1a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#2a1a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g stroke="#C09050">'+smile+'</g>'
-        +'</svg>';
-    },
-    loup:function(){
-      var c = t?"#4A4A5A":"#6A6A8A";
-      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
-        +'<polygon points="28,32 18,8 40,26" fill="'+c+'"/>'
-        +'<polygon points="72,32 82,8 60,26" fill="'+c+'"/>'
-        +'<polygon points="28,32 22,12 38,26" fill="#C8C8D8"/>'
-        +'<polygon points="72,32 78,12 62,26" fill="#C8C8D8"/>'
-        +'<ellipse cx="50" cy="67" rx="26" ry="19" fill="'+c+'"/>'
-        +'<circle cx="50" cy="42" r="22" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="53" rx="14" ry="10" fill="#C8C8D8"/>'
-        +'<ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#2A1A2A"/>'
-        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#0a0a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#0a0a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g stroke="#8A8AAA">'+smile+'</g>'
-        +'</svg>';
-    }
-  };
-  return (B[name]||B.renard)();
-}
-
-// ── NAVIGATION ──
+// ── NAV ──
+var NAV_SCREENS={"s-dash":true,"s-comp":true};
+var cur="s0", hist=[];
 var btnTimerInt=null, btnReady=false;
 var reflTimerInt=null;
 var simScrollInt=null, simInterceptTmr=null;
 var pendingReward=null;
 
-function go(id) {
-  if (!id || id===cur) return;
+function go(id){
+  if (!id||id===cur) return;
   var cEl=document.getElementById(cur);
   var nEl=document.getElementById(id);
   if (!cEl||!nEl) return;
@@ -820,18 +665,20 @@ function go(id) {
   nEl.classList.add("A");
   hist.push(cur); cur=id;
   document.getElementById("bnav").classList.toggle("V",!!NAV_SCREENS[id]);
-  if (id==="s-dash")   renderDash();
-  if (id==="s-ovl1")   renderOvl1();
-  if (id==="s-ovl2")   renderOvl2();
-  if (id==="s-slip")   renderSlip();
-  if (id==="s-comp")   renderComp();
-  if (id==="s-ident")  renderIdent();
+  if (id==="s-dash")    renderDash();
+  if (id==="s-ovl1")    renderOvl1();
+  if (id==="s-ovl-emo") renderOvlEmo();
+  if (id==="s-ovl2")    renderOvl2();
+  if (id==="s-comp")    renderComp();
+  if (id==="s-slip")    renderSlip();
   if (id==="s-victory") renderVictory();
-  if (id==="s-onb2")   renderCompGrid();
-  if (id==="s-onb3")   setTimeout(initCam,100);
+  if (id==="s-onb2")    renderOnb2();
+  if (id==="s-onb3")    renderOnb3();
+  if (id==="s-onb4-comp") renderCompGrid();
+  if (id==="s-onb5")    setTimeout(initCam,100);
 }
 
-function nav(id,nbId) {
+function nav(id,nbId){
   document.querySelectorAll(".nb").forEach(function(n){ n.classList.remove("on"); });
   var nb=document.getElementById(nbId); if(nb) nb.classList.add("on");
   go(id);
@@ -839,7 +686,7 @@ function nav(id,nbId) {
 
 // ── TOAST ──
 var toastTmr=null;
-function toast(msg) {
+function toast(msg){
   var el=document.getElementById("toast");
   el.textContent=msg; el.classList.add("S");
   clearTimeout(toastTmr);
@@ -847,81 +694,316 @@ function toast(msg) {
 }
 
 // ── UTILS ──
-function getTime() {
-  var d=new Date(); return d.getHours()+":"+String(d.getMinutes()).padStart(2,"0");
-}
+function getTime(){ var d=new Date(); return d.getHours()+":"+String(d.getMinutes()).padStart(2,"0"); }
 function cap(s){ return s?s.charAt(0).toUpperCase()+s.slice(1):""; }
-function clean(arr){ return (arr||[]).map(function(s){ return s.replace(/^[^\wÀ-ÿ]+/,"").trim().toLowerCase(); }); }
+function fmt(n){ return n>=1000?(n/1000).toFixed(1)+"k":String(n); }
 
-// ── IKIGAI ──
-function ikNext(step) {
-  var maps={1:"ik1",2:"ik2",3:"ik3",4:"ik4"};
-  var keys={1:"p",2:"f",3:"m",4:"v"};
-  var nexts={1:"s-ik2",2:"s-ik3",3:"s-ik4",4:"s-ik5"};
-  var chips=document.querySelectorAll("#"+maps[step]+" .ik-chip.on");
-  ST.ikigai[keys[step]]=[];
-  chips.forEach(function(c){ ST.ikigai[keys[step]].push(c.textContent.trim()); });
-  go(nexts[step]);
-}
-
-function ikFinish() {
-  var ta=document.getElementById("scene-ta");
-  ST.scene=ta?ta.value.trim():"";
-  var val=clean(ST.ikigai.v)[0]||"cohérente";
-  var force=clean(ST.ikigai.f)[0]||"ma créativité";
-  var miss=clean(ST.ikigai.m)[0]||"un monde meilleur";
-  if (miss.indexOf("un ")!==0&&miss.indexOf("plus")!==0) miss="un monde plus "+miss;
-  ST.phrase=val+" · "+force;
-  var ph=document.getElementById("ik6-phrase");
-  if (ph) ph.innerHTML="Je construis une vie <strong style='color:var(--fox);font-style:normal'>"+val+"</strong>"
-    +" en mettant <strong style='color:var(--fox);font-style:normal'>"+force+"</strong>"
-    +" au service de <strong style='color:var(--fox);font-style:normal'>"+miss+"</strong>.";
-  var allV=clean(ST.ikigai.v).concat(clean(ST.ikigai.p)).slice(0,4);
-  var ve=document.getElementById("ik6-vals");
-  if (ve) ve.innerHTML=allV.map(function(v){
-    return "<div style='font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--fox);color:var(--fox);font-weight:600'>"+cap(v)+"</div>";
-  }).join("");
-  var sc=document.getElementById("ik6-scene");
-  if (sc&&ST.scene) sc.textContent="\u201C"+ST.scene+"\u201D";
-  go("s-ik6");
-}
-
-// ── SCÈNE INPUT ──
-function initSceneInput() {
-  var ta=document.getElementById("scene-ta");
-  var btn=document.getElementById("btn-scene");
-  var cnt=document.getElementById("scene-count");
-  if (!ta||!btn||!cnt) return;
-  ta.addEventListener("input",function(){
-    var len=ta.value.trim().length;
-    cnt.textContent=len+" / 20 caractères minimum";
-    if (len>=20){
-      btn.style.opacity="1"; btn.style.pointerEvents="auto";
-      cnt.style.color="var(--green)";
-    } else {
-      btn.style.opacity=".4"; btn.style.pointerEvents="none";
-      cnt.style.color="var(--muted)";
+// ── SVG COMPAGNONS ──
+function svg(name,size,happy,tired){
+  var s=size||80; var h=!!happy; var t=!!tired;
+  var eye=h?"M-4,-2 Q0,-6 4,-2":(t?"M-4,0 Q0,2 4,0":"M-4,0 Q0,-3 4,0");
+  var smile=h?'<path d="M40,60 Q50,67 60,60" stroke-width="2.5" fill="none" stroke-linecap="round"/>':'';
+  var B={
+    renard:function(){
+      var c=t?"#A04428":"#E8763A";
+      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
+        +'<polygon points="25,35 15,10 38,28" fill="'+c+'"/><polygon points="75,35 85,10 62,28" fill="'+c+'"/>'
+        +'<polygon points="25,35 20,14 36,28" fill="#F5C8A0"/><polygon points="75,35 80,14 64,28" fill="#F5C8A0"/>'
+        +'<ellipse cx="50" cy="65" rx="28" ry="22" fill="'+c+'"/><circle cx="50" cy="42" r="22" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="52" rx="14" ry="10" fill="#F5C8A0"/><ellipse cx="50" cy="56" rx="6" ry="4" fill="#E87090"/>'
+        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g stroke="#E87090">'+smile+'</g></svg>';
+    },
+    loutre:function(){
+      var c=t?"#5A7A6A":"#7AB89A";
+      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
+        +'<ellipse cx="44" cy="35" rx="9" ry="7" fill="'+c+'"/><ellipse cx="56" cy="35" rx="9" ry="7" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="67" rx="24" ry="18" fill="'+c+'"/><circle cx="50" cy="42" r="22" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="52" rx="13" ry="9" fill="#C8E8D8"/><ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#4A3030"/>'
+        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#1a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#1a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g stroke="#4A9070">'+smile+'</g></svg>';
+    },
+    cerf:function(){
+      var c=t?"#7A5A30":"#A07840";
+      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
+        +'<path d="M30,20 Q20,5 15,2 Q25,8 28,18" fill="'+c+'"/><path d="M70,20 Q80,5 85,2 Q75,8 72,18" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="67" rx="24" ry="18" fill="'+c+'"/><circle cx="50" cy="42" r="22" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="52" rx="13" ry="9" fill="#E8D8B0"/><ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#7A3030"/>'
+        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#2a1a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#2a1a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g stroke="#C09050">'+smile+'</g></svg>';
+    },
+    loup:function(){
+      var c=t?"#4A4A5A":"#6A6A8A";
+      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
+        +'<polygon points="28,32 18,8 40,26" fill="'+c+'"/><polygon points="72,32 82,8 60,26" fill="'+c+'"/>'
+        +'<polygon points="28,32 22,12 38,26" fill="#C8C8D8"/><polygon points="72,32 78,12 62,26" fill="#C8C8D8"/>'
+        +'<ellipse cx="50" cy="67" rx="26" ry="19" fill="'+c+'"/><circle cx="50" cy="42" r="22" fill="'+c+'"/>'
+        +'<ellipse cx="50" cy="53" rx="14" ry="10" fill="#C8C8D8"/><ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#2A1A2A"/>'
+        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#0a0a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#0a0a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
+        +'<g stroke="#8A8AAA">'+smile+'</g></svg>';
     }
-  });
+  };
+  return (B[name]||B.renard)();
+}
+
+// ── COÛT D'OPPORTUNITÉ ──
+function buildCostAlts(domKey){
+  var d=DC[domKey]||DC.delivery;
+  var avg=d.avg;
+  var alts=[];
+  var amb=ST.ambitions;
+
+  // Cas temps pur — réseaux sociaux, gaming
+  if (avg===0){
+    if (amb.indexOf("projet")!==-1)
+      alts.push({ico:"🚀",title:"30 min sur ton projet",sub:"Le temps passé ici ne revient pas. Ton projet avance si tu le nourris."});
+    else if (amb.indexOf("formation")!==-1)
+      alts.push({ico:"📚",title:"Un module de formation",sub:"Ce temps = un chapitre, une leçon, un exercice."});
+    else if (amb.indexOf("sante")!==-1)
+      alts.push({ico:"💪",title:"20 min de mouvement",sub:"Une marche, quelques étirements — ton corps te remerciera."});
+    else
+      alts.push({ico:"⏰",title:"Ton temps est une ressource",sub:"Chaque heure compte. Qu'est-ce qui t'apporterait vraiment quelque chose ?"});
+    alts.push({ico:"🧘",title:"Une vraie pause",sub:"Ferme les apps. Respire. C'est aussi une forme de soin."});
+    return alts;
+  }
+
+  // 💰 Liberté financière
+  if (amb.indexOf("epargne")!==-1&&ST.goals.epargne>0){
+    var pct=Math.round(avg/ST.goals.epargne*100);
+    var reste=ST.goals.epargne-ST.totalSaved%ST.goals.epargne;
+    alts.push({ico:"💰",title:pct+"% de ton objectif épargne du mois",sub:avg+"€ de moins = "+pct+"% de l'objectif "+ST.goals.epargne+"€. Il t'en manque "+Math.max(0,reste)+"€."});
+  }
+
+  // 🗺️ Voyage
+  if (amb.indexOf("voyage")!==-1&&ST.goals.voyage>0){
+    var nbCmd=Math.round(ST.goals.voyage/avg);
+    var pctVoy=(avg/ST.goals.voyage*100).toFixed(0);
+    alts.push({ico:"🗺️",title:pctVoy+"% de ton budget voyage",sub:avg+"€ ici = "+pctVoy+"% en moins. En "+nbCmd+" résistances tu finances ton voyage entier."});
+  }
+
+  // 🌱 Écologie
+  if (amb.indexOf("ecologie")!==-1&&d.co2>0){
+    var km=d.co2*8;
+    var arbres=(d.co2/21).toFixed(1);
+    alts.push({ico:"🌱",title:d.co2+"kg de CO₂ évités si tu résistes",sub:"Soit "+km+"km en voiture, ou l'équivalent de "+arbres+" arbres à planter pour compenser."});
+  }
+
+  // 🚀 Projet
+  if (amb.indexOf("projet")!==-1){
+    var nomProjet=ST.goals.projet_name||"ton projet";
+    alts.push({ico:"🚀",title:avg+"€ investis dans "+nomProjet,sub:"Matériel, formation, outils — chaque euro résisté rapproche ton projet de la réalité."});
+  }
+
+  // 📚 Formation
+  if (amb.indexOf("formation")!==-1){
+    var cours=Math.max(1,Math.floor(avg/15));
+    var heures=Math.max(1,Math.floor(avg/10));
+    alts.push({ico:"📚",title:cours+" cours en ligne financés",sub:avg+"€ = "+cours+" leçons Skillshare / Udemy. Ou "+heures+"h de formation à taux réduit."});
+  }
+
+  // 💪 Santé
+  if (amb.indexOf("sante")!==-1){
+    var seances=Math.max(1,Math.floor(avg/12));
+    if (domKey==="food"||domKey==="delivery"){
+      alts.push({ico:"💪",title:"Un repas fait maison = 3× moins cher",sub:"Cuisiner "+avg+"€ de courses = 3 repas équilibrés. Commander = 1 repas, plus de calories vides."});
+    } else if (domKey==="alcohol"){
+      alts.push({ico:"💪",title:"Ton énergie de demain matin",sub:"L'alcool fragmente ton sommeil et nuit à ta récupération. "+avg+"€ économisés = une vraie nuit de repos."});
+    } else if (domKey==="coffee"){
+      alts.push({ico:"💪",title:seances+" séance"+(seances>1?"s":"")+" de sport",sub:avg+"€ = "+seances+" cours collectifs ou "+avg+"€ vers ton abonnement salle."});
+    } else {
+      alts.push({ico:"💪",title:seances+" séance"+(seances>1?"s":"")+" de sport",sub:avg+"€ = "+seances+" cours de yoga, natation ou salle. Investis-le en toi."});
+    }
+  }
+
+  // 🏠 Logement
+  if (amb.indexOf("logement")!==-1){
+    var goalLog=ST.goals.logement_name||"ton logement";
+    var mois=ST.goals.logement_amount>0?Math.ceil(ST.goals.logement_amount/avg)+" commandes":null;
+    alts.push({ico:"🏠",title:avg+"€ vers "+goalLog,sub:mois?"Il te faut "+mois+" résistances pour atteindre ton objectif.":"Chaque euro mis de côté construit ta stabilité."});
+  }
+
+  // 🤝 Impact
+  if (amb.indexOf("impact")!==-1){
+    var assos=Math.max(1,Math.floor(avg/5));
+    if (domKey==="fashion"){
+      alts.push({ico:"🤝",title:"Une marque éthique à la place",sub:"Des marques comme Faguo, Veja ou Patagonia coûtent pareil mais soutiennent des conditions de travail dignes."});
+    } else {
+      alts.push({ico:"🤝",title:assos+" mois de soutien à une asso",sub:avg+"€ = "+assos+" mois d'abonnement solidaire. Ton argent peut avoir un impact réel."});
+    }
+  }
+
+  // Fallback si aucune ambition ne correspond
+  if (alts.length===0){
+    alts.push({ico:"💡",title:"Est-ce vraiment nécessaire ?",sub:avg+"€ dépensés maintenant, c'est "+avg+"€ de moins pour ce qui compte vraiment."});
+  }
+
+  return alts.slice(0,3);
 }
 
 // ── ONB ──
-function saveDomains() {
-  var chips=document.querySelectorAll("#dom-chips .ik-chip.on");
+function saveAmb(){
+  var chips=document.querySelectorAll("#amb-chips .amb-chip.on");
+  ST.ambitions=[];
+  chips.forEach(function(c){ if(c.dataset.a) ST.ambitions.push(c.dataset.a); });
+  if (!ST.ambitions.length) ST.ambitions=["epargne"];
+  go("s-onb2");
+}
+
+function renderOnb2(){
+  var body=document.getElementById("onb2-body");
+  if (!body) return;
+  // Vider les champs dynamiques (garder kicker, title, hint)
+  var fixed=body.querySelectorAll(".onb-kicker,.onb-title,.onb-hint");
+  while (body.children.length>3) body.removeChild(body.lastChild);
+
+  var fields={
+    epargne:{lbl:"Combien veux-tu épargner par mois ?",type:"range",min:50,max:500,step:10,unit:"€/mois",key:"epargne"},
+    voyage: {lbl:"Quel budget pour ton prochain voyage ?",type:"range",min:200,max:5000,step:100,unit:"€",key:"voyage"},
+    projet: {lbl:"Nom de ton projet",type:"text",placeholder:"Ex: lancer mon Etsy, financer mon matériel…",key:"projet_name"},
+    formation:{lbl:"Quel domaine ?",type:"text",placeholder:"Ex: design, code, langue, photo…",key:"formation_name"},
+    sante:  {lbl:"Ton objectif santé",type:"text",placeholder:"Ex: salle de sport, manger mieux, courir…",key:"sante_name"},
+    logement:{lbl:"Ton objectif logement",type:"text",placeholder:"Ex: caution, meubles, premier appart…",key:"logement_name"},
+    impact: {lbl:"Comment tu veux avoir un impact ?",type:"text",placeholder:"Ex: asso, bénévolat, projet solidaire…",key:"impact_name"}
+  };
+
+  ST.ambitions.forEach(function(a){
+    var f=fields[a]; if(!f) return;
+    var wrap=document.createElement("div");
+    wrap.style.cssText="display:flex;flex-direction:column;gap:8px";
+    var lbl=document.createElement("div");
+    lbl.style.cssText="font-size:13px;font-weight:600;color:var(--ink)";
+    lbl.textContent=f.lbl;
+    wrap.appendChild(lbl);
+    if (f.type==="range"){
+      var val=ST.goals[f.key]||f.min;
+      var vd=document.createElement("div");
+      vd.className="slider-val"; vd.id="sv-"+f.key; vd.textContent=val+f.unit;
+      var sl=document.createElement("input");
+      sl.type="range"; sl.min=f.min; sl.max=f.max; sl.step=f.step; sl.value=val;
+      sl.dataset.key=f.key; sl.dataset.unit=f.unit;
+      sl.oninput=function(){
+        ST.goals[this.dataset.key]=parseInt(this.value);
+        var vEl=document.getElementById("sv-"+this.dataset.key);
+        if (vEl) vEl.textContent=this.value+this.dataset.unit;
+      };
+      var ll=document.createElement("div"); ll.className="slider-lbl";
+      ll.innerHTML="<span>"+f.min+f.unit+"</span><span>"+f.max+f.unit+"</span>";
+      wrap.appendChild(vd); wrap.appendChild(sl); wrap.appendChild(ll);
+    } else {
+      var inp=document.createElement("input");
+      inp.type="text"; inp.className="txt-input";
+      inp.placeholder=f.placeholder||"";
+      inp.dataset.key=f.key;
+      inp.oninput=function(){ ST.goals[this.dataset.key]=this.value; };
+      wrap.appendChild(inp);
+    }
+    body.appendChild(wrap);
+  });
+}
+
+function saveGoals(){ go("s-onb3"); }
+
+// ── MAPPING AMBITIONS → DOMAINES ──
+var AMB_DOMAINS = {
+  epargne:  ["fashion","shopping","delivery","coffee"],
+  voyage:   ["fashion","shopping","delivery"],
+  ecologie: ["fashion","food","delivery","shopping"],
+  projet:   ["shopping","gaming","social"],
+  formation:["gaming","social"],
+  sante:    ["food","delivery","alcohol","coffee"],
+  logement: ["shopping","delivery"],
+  impact:   ["fashion","shopping"]
+};
+
+// ── TEXTES NARRATIFS PAR DOMAINE ──
+var DOM_WATCH = {
+  fashion:  {ico:"👗", txt:"Les achats mode impulsifs (Shein, Zara, Vinted…)"},
+  delivery: {ico:"🛵", txt:"Les commandes de repas à domicile (Uber Eats, Deliveroo…)"},
+  shopping: {ico:"📦", txt:"Les achats en ligne compulsifs (Amazon, Fnac…)"},
+  food:     {ico:"🍔", txt:"Le fast food et la malbouffe (McDo, KFC…)"},
+  social:   {ico:"📱", txt:"Le scroll infini sur les réseaux sociaux"},
+  gaming:   {ico:"🎮", txt:"TikTok et les jeux vidéo chronophages"},
+  alcohol:  {ico:"🍷", txt:"La consommation d'alcool impulsive"},
+  coffee:   {ico:"☕", txt:"Les cafés et boissons du quotidien (Starbucks…)"}
+};
+
+// Phrases de lien ambition → domaine (pourquoi Miroir surveille ça)
+var DOM_REASON = {
+  fashion:  {"epargne":"chaque achat mode grignote ton épargne","voyage":"c'est de l'argent qui ne part pas en voyage","ecologie":"la fast fashion est l'une des industries les plus polluantes","impact":"la fast fashion exploite des conditions de travail précaires"},
+  delivery: {"epargne":"les livraisons s'accumulent vite sur un mois","voyage":"une commande = plusieurs heures de voyage","sante":"la livraison remplace souvent un repas cuisiné plus sain","logement":"c'est de l'argent pour ton futur logement"},
+  shopping: {"epargne":"les achats impulsifs sont des fuites d'épargne silencieuses","voyage":"chaque article = moins de budget voyage","projet":"cet argent pourrait financer ton projet","logement":"chaque commande = un peu moins pour ton logement"},
+  food:     {"sante":"le fast food nuit à ton objectif santé","epargne":"cuisiner revient 3x moins cher","ecologie":"l'industrie du fast food a un fort impact carbone"},
+  social:   {"projet":"le temps sur les réseaux = du temps en moins sur ton projet","formation":"ce temps pourrait être investi dans ta formation"},
+  gaming:   {"projet":"les heures de jeu sont des heures de moins sur ton projet","formation":"ce temps pourrait t'apprendre quelque chose"},
+  alcohol:  {"sante":"l'alcool impacte directement ta santé et ton énergie","epargne":"les sorties s'accumulent sur le budget"},
+  coffee:   {"epargne":"5€/jour × 20 jours = 100€/mois","sante":"la caféine en excès nuit au sommeil et à l'énergie"}
+};
+
+function renderOnb3(){
+  var suggested={};
+  ST.ambitions.forEach(function(a){
+    var doms=AMB_DOMAINS[a]||[];
+    doms.forEach(function(d){ suggested[d]=(suggested[d]||0)+1; });
+  });
+
+  // Cocher les chips silencieusement
+  var chips=document.querySelectorAll("#dom-chips .amb-chip");
+  chips.forEach(function(c){
+    if (suggested[c.dataset.k]) c.classList.add("on");
+    else c.classList.remove("on");
+  });
+
+  // Générer la liste narrative
+  var list=document.getElementById("onb3-watch-list");
+  if (!list) return;
+
+  var html="";
+  var domKeys=Object.keys(suggested);
+  domKeys.forEach(function(dk){
+    var dw=DOM_WATCH[dk]; if(!dw) return;
+    // Trouver la meilleure raison selon ambitions
+    var reason="";
+    ST.ambitions.forEach(function(a){
+      if (!reason&&DOM_REASON[dk]&&DOM_REASON[dk][a]) reason=DOM_REASON[dk][a];
+    });
+    html+="<div style='display:flex;gap:12px;align-items:flex-start;background:var(--c2);border:1px solid var(--line);border-radius:12px;padding:12px 14px'>"
+      +"<div style='font-size:22px;flex-shrink:0;margin-top:1px'>"+dw.ico+"</div>"
+      +"<div>"
+      +"<div style='font-size:13px;font-weight:600;line-height:1.3'>"+dw.txt+"</div>"
+      +(reason?"<div style='font-size:11px;color:var(--fox);margin-top:3px;line-height:1.4'>Parce que "+reason+".</div>":"")
+      +"</div></div>";
+  });
+
+  if (!html) html="<div style='font-size:13px;color:var(--muted)'>Sélectionne au moins une catégorie ci-dessous.</div>";
+  list.innerHTML=html;
+
+  // Cacher le toggle si aucune chips
+  var toggle=document.getElementById("onb3-toggle");
+  if (toggle) toggle.style.display=domKeys.length?"block":"none";
+}
+
+var domChipsVisible=false;
+function toggleDomChips(){
+  domChipsVisible=!domChipsVisible;
+  var wrap=document.getElementById("dom-chips-wrap");
+  var toggle=document.getElementById("onb3-toggle");
+  if (wrap) wrap.style.display=domChipsVisible?"block":"none";
+  if (toggle) toggle.textContent=domChipsVisible?"Masquer ↑":"Ajuster manuellement →";
+  // Regénérer la liste si on vient de fermer les chips
+  if (!domChipsVisible) renderOnb3();
+}
+
+function saveDomains(){
+  var chips=document.querySelectorAll("#dom-chips .amb-chip.on");
   ST.domains=[];
   chips.forEach(function(c){ if(c.dataset.k) ST.domains.push(c.dataset.k); });
   if (!ST.domains.length) ST.domains=["delivery"];
   ST.curD=0;
-  go("s-onb2");
-}
-
-function pickComp(el) {
-  document.querySelectorAll(".comp-card").forEach(function(c){ c.classList.remove("on"); });
-  el.classList.add("on");
-  ST.comp=el.dataset.c;
-  var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
-  var ico=document.getElementById("nb-comp-ico");
-  if (ico) ico.textContent=icons[ST.comp]||"🦊";
+  go("s-onb4-comp");
 }
 
 function renderCompGrid(){
@@ -931,10 +1013,48 @@ function renderCompGrid(){
   });
 }
 
+function pickComp(el){
+  document.querySelectorAll(".comp-card").forEach(function(c){ c.classList.remove("on"); });
+  el.classList.add("on");
+  ST.comp=el.dataset.c;
+  var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
+  var ico=document.getElementById("nb-comp-ico");
+  if (ico) ico.textContent=icons[ST.comp]||"🦊";
+}
+
+function startApp(){
+  document.getElementById("bnav").classList.add("V");
+  document.querySelectorAll(".nb").forEach(function(n){ n.classList.remove("on"); });
+  var nb=document.getElementById("nb-dash"); if(nb) nb.classList.add("on");
+  go("s-dash");
+}
+
+// Suggestion de phrase selon ambitions
+var SUGGEST={
+  epargne:["Je veux être libre financièrement.", "Je choisis où va mon argent.", "Je construis mon indépendance, euro par euro."],
+  voyage: ["Je veux voyager en Asie l'année prochaine.", "Je veux voir le monde avant mes 25 ans.", "Mon prochain voyage, je le finance moi-même."],
+  ecologie:["Je veux consommer de façon cohérente avec mes valeurs.", "Je veux laisser moins de traces.", "Je veux être fière de mes choix de consommation."],
+  projet: ["Je veux lancer mon projet cette année.", "Je construis quelque chose qui me ressemble.", "Je veux vivre de ma passion."],
+  formation:["Je veux apprendre quelque chose de nouveau.", "Je veux investir en moi.", "Je veux progresser."],
+  sante:  ["Je veux prendre soin de moi.", "Mon corps mérite mieux.", "Je veux être en forme et énergique."],
+  logement:["Je veux mon propre espace.", "Je construis ma stabilité.", "Mon logement, c'est ma priorité."],
+  impact: ["Je veux faire une différence.", "Je veux agir pour ce en quoi je crois.", "Je veux que mes actes aient du sens."]
+};
+
+function getSuggest(){
+  var pool=[];
+  ST.ambitions.forEach(function(a){ if(SUGGEST[a]) pool=pool.concat(SUGGEST[a]); });
+  if (!pool.length) pool=["Dis qui tu veux devenir."];
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
 // ── CAMÉRA ──
 var camStream=null, recTimerInt=null, recSec=0;
 
 function initCam(){
+  // Afficher suggestion
+  var sg=document.getElementById("onb4-suggest");
+  if (sg) sg.textContent="Ex : \""+getSuggest()+"\"";
   if (camStream) return;
   if (!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) return;
   navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:true})
@@ -958,9 +1078,8 @@ function startRec(){
   ST.mediaRecorder.ondataavailable=function(e){ if(e.data.size>0) ST.chunks.push(e.data); };
   ST.mediaRecorder.onstop=function(){
     var blob=new Blob(ST.chunks,{type:"video/webm"});
-    var k=ST.domains[ST.curD]||"delivery";
-    if (ST.blobs[k]) URL.revokeObjectURL(ST.blobs[k]);
-    ST.blobs[k]=URL.createObjectURL(blob);
+    if (ST.blobs.main) URL.revokeObjectURL(ST.blobs.main);
+    ST.blobs.main=URL.createObjectURL(blob);
     recSec=0; clearInterval(recTimerInt);
     var timer=document.getElementById("cam-timer");
     var rec=document.getElementById("cam-rec");
@@ -968,9 +1087,8 @@ function startRec(){
     if (rec)   rec.style.display="none";
     var btn=document.getElementById("btn-rec");
     if (btn){ btn.textContent="✓ Enregistré"; btn.style.background="var(--green)"; btn.style.borderColor="var(--green)"; }
-    ST.xp=Math.min(100,ST.xp+10);
-    toast("Engagement enregistré +10 xp");
-    setTimeout(function(){ go("s-dash"); },1200);
+    toast("Engagement enregistré ✦");
+    setTimeout(function(){ startApp(); },1200);
   };
   ST.mediaRecorder.start(100); ST.recording=true; recSec=0;
   var timer=document.getElementById("cam-timer");
@@ -979,7 +1097,10 @@ function startRec(){
   if (rec)   rec.style.display="flex";
   var btn=document.getElementById("btn-rec");
   if (btn){ btn.textContent="⏹ Arrêter"; btn.style.background="var(--red)"; btn.style.borderColor="var(--red)"; }
-  recTimerInt=setInterval(function(){ recSec++; var t=document.getElementById("cam-timer"); if(t) t.textContent=recSec+"s"; },1000);
+  recTimerInt=setInterval(function(){
+    recSec++;
+    var t=document.getElementById("cam-timer"); if(t) t.textContent=recSec+"s";
+  },1000);
 }
 
 function stopRec(){
@@ -987,62 +1108,147 @@ function stopRec(){
 }
 
 // ── DASHBOARD ──
+var AMB_COLORS={epargne:"var(--green)",voyage:"var(--teal)",ecologie:"#86EFAC",projet:"var(--fox)",formation:"var(--purple)",sante:"var(--gold)",logement:"#F97316",impact:"#38BDF8"};
+var AMB_ICOS={epargne:"💰",voyage:"🗺️",ecologie:"🌱",projet:"🚀",formation:"📚",sante:"💪",logement:"🏠",impact:"🤝"};
+
+function ambCard(a){
+  var ico=AMB_ICOS[a]||"✦";
+  var col=AMB_COLORS[a]||"var(--fox)";
+  var goal=ST.goals[a]||0;
+  var saved=ST.totalSaved;
+  var html="";
+
+  if (a==="epargne"&&goal>0){
+    var pct=Math.min(Math.round(saved/goal*100),100);
+    var moisRestants=goal>0?Math.ceil((goal-ST.weekSaved)/Math.max(1,ST.weekSaved/4)):null;
+    html="<div style='font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:"+col+";margin-bottom:6px'>"+ico+" Liberté financière</div>"
+      +"<div style='display:flex;align-items:baseline;gap:6px;margin-bottom:8px'>"
+      +"<span style='font-family:var(--serif);font-size:28px;font-weight:700;color:"+col+"'>"+saved+"€</span>"
+      +"<span style='font-size:12px;color:var(--muted)'>économisés · objectif "+goal+"€/mois</span></div>"
+      +"<div style='height:5px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:6px'>"
+      +"<div style='height:100%;width:"+pct+"%;background:"+col+";border-radius:3px;transition:width .8s'></div></div>"
+      +"<div style='font-size:11px;color:var(--muted)'>"+pct+"% de l'objectif mensuel"+(moisRestants&&moisRestants>0?" · encore ~"+moisRestants+" semaines à ce rythme":"")+"</div>";
+  }
+  else if (a==="voyage"&&goal>0){
+    var pctV=Math.min(Math.round(saved/goal*100),100);
+    var reste=Math.max(0,goal-saved);
+    html="<div style='font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:"+col+";margin-bottom:6px'>"+ico+" Voyage</div>"
+      +"<div style='display:flex;align-items:baseline;gap:6px;margin-bottom:8px'>"
+      +"<span style='font-family:var(--serif);font-size:28px;font-weight:700;color:"+col+"'>"+pctV+"%</span>"
+      +"<span style='font-size:12px;color:var(--muted)'>du budget · "+saved+"€ / "+goal+"€</span></div>"
+      +"<div style='height:5px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:6px'>"
+      +"<div style='height:100%;width:"+pctV+"%;background:"+col+";border-radius:3px;transition:width .8s'></div></div>"
+      +"<div style='font-size:11px;color:var(--muted)'>Il manque "+reste+"€. Continue comme ça.</div>";
+  }
+  else if (a==="ecologie"){
+    var kgEvites=ST.weekResist*12; // estimation: 12kg CO2 évités par résistance moyenne
+    var equiv=Math.round(kgEvites*8);
+    html="<div style='font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:"+col+";margin-bottom:6px'>"+ico+" Impact écologique</div>"
+      +"<div style='display:flex;align-items:baseline;gap:6px;margin-bottom:8px'>"
+      +"<span style='font-family:var(--serif);font-size:28px;font-weight:700;color:"+col+"'>"+kgEvites+"kg</span>"
+      +"<span style='font-size:12px;color:var(--muted)'>CO₂ évités cette semaine</span></div>"
+      +"<div style='font-size:11px;color:var(--muted)'>Soit "+equiv+"km en voiture non parcourus. "+ST.weekResist+" résistance"+(ST.weekResist>1?"s":"")+" = un choix conscient.</div>";
+  }
+  else if (a==="sante"){
+    var nomSante=ST.goals.sante_name||"ta santé";
+    var seances=ST.weekResist;
+    html="<div style='font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:"+col+";margin-bottom:6px'>"+ico+" Santé</div>"
+      +"<div style='display:flex;align-items:baseline;gap:6px;margin-bottom:8px'>"
+      +"<span style='font-family:var(--serif);font-size:28px;font-weight:700;color:"+col+"'>"+seances+"</span>"
+      +"<span style='font-size:12px;color:var(--muted)'>choix sains cette semaine</span></div>"
+      +"<div style='font-size:11px;color:var(--muted)'>Objectif : "+nomSante+". Chaque résistance est un acte de soin envers toi-même.</div>";
+  }
+  else if (a==="impact"){
+    var nomImpact=ST.goals.impact_name||"avoir un impact";
+    var eurosImpact=saved;
+    html="<div style='font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:"+col+";margin-bottom:6px'>"+ico+" Impact</div>"
+      +"<div style='display:flex;align-items:baseline;gap:6px;margin-bottom:8px'>"
+      +"<span style='font-family:var(--serif);font-size:28px;font-weight:700;color:"+col+"'>"+eurosImpact+"€</span>"
+      +"<span style='font-size:12px;color:var(--muted)'>pourraient aller à "+nomImpact+"</span></div>"
+      +"<div style='font-size:11px;color:var(--muted)'>Chaque résistance libère des ressources pour ce qui compte vraiment.</div>";
+  }
+  else if (a==="projet"){
+    var nomProjet=ST.goals.projet_name||"ton projet";
+    html="<div style='font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:"+col+";margin-bottom:6px'>"+ico+" Projet</div>"
+      +"<div style='display:flex;align-items:baseline;gap:6px;margin-bottom:8px'>"
+      +"<span style='font-family:var(--serif);font-size:28px;font-weight:700;color:"+col+"'>"+saved+"€</span>"
+      +"<span style='font-size:12px;color:var(--muted)'>économisés vers "+nomProjet+"</span></div>"
+      +"<div style='font-size:11px;color:var(--muted)'>"+ST.weekResist+" résistance"+(ST.weekResist>1?"s":"")+" cette semaine. Continue.</div>";
+  }
+  else if (a==="formation"){
+    var nomForm=ST.goals.formation_name||"ta formation";
+    var cours=Math.max(1,Math.floor(saved/15));
+    html="<div style='font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:"+col+";margin-bottom:6px'>"+ico+" Formation</div>"
+      +"<div style='display:flex;align-items:baseline;gap:6px;margin-bottom:8px'>"
+      +"<span style='font-family:var(--serif);font-size:28px;font-weight:700;color:"+col+"'>"+cours+"</span>"
+      +"<span style='font-size:12px;color:var(--muted)'>cours finançables · "+nomForm+"</span></div>"
+      +"<div style='font-size:11px;color:var(--muted)'>"+saved+"€ économisés = "+cours+" leçons Skillshare, Udemy ou autre.</div>";
+  }
+  else if (a==="logement"){
+    var nomLog=ST.goals.logement_name||"ton logement";
+    html="<div style='font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:"+col+";margin-bottom:6px'>"+ico+" Logement</div>"
+      +"<div style='display:flex;align-items:baseline;gap:6px;margin-bottom:8px'>"
+      +"<span style='font-family:var(--serif);font-size:28px;font-weight:700;color:"+col+"'>"+saved+"€</span>"
+      +"<span style='font-size:12px;color:var(--muted)'>vers "+nomLog+"</span></div>"
+      +"<div style='font-size:11px;color:var(--muted)'>Chaque euro résisté construit ta stabilité.</div>";
+  }
+  else {
+    var pctDef=goal>0?Math.min(Math.round(saved/goal*100),100):0;
+    html="<div style='font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:"+col+";margin-bottom:6px'>"+ico+" "+ST.goalNames[a]+"</div>"
+      +"<div style='font-family:var(--serif);font-size:28px;font-weight:700;color:"+col+";margin-bottom:6px'>"+saved+"€ économisés</div>"
+      +(goal>0?"<div style='height:5px;background:var(--line);border-radius:3px;overflow:hidden'><div style='height:100%;width:"+pctDef+"%;background:"+col+";border-radius:3px'></div></div>":"");
+  }
+  return "<div style='background:var(--c2);border:1px solid var(--line);border-radius:14px;padding:14px 16px'>"+html+"</div>";
+}
+
 function renderDash(){
-  var d=DC[ST.domains[ST.curD]]||DC.delivery;
-  var ph=document.getElementById("dash-phrase");
-  if (ph) ph.textContent=ST.phrase?"\u00AB "+ST.phrase+" \u00BB":"";
-  var diw=document.getElementById("dash-ident-word");
-  if (diw) diw.textContent=ST.lastIdentWord?"Je suis "+ST.lastIdentWord.toLowerCase()+" \u2014 "+ST.identWords.length+" acte"+(ST.identWords.length>1?"s":"")+" d'identit\u00E9":"";
-  var ds=document.getElementById("dash-streak");
-  if (ds) ds.textContent="🔥 "+ST.streak;
+  var dn=document.getElementById("dash-name"); if(dn) dn.textContent="Bonsoir, Léa";
+  var ds=document.getElementById("dash-streak"); if(ds) ds.textContent="🔥 "+ST.streak;
+  var dsub=document.getElementById("dash-sub");
+  if (dsub){
+    if (ST.weekSaved>0)
+      dsub.innerHTML="Tu as économisé <strong style='color:var(--green)'>"+ST.weekSaved+"€</strong> cette semaine";
+    else
+      dsub.textContent="Commence à simuler pour voir tes progrès";
+  }
+  // Ambitions — une card par ambition
+  var da=document.getElementById("dash-amb");
+  if (da){
+    da.innerHTML="<div style='display:flex;flex-direction:column;gap:10px'>"
+      +ST.ambitions.map(function(a){ return ambCard(a); }).join("")
+      +"</div>";
+  }
   var cs=document.getElementById("d-comp-svg"); if(cs) cs.innerHTML=svg(ST.comp,72);
   var cn=document.getElementById("d-comp-name"); if(cn) cn.textContent=STAGES[ST.comp][ST.stage-1]||ST.comp;
   var cst=document.getElementById("d-comp-stage"); if(cst) cst.textContent=cap(ST.comp)+" · Stade "+ST.stage;
   var xf=document.getElementById("d-xp-fill"); if(xf) xf.style.width=ST.xp+"%";
   var xl=document.getElementById("d-xp-lbl"); if(xl) xl.textContent=ST.xp+" xp";
-  var tabs=document.getElementById("dom-tabs");
-  if (tabs) tabs.innerHTML=ST.domains.map(function(k,i){
-    return "<div class='dom-tab"+(i===ST.curD?" on":"")+"' onclick='R.switchD("+i+")'>"+DC[k].e+" "+DC[k].l+"</div>";
-  }).join("");
-  var si=document.getElementById("d-sim-ico"); if(si) si.textContent=d.e;
-  var ss=document.getElementById("d-sim-sub"); if(ss) ss.textContent=d.sim;
   var jl=document.getElementById("j-list");
   if (jl) jl.innerHTML=ST.journal.length
     ?ST.journal.map(function(e){
-      var wTag=e.w?"<span style='font-size:10px;color:var(--purple);font-weight:700;margin-left:6px'>"+e.w+"</span>":"";
-      return "<div class='j-item'><div class='j-dot "+e.t+"'></div><div><div style='font-size:10px;color:var(--muted);margin-bottom:3px;font-weight:600;letter-spacing:.5px'>"+e.d+"</div><div style='font-size:13px;color:var(--ink);line-height:1.4'>"+e.x+wTag+"</div></div></div>";
+      return "<div class='j-item'><div class='j-dot "+e.t+"'></div><div>"
+        +"<div style='font-size:10px;color:var(--muted);margin-bottom:3px;font-weight:600;letter-spacing:.5px'>"+e.d+"</div>"
+        +"<div style='font-size:13px;color:var(--ink);line-height:1.4'>"+e.x+"</div>"
+        +"</div></div>";
     }).join("")
     :"<div style='font-size:13px;color:var(--muted);text-align:center;padding:20px'>Pas encore d'historique</div>";
 }
 
-function switchD(i){ ST.curD=i; renderDash(); }
-
 // ── SIMULATION ──
-function clearSimTimers(){
-  clearInterval(simScrollInt); clearTimeout(simInterceptTmr);
-}
+function clearSimTimers(){ clearInterval(simScrollInt); clearTimeout(simInterceptTmr); }
 
 function simT(){
-  var k=ST.domains[ST.curD]||"delivery";
+  // Tirage aléatoire parmi les domaines actifs
+  var pool=ST.domains.length?ST.domains:["delivery"];
+  var k=pool[Math.floor(Math.random()*pool.length)];
+  ST.curD=ST.domains.indexOf(k); if(ST.curD<0) ST.curD=0;
   var d=DC[k];
   ["o1-ico","o2-ico"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent=d.e; });
   ["o1-app","o2-app"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent=d.a; });
-  var oq=document.getElementById("o1-quote"); if(oq) oq.textContent="\u00AB "+d.q+" \u00BB";
-  var ob=document.getElementById("o1-by"); if(ob) ob.textContent="\u2014 Toi, il y a "+ST.day+" jours";
-  var is=document.getElementById("int-sub"); if(is) is.textContent="Tu t'\u00E9tais engag\u00E9e il y a "+ST.day+" jours.";
-  // ANCRAGE SCÈNE dans ovl1
-  var sa=document.getElementById("scene-anchor");
-  if (sa){
-    if (ST.scene){
-      sa.textContent="Ton ancre : \u201C"+ST.scene.substring(0,80)+(ST.scene.length>80?"\u2026":"")+"\u201D";
-      sa.classList.add("V");
-    } else {
-      sa.classList.remove("V");
-    }
-  }
+  var is=document.getElementById("int-sub");
+  if (is) is.textContent=d.avg>0?"~"+d.avg+"€ que tu t'apprêtes à dépenser.":"Du temps que tu ne récupères pas.";
   document.getElementById("sim-inner").innerHTML=buildSim(k);
-  var ic=document.getElementById("intercept");
-  ic.style.display="none"; ic.classList.remove("V");
+  var ic=document.getElementById("intercept"); ic.style.display="none"; ic.classList.remove("V");
   go("s-sim");
   clearSimTimers();
   if (k!=="gaming"){
@@ -1050,8 +1256,7 @@ function simT(){
     if (sc){
       var moved=0;
       simScrollInt=setInterval(function(){
-        if (!sc) return;
-        sc.scrollTop+=1.5; moved+=1.5;
+        if (!sc) return; sc.scrollTop+=1.5; moved+=1.5;
         if (moved>260) clearInterval(simScrollInt);
       },16);
     }
@@ -1063,109 +1268,142 @@ function simT(){
 }
 
 function goOverlay(){
-  var ic=document.getElementById("intercept");
-  if (ic) ic.classList.remove("V");
+  var ic=document.getElementById("intercept"); if(ic) ic.classList.remove("V");
   setTimeout(function(){ go("s-ovl1"); },380);
 }
 
-// ── SIM BUILDERS ──
+// ── BUILD SIM ──
 function buildSim(k){
   var back="onclick=\"R.go('s-dash')\"";
   var S={
     fashion:function(){
-      var grid=[
-        ["#F5D0C5","👗","<span style='background:#E8563A'>-71%</span>","6,99€","24€","Robe fleurie manches bouffantes"],
-        ["#C8D8E8","👕","<span style='background:#111'>NOUVEAU</span>","12,99€","39€","Crop top côtelé sans manches"],
-        ["#5B7FA6","👖","<span style='background:#E8563A'>-66%</span>","9,49€","28€","Jeans taille haute skinny"],
-        ["#D4C8E8","🧥","<span style='background:#E8563A'>FLASH</span>","4,99€","18€","Crop hoodie oversize pastel"],
-        ["#F0E0B0","🧣","<span style='background:#E8563A'>-64%</span>","7,99€","22€","Mini jupe plissée tendance"],
-        ["#C8E8C8","👚","<span style='background:#111'>TOP</span>","3,49€","14€","Débardeur basique stretch"]
-      ].map(function(it){
-        return "<div style='background:#fff'><div style='aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;position:relative;background:"+it[0]+"'><span style='font-size:48px'>"+it[1]+"</span><div style='position:absolute;top:7px;left:7px;color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px'>"+it[2]+"</div><div style='position:absolute;top:7px;right:7px;font-size:15px'>🤍</div></div><div style='padding:6px 8px 9px'><span style='font-size:13px;font-weight:700;color:#E8563A'>"+it[3]+"</span><span style='font-size:10px;color:#aaa;text-decoration:line-through;margin-left:3px'>"+it[4]+"</span><div style='font-size:11px;color:#555;margin-top:2px;line-height:1.3'>"+it[5]+"</div></div></div>";
-      }).join("");
-      return "<div class='sim-content skin-shein'><div class='app-nav' style='border-bottom:1px solid #eee'><button class='app-back' style='color:#111' "+back+">←</button><div style='font-size:20px;font-weight:900;color:#E8563A;letter-spacing:-1px;flex:1;text-align:center'>SHEIN</div><span style='font-size:18px;position:relative'>🛒<span style='position:absolute;top:-4px;right:-6px;background:#E8563A;color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:8px'>3</span></span></div><div style='margin:4px 14px 6px;background:#f5f5f5;border-radius:20px;height:34px;display:flex;align-items:center;padding:0 12px;gap:7px;font-size:13px;color:#999;flex-shrink:0'>🔍 <span>robe été tendance</span></div><div style='display:flex;gap:0;padding:0 10px;border-bottom:1px solid #eee;flex-shrink:0;overflow-x:auto'><div style='padding:8px 12px;font-size:12px;color:#E8563A;border-bottom:2px solid #E8563A;font-weight:600;white-space:nowrap'>Pour toi</div><div style='padding:8px 12px;font-size:12px;color:#888;white-space:nowrap'>Nouveautés</div><div style='padding:8px 12px;font-size:12px;color:#888;white-space:nowrap'>Robes</div><div style='padding:8px 12px;font-size:12px;color:#888;white-space:nowrap'>Tops</div></div><div class='app-scroll' id='sim-scroll-el'><div style='display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#eee'>"+grid+"</div></div></div>";
+      var grid=[["#F5D0C5","👗","<span style='background:#E8563A'>-71%</span>","6,99€","24€","Robe fleurie manches bouffantes"],["#C8D8E8","👕","<span style='background:#111'>NOUVEAU</span>","12,99€","39€","Crop top côtelé sans manches"],["#5B7FA6","👖","<span style='background:#E8563A'>-66%</span>","9,49€","28€","Jeans taille haute skinny"],["#D4C8E8","🧥","<span style='background:#E8563A'>FLASH</span>","4,99€","18€","Crop hoodie oversize pastel"],["#F0E0B0","🧣","<span style='background:#E8563A'>-64%</span>","7,99€","22€","Mini jupe plissée tendance"],["#C8E8C8","👚","<span style='background:#111'>TOP</span>","3,49€","14€","Débardeur basique stretch"]].map(function(it){ return "<div style='background:#fff'><div style='aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;position:relative;background:"+it[0]+"'><span style='font-size:48px'>"+it[1]+"</span><div style='position:absolute;top:7px;left:7px;color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px'>"+it[2]+"</div><div style='position:absolute;top:7px;right:7px;font-size:15px'>🤍</div></div><div style='padding:6px 8px 9px'><span style='font-size:13px;font-weight:700;color:#E8563A'>"+it[3]+"</span><span style='font-size:10px;color:#aaa;text-decoration:line-through;margin-left:3px'>"+it[4]+"</span><div style='font-size:11px;color:#555;margin-top:2px;line-height:1.3'>"+it[5]+"</div></div></div>"; }).join("");
+      return "<div class='skin-shein' style='display:flex;flex-direction:column;flex:1;min-height:0'><div class='app-nav' style='border-bottom:1px solid #eee;flex-shrink:0'><button class='app-back' style='color:#111' "+back+">←</button><div style='font-size:20px;font-weight:900;color:#E8563A;letter-spacing:-1px;flex:1;text-align:center'>SHEIN</div><span style='font-size:18px;position:relative'>🛒<span style='position:absolute;top:-4px;right:-6px;background:#E8563A;color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:8px'>3</span></span></div><div style='margin:4px 14px 6px;background:#f5f5f5;border-radius:20px;height:34px;display:flex;align-items:center;padding:0 12px;gap:7px;font-size:13px;color:#999;flex-shrink:0'>🔍 <span>robe été tendance</span></div><div class='app-scroll' id='sim-scroll-el'><div style='display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#eee'>"+grid+"</div></div></div>";
     },
     delivery:function(){
-      var cards=[["🍕","#FFF3E0","Pizza Napoli","★ 4.8 · 18-28 min · Livraison 0€"],["🍔","#FFF8E1","Burger District","★ 4.6 · 22-32 min · Livraison 1,99€"],["🍜","#F3E5F5","Wok and Noodles","★ 4.7 · 25-35 min · Livraison 0€"],["🌮","#E8F5E9","Tacos Bros","★ 4.5 · 20-30 min · Livraison 0,99€"]].map(function(it){
-        return "<div style='margin:0 14px 10px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.07)'><div style='height:100px;display:flex;align-items:center;justify-content:center;font-size:50px;background:"+it[1]+"'>"+it[0]+"</div><div style='padding:10px 12px'><div style='font-size:14px;font-weight:700'>"+it[2]+"</div><div style='font-size:11px;color:#777;margin-top:3px'>"+it[3]+"</div></div></div>";
-      }).join("");
-      return "<div class='sim-content skin-uber'><div class='app-nav'><button class='app-back' style='color:#000' "+back+">←</button><div style='font-size:17px;font-weight:900;color:#000;flex:1;letter-spacing:-.5px'>Uber Eats</div><span style='font-size:16px'>👤</span></div><div style='margin:0 14px 8px;background:#fff;border-radius:10px;height:40px;display:flex;align-items:center;padding:0 14px;gap:9px;font-size:13px;color:#888;box-shadow:0 1px 6px rgba(0,0,0,.08);flex-shrink:0'>🔍 <span>Restaurants près de chez toi</span></div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'><div style='margin:0 14px 10px;background:#000;border-radius:12px;padding:12px 14px;flex-shrink:0'><div style='font-size:13px;font-weight:700;color:#fff'>🚀 Livraison gratuite ce soir</div><div style='font-size:11px;color:rgba(255,255,255,.7);margin-top:2px'>Commandes +15€</div></div><div style='padding:6px 14px 4px;font-size:13px;font-weight:700'>Rapide et proche</div>"+cards+"</div></div>";
+      var cards=[["🍕","#FFF3E0","Pizza Napoli","★ 4.8 · 18-28 min · 0€"],["🍔","#FFF8E1","Burger District","★ 4.6 · 22-32 min · 1,99€"],["🍜","#F3E5F5","Wok and Noodles","★ 4.7 · 25-35 min · 0€"],["🌮","#E8F5E9","Tacos Bros","★ 4.5 · 20-30 min · 0,99€"]].map(function(it){ return "<div style='margin:0 14px 10px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.07)'><div style='height:100px;display:flex;align-items:center;justify-content:center;font-size:50px;background:"+it[1]+"'>"+it[0]+"</div><div style='padding:10px 12px'><div style='font-size:14px;font-weight:700'>"+it[2]+"</div><div style='font-size:11px;color:#777;margin-top:3px'>"+it[3]+"</div></div></div>"; }).join("");
+      return "<div class='skin-uber' style='display:flex;flex-direction:column;flex:1;min-height:0'><div class='app-nav' style='flex-shrink:0'><button class='app-back' style='color:#000' "+back+">←</button><div style='font-size:17px;font-weight:900;color:#000;flex:1;letter-spacing:-.5px'>Uber Eats</div><span style='font-size:16px'>👤</span></div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'><div style='margin:0 14px 10px;background:#000;border-radius:12px;padding:12px 14px'><div style='font-size:13px;font-weight:700;color:#fff'>🚀 Livraison gratuite ce soir</div><div style='font-size:11px;color:rgba(255,255,255,.7);margin-top:2px'>Commandes +15€</div></div><div style='padding:6px 14px 4px;font-size:13px;font-weight:700'>Rapide et proche</div>"+cards+"</div></div>";
     },
     shopping:function(){
-      var items=[["🎧","#f5f5f5","Casque Bluetooth Premium","★★★★☆ 2 847 avis","24,99€"],["💡","#fffde7","Pack 3 ampoules LED","★★★★★ 1 203 avis","19,99€"],["📚","#e3f2fd","Livre: Atomic Habits","★★★★★ 8 412 avis","14,90€"],["🧴","#f3e5f5","Serum Vitamine C","★★★★☆ 934 avis","27,99€"]].map(function(it){
-        return "<div style='background:#fff;display:flex;gap:12px;padding:12px 14px;border-bottom:1px solid #eee'><div style='width:76px;height:76px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;background:"+it[1]+"'>"+it[0]+"</div><div style='flex:1;min-width:0'><div style='font-size:12px;color:#0F1111;line-height:1.4'>"+it[2]+"</div><div style='color:#FF9900;font-size:11px'>"+it[3]+"</div><div style='font-size:15px;font-weight:700;color:#B12704'>"+it[4]+"</div><div style='font-size:9px;color:#00A8E1;font-weight:700;border:1px solid #00A8E1;border-radius:2px;padding:1px 4px;display:inline-block;margin-top:2px'>prime</div></div></div>";
-      }).join("");
-      return "<div class='sim-content skin-amz'><div style='background:#131921;height:50px;display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0'><button class='app-back' style='color:#fff;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='flex:1;background:#fff;border-radius:6px;height:32px;display:flex;align-items:center;padding:0 10px;gap:6px;font-size:12px;color:#888;margin:0 4px'>🔍 Rechercher</div><span style='font-size:18px;color:#FF9900'>🛒</span></div><div class='app-scroll' id='sim-scroll-el'><div style='background:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #eee'><span style='font-size:14px;font-weight:700;color:#00A8E1'>prime</span><span style='font-size:12px;color:#555'>Livraison GRATUITE demain</span></div><div style='padding:6px 14px 4px;font-size:13px;font-weight:700;background:#fff;border-bottom:1px solid #eee'>Vos meilleures ventes</div>"+items+"</div></div>";
+      var items=[["🎧","#f5f5f5","Casque Bluetooth Premium","★★★★☆ 2 847 avis","24,99€"],["💡","#fffde7","Pack 3 ampoules LED","★★★★★ 1 203 avis","19,99€"],["📚","#e3f2fd","Livre: Atomic Habits","★★★★★ 8 412 avis","14,90€"],["🧴","#f3e5f5","Serum Vitamine C","★★★★☆ 934 avis","27,99€"]].map(function(it){ return "<div style='background:#fff;display:flex;gap:12px;padding:12px 14px;border-bottom:1px solid #eee'><div style='width:76px;height:76px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;background:"+it[1]+"'>"+it[0]+"</div><div style='flex:1;min-width:0'><div style='font-size:12px;color:#0F1111;line-height:1.4'>"+it[2]+"</div><div style='color:#FF9900;font-size:11px'>"+it[3]+"</div><div style='font-size:15px;font-weight:700;color:#B12704'>"+it[4]+"</div></div></div>"; }).join("");
+      return "<div class='skin-amz' style='display:flex;flex-direction:column;flex:1;min-height:0'><div style='background:#131921;height:50px;display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0'><button class='app-back' style='color:#fff;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='flex:1;background:#fff;border-radius:6px;height:32px;display:flex;align-items:center;padding:0 10px;font-size:12px;color:#888'>🔍 Rechercher</div><span style='font-size:18px;color:#FF9900'>🛒</span></div><div class='app-scroll' id='sim-scroll-el'>"+items+"</div></div>";
     },
     food:function(){
-      var items=[["🍔","Big Mac","2 steaks, sauce secrète, salade","7,40€"],["🌯","McWrap Croustillant","Poulet, salade, tomate","6,50€"],["🍟","Menu Best Of","Burger + frites + boisson","10,90€"],["🥤","McFlurry Oreo","Glace aux éclats d'Oreo","3,20€"]].map(function(it){
-        return "<div style='margin:0 14px 10px;background:#fff;border-radius:12px;overflow:hidden;display:flex;box-shadow:0 1px 6px rgba(0,0,0,.06)'><div style='width:88px;height:88px;display:flex;align-items:center;justify-content:center;font-size:42px;background:#fff8e1;flex-shrink:0'>"+it[0]+"</div><div style='flex:1;padding:10px 12px'><div style='font-size:13px;font-weight:700'>"+it[1]+"</div><div style='font-size:11px;color:#777;margin-top:2px'>"+it[2]+"</div><div style='font-size:14px;font-weight:700;color:#DA0010;margin-top:5px'>"+it[3]+"</div></div></div>";
-      }).join("");
-      return "<div class='sim-content skin-mcd'><div style='background:#DA0010;height:50px;display:flex;align-items:center;padding:0 14px;flex-shrink:0'><button class='app-back' style='color:#FFC72C;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='color:#FFC72C;font-size:22px;font-weight:900;flex:1;text-align:center'>M</div><span style='font-size:16px;color:#FFC72C'>🛒</span></div><div style='background:#DA0010;padding:12px 16px 16px;flex-shrink:0'><div style='font-size:15px;font-weight:700;color:#FFC72C'>Bonsoir ! 😊</div><div style='font-size:12px;color:rgba(255,255,255,.7);margin-top:2px'>Lyon Bellecour · Ouvert jusqu'à 1h00</div></div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'>"+items+"</div></div>";
+      var items=[["🍔","Big Mac","2 steaks, sauce secrète","7,40€"],["🌯","McWrap Croustillant","Poulet, salade, tomate","6,50€"],["🍟","Menu Best Of","Burger + frites + boisson","10,90€"],["🥤","McFlurry Oreo","Glace aux éclats d'Oreo","3,20€"]].map(function(it){ return "<div style='margin:0 14px 10px;background:#fff;border-radius:12px;overflow:hidden;display:flex;box-shadow:0 1px 6px rgba(0,0,0,.06)'><div style='width:88px;height:88px;display:flex;align-items:center;justify-content:center;font-size:42px;background:#fff8e1;flex-shrink:0'>"+it[0]+"</div><div style='flex:1;padding:10px 12px'><div style='font-size:13px;font-weight:700'>"+it[1]+"</div><div style='font-size:11px;color:#777;margin-top:2px'>"+it[2]+"</div><div style='font-size:14px;font-weight:700;color:#DA0010;margin-top:5px'>"+it[3]+"</div></div></div>"; }).join("");
+      return "<div class='skin-mcd' style='display:flex;flex-direction:column;flex:1;min-height:0'><div style='background:#DA0010;height:50px;display:flex;align-items:center;padding:0 14px;flex-shrink:0'><button class='app-back' style='color:#FFC72C;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='color:#FFC72C;font-size:22px;font-weight:900;flex:1;text-align:center'>M</div><span style='font-size:16px;color:#FFC72C'>🛒</span></div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'>"+items+"</div></div>";
     },
     social:function(){
-      var stories=[["👤","Ma story",false],["🌍","lea.voyage",false],["🎨","art.studio",false],["🐈","chatounette",true],["🌿","green.life",false]].map(function(it){
-        var ring=it[2]?"background:#ccc":"background:linear-gradient(45deg,#f09433,#dc2743,#bc1888)";
-        return "<div style='display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0'><div style='width:54px;height:54px;border-radius:50%;padding:2px;"+ring+"'><div style='width:100%;height:100%;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f0f0f0'>"+it[0]+"</div></div><div style='font-size:10px;max-width:54px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+it[1]+"</div></div>";
-      }).join("");
-      var posts=[["🌍","lea.voyage","🗼","54 829","Une journée magique à Paris ✨ #paris #travel"],["🎨","art.studio","🎨","12 043","Nouvelle collection printemps 🌸 Que pensez-vous ?"]].map(function(it){
-        return "<div style='border-bottom:1px solid #efefef'><div style='display:flex;align-items:center;gap:10px;padding:10px 14px'><div style='width:32px;height:32px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:18px'>"+it[0]+"</div><div style='font-size:12px;font-weight:600'>"+it[1]+"</div><span style='margin-left:auto;font-size:18px'>···</span></div><div style='width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:72px;background:#fafafa'>"+it[2]+"</div><div style='padding:8px 14px;font-size:20px'>❤️ 💬 📤</div><div style='font-size:12px;font-weight:600;padding:0 14px'>"+it[3]+" mentions</div><div style='font-size:12px;padding:3px 14px 10px;border-bottom:1px solid #efefef'><span style='font-weight:600'>"+it[1]+"</span> "+it[4]+"</div></div>";
-      }).join("");
-      return "<div class='sim-content skin-insta'><div class='app-nav' style='border-bottom:1px solid #efefef'><button class='app-back' style='color:#111' "+back+">←</button><div style='font-size:15px;font-weight:700;color:#111;flex:1;text-align:center;font-family:Georgia,serif'>Instagram</div><span style='font-size:18px'>❤️</span><span style='font-size:18px'>💬</span></div><div class='ig-stories'>"+stories+"</div><div class='app-scroll' id='sim-scroll-el'>"+posts+"</div></div>";
+      var stories=[["👤","Ma story",false],["🌍","lea.voyage",false],["🎨","art.studio",false],["🐈","chatounette",true],["🌿","green.life",false]].map(function(it){ var ring=it[2]?"background:#ccc":"background:linear-gradient(45deg,#f09433,#dc2743,#bc1888)"; return "<div style='display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0'><div style='width:54px;height:54px;border-radius:50%;padding:2px;"+ring+"'><div style='width:100%;height:100%;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f0f0f0'>"+it[0]+"</div></div><div style='font-size:10px;max-width:54px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+it[1]+"</div></div>"; }).join("");
+      var posts=[["🌍","lea.voyage","🗼","54 829","Une journée magique à Paris ✨"],["🎨","art.studio","🎨","12 043","Nouvelle collection printemps 🌸"]].map(function(it){ return "<div style='border-bottom:1px solid #efefef'><div style='display:flex;align-items:center;gap:10px;padding:10px 14px'><div style='width:32px;height:32px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:18px'>"+it[0]+"</div><div style='font-size:12px;font-weight:600'>"+it[1]+"</div><span style='margin-left:auto;font-size:18px'>···</span></div><div style='width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:72px;background:#fafafa'>"+it[2]+"</div><div style='padding:8px 14px;font-size:20px'>❤️ 💬 📤</div><div style='font-size:12px;font-weight:600;padding:0 14px'>"+it[3]+" mentions</div><div style='font-size:12px;padding:3px 14px 10px'><span style='font-weight:600'>"+it[1]+"</span> "+it[4]+"</div></div>"; }).join("");
+      return "<div class='skin-insta' style='display:flex;flex-direction:column;flex:1;min-height:0'><div class='app-nav' style='border-bottom:1px solid #efefef;flex-shrink:0'><button class='app-back' style='color:#111' "+back+">←</button><div style='font-size:15px;font-weight:700;color:#111;flex:1;text-align:center;font-family:Georgia,serif'>Instagram</div><span style='font-size:18px'>❤️</span></div><div class='ig-stories'>"+stories+"</div><div class='app-scroll' id='sim-scroll-el'>"+posts+"</div></div>";
     },
     gaming:function(){
-      var vids=[["#1a0a2e","🌌","@astro.vibes","Quand tu réalises que tu scrolles depuis 2h 😅 #nuit"],["#0a1a10","🌿","@nature.zen","La forêt la nuit, son calme incroyable... #asmr #zen"],["#1a1000","🔥","@gaming.clips","Ce moment impossible en ranked 😱 #gaming"]].map(function(it){
-        return "<div style='height:100vh;scroll-snap-align:start;position:relative;display:flex;align-items:flex-end;flex-shrink:0;background:"+it[0]+"'><div style='position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:90px'>"+it[1]+"</div><div style='position:relative;z-index:1;padding:14px 56px 14px 14px;width:100%'><div style='font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px'>"+it[2]+" <span style='background:#FE2C55;border-radius:4px;font-size:10px;padding:2px 7px;cursor:pointer'>Suivre</span></div><div style='font-size:12px;color:rgba(255,255,255,.9)'>"+it[3]+"</div></div><div style='position:absolute;right:10px;bottom:20px;display:flex;flex-direction:column;gap:14px;align-items:center;z-index:2'><div style='display:flex;flex-direction:column;align-items:center;gap:2px'><span style='font-size:24px'>❤️</span><span style='font-size:10px;color:#fff'>245k</span></div><div style='display:flex;flex-direction:column;align-items:center;gap:2px'><span style='font-size:24px'>💬</span><span style='font-size:10px;color:#fff'>18k</span></div></div></div>";
-      }).join("");
-      return "<div class='sim-content skin-tiktok'><div style='position:absolute;top:0;left:0;right:0;z-index:5;height:50px;display:flex;align-items:center;padding:0 14px;gap:10px'><button class='app-back' style='color:#fff;background:rgba(0,0,0,.3);border-radius:50%;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='font-size:16px;font-weight:700;color:#fff;flex:1;text-align:center'>TikTok</div><span style='font-size:16px'>🔴</span></div><div class='tk-feed' id='sim-scroll-el'>"+vids+"</div></div>";
+      var vids=[["#1a0a2e","🌌","@astro.vibes","Quand tu scrolles depuis 2h 😅"],["#0a1a10","🌿","@nature.zen","La forêt la nuit #asmr"],["#1a1000","🔥","@gaming.clips","Ce moment impossible 😱"]].map(function(it){ return "<div style='height:100vh;scroll-snap-align:start;position:relative;display:flex;align-items:flex-end;flex-shrink:0;background:"+it[0]+"'><div style='position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:90px'>"+it[1]+"</div><div style='position:relative;z-index:1;padding:14px 56px 14px 14px;width:100%'><div style='font-size:13px;font-weight:700;color:#fff;margin-bottom:6px'>"+it[2]+" <span style='background:#FE2C55;border-radius:4px;font-size:10px;padding:2px 7px'>Suivre</span></div><div style='font-size:12px;color:rgba(255,255,255,.9)'>"+it[3]+"</div></div><div style='position:absolute;right:10px;bottom:20px;display:flex;flex-direction:column;gap:14px;align-items:center;z-index:2'><div style='display:flex;flex-direction:column;align-items:center;gap:2px'><span style='font-size:24px'>❤️</span><span style='font-size:10px;color:#fff'>245k</span></div></div></div>"; }).join("");
+      return "<div class='skin-tiktok' style='display:flex;flex-direction:column;flex:1;min-height:0;position:relative'><div style='position:absolute;top:0;left:0;right:0;z-index:5;height:50px;display:flex;align-items:center;padding:0 14px;gap:10px'><button class='app-back' style='color:#fff;background:rgba(0,0,0,.3);border-radius:50%;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='font-size:16px;font-weight:700;color:#fff;flex:1;text-align:center'>TikTok</div></div><div class='tk-feed' id='sim-scroll-el'>"+vids+"</div></div>";
     },
     alcohol:function(){
-      var bars=[["🍸","Le Comptoir des Cocktails","Ouvert","120m","★ 4.8"],["🍺","Brasserie du Vieux Lyon","Ouvert","350m","★ 4.6"],["🍷","Cave et Wine Bar","Ouvert","200m","★ 4.9"],["🎵","Le Jazz Club","Ouvert","500m","★ 4.7"]].map(function(it){
-        return "<div style='margin:0 14px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden'><div style='height:70px;display:flex;align-items:center;justify-content:center;font-size:40px;background:rgba(245,200,66,.06)'>"+it[0]+"</div><div style='padding:10px 13px'><div style='display:flex;justify-content:space-between'><span style='font-size:14px;font-weight:700'>"+it[1]+"</span><span style='color:#F5C842;font-size:12px'>"+it[4]+"</span></div><div style='font-size:11px;margin-top:3px'><span style='color:#42C47E;font-weight:600'>"+it[2]+"</span> <span style='color:rgba(245,232,208,.4)'>"+it[3]+"</span></div></div></div>";
-      }).join("");
-      return "<div class='sim-content skin-bar'><div class='app-nav' style='border-bottom:1px solid rgba(255,255,255,.08)'><button class='app-back' style='color:#F5C842;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='font-size:15px;font-weight:700;color:#F5C842;flex:1;text-align:center'>The Fork · Bars</div><span style='font-size:16px'>🔔</span></div><div style='margin:8px 14px;background:rgba(245,200,66,.1);border-radius:10px;padding:9px 12px;font-size:12px;color:#F5C842;flex-shrink:0'>📍 Lyon 2ème · 14 bars ouverts</div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'>"+bars+"</div></div>";
+      var bars=[["🍸","Le Comptoir des Cocktails","Ouvert","120m","★ 4.8"],["🍺","Brasserie du Vieux Lyon","Ouvert","350m","★ 4.6"],["🍷","Cave et Wine Bar","Ouvert","200m","★ 4.9"]].map(function(it){ return "<div style='margin:0 14px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden'><div style='height:70px;display:flex;align-items:center;justify-content:center;font-size:40px;background:rgba(245,200,66,.06)'>"+it[0]+"</div><div style='padding:10px 13px'><div style='display:flex;justify-content:space-between'><span style='font-size:14px;font-weight:700'>"+it[1]+"</span><span style='color:#F5C842;font-size:12px'>"+it[4]+"</span></div><div style='font-size:11px;margin-top:3px'><span style='color:#42C47E;font-weight:600'>"+it[2]+"</span> <span style='color:rgba(245,232,208,.4)'>"+it[3]+"</span></div></div></div>"; }).join("");
+      return "<div class='skin-bar' style='display:flex;flex-direction:column;flex:1;min-height:0'><div class='app-nav' style='border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0'><button class='app-back' style='color:#F5C842;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='font-size:15px;font-weight:700;color:#F5C842;flex:1;text-align:center'>Bars · Lyon</div></div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'>"+bars+"</div></div>";
     },
     coffee:function(){
-      var items=[["☕","Flat White","Espresso corsé, mousse veloutée","4,95€"],["🧊","Iced Caramel Macchiato","Vanille, lait, expresso, caramel","5,45€"],["🍵","Matcha Latte","Matcha premium, lait vapeur","5,25€"],["🎃","Pumpkin Spice Latte","Edition limitée automne","5,75€"]].map(function(it){
-        return "<div style='margin:0 14px 10px;background:#fff;border:1px solid #eee;border-radius:14px;overflow:hidden;display:flex;box-shadow:0 1px 4px rgba(0,0,0,.05)'><div style='width:78px;height:78px;display:flex;align-items:center;justify-content:center;font-size:34px;background:#f0faf5;flex-shrink:0'>"+it[0]+"</div><div style='flex:1;padding:10px 12px'><div style='font-size:13px;font-weight:600'>"+it[1]+"</div><div style='font-size:10px;color:#888;margin-top:1px'>"+it[2]+"</div><div style='font-size:14px;font-weight:700;color:#006241;margin-top:4px'>"+it[3]+"</div></div></div>";
-      }).join("");
-      return "<div class='sim-content skin-sbux'><div style='background:#006241;height:50px;display:flex;align-items:center;padding:0 14px;flex-shrink:0'><button class='app-back' style='color:#fff;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='color:#fff;font-size:15px;font-weight:700;flex:1;text-align:center;letter-spacing:.5px'>Starbucks</div><span style='font-size:18px;color:#fff'>⭐</span></div><div style='background:#006241;padding:12px 16px 18px;flex-shrink:0'><div style='font-size:15px;font-weight:700;color:#fff'>Bonsoir, Léa ☕</div><div style='font-size:11px;color:rgba(255,255,255,.7);margin-top:2px'>340 étoiles disponibles</div></div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'>"+items+"</div></div>";
+      var items=[["☕","Flat White","Espresso, mousse veloutée","4,95€"],["🧊","Iced Caramel Macchiato","Vanille, lait, caramel","5,45€"],["🍵","Matcha Latte","Matcha premium, lait vapeur","5,25€"]].map(function(it){ return "<div style='margin:0 14px 10px;background:#fff;border:1px solid #eee;border-radius:14px;overflow:hidden;display:flex;box-shadow:0 1px 4px rgba(0,0,0,.05)'><div style='width:78px;height:78px;display:flex;align-items:center;justify-content:center;font-size:34px;background:#f0faf5;flex-shrink:0'>"+it[0]+"</div><div style='flex:1;padding:10px 12px'><div style='font-size:13px;font-weight:600'>"+it[1]+"</div><div style='font-size:10px;color:#888;margin-top:1px'>"+it[2]+"</div><div style='font-size:14px;font-weight:700;color:#006241;margin-top:4px'>"+it[3]+"</div></div></div>"; }).join("");
+      return "<div class='skin-sbux' style='display:flex;flex-direction:column;flex:1;min-height:0'><div style='background:#006241;height:50px;display:flex;align-items:center;padding:0 14px;flex-shrink:0'><button class='app-back' style='color:#fff;background:none;border:none;font-size:18px;cursor:pointer' "+back+">←</button><div style='color:#fff;font-size:15px;font-weight:700;flex:1;text-align:center'>Starbucks</div><span style='font-size:18px;color:#fff'>⭐</span></div><div class='app-scroll' id='sim-scroll-el' style='padding-bottom:10px'>"+items+"</div></div>";
     }
   };
   return (S[k]||S.delivery)();
 }
 
-// ── OVERLAY 1 ──
+// ── OVL1 ──
 function renderOvl1(){
   btnReady=false; stopBtnTimer();
+  ST.selectedEmo="";
+  document.querySelectorAll(".emo-chip,.emo-s-chip").forEach(function(c){ c.classList.remove("on"); });
   var bar=document.getElementById("btn-fill-bar");
   var lbl=document.getElementById("btn-lbl");
   if (bar){ bar.style.width="0"; bar.style.transition="none"; }
   if (lbl) lbl.textContent="Regarde d'abord\u2026";
-  var k=ST.domains[ST.curD]||"delivery";
-  var blobURL=ST.blobs[k]||ST.blobs[Object.keys(ST.blobs)[0]]||null;
+
+  // Reset visuel : vidéo grande, carte cachée
   var wrap=document.getElementById("vid-wrap");
-  var noVid=document.getElementById("vid-no");
+  var costReveal=document.getElementById("cost-reveal");
+  if (wrap){ wrap.style.flex="1"; wrap.style.opacity="1"; wrap.style.margin="0 18px"; }
+  if (costReveal){ costReveal.style.maxHeight="0"; costReveal.style.opacity="0"; costReveal.style.padding="0 18px"; }
+
+  var k=ST.domains[ST.curD]||"delivery";
+  var d=DC[k];
+
+  // Remplir carte coût en avance (cachée)
+  var ca=document.getElementById("cost-amount");
+  if (ca) ca.textContent=d.avg>0?"~"+d.avg+"\u20AC":"Ton temps";
+  var cl=document.getElementById("cost-label");
+  if (cl) cl.textContent=d.avg>0?"Commande "+d.a+" moyenne":"Cette session "+d.a;
+  var alts=buildCostAlts(k);
+  var ca2=document.getElementById("cost-alts");
+  if (ca2) ca2.innerHTML=alts.map(function(a){
+    return "<div class='cost-alt'><div class='cost-alt-ico'>"+a.ico+"</div><div class='cost-alt-body'><div class='cost-alt-title'>"+a.title+"</div><div class='cost-alt-sub'>"+a.sub+"</div></div></div>";
+  }).join("");
+  var eco=document.getElementById("cost-eco");
+  if (eco){
+    if (ST.ambitions.indexOf("ecologie")!==-1&&d.co2>0){
+      eco.textContent="🌱 Impact estimé : "+d.co2+"kg de CO₂ — "+(d.co2*8)+"km en voiture.";
+      eco.classList.add("V");
+    } else { eco.classList.remove("V"); }
+  }
+
+  // Citation
+  var oq=document.getElementById("o1-quote");
+  if (oq) oq.textContent=ST.lifePhrase||"Parle-toi de qui tu veux devenir.";
+
+  // Compagnon badge
   var cb=document.getElementById("vid-comp-badge");
-  if (cb) cb.innerHTML=svg(ST.comp,70,true);
+  if (cb) cb.innerHTML=svg(ST.comp,64,true);
+
+  // Vidéo
+  var noVid=document.getElementById("vid-no");
+  var blobURL=ST.blobs.main||null;
+
+  function revealCostCard(){
+    // Réduire vidéo
+    if (wrap){
+      wrap.style.flex="0";
+      wrap.style.height="0";
+      wrap.style.minHeight="0";
+      wrap.style.margin="0";
+      wrap.style.opacity="0";
+    }
+    // Révéler carte coût
+    if (costReveal){
+      costReveal.style.maxHeight="400px";
+      costReveal.style.opacity="1";
+      costReveal.style.padding="10px 18px 0";
+    }
+    // Débloquer bouton
+    if (!btnReady){ btnReady=true; }
+    var lbl2=document.getElementById("btn-lbl");
+    if (lbl2) lbl2.textContent="Prendre 30s pour r\u00E9fl\u00E9chir \u2192";
+    var bar2=document.getElementById("btn-fill-bar");
+    if (bar2) bar2.style.background="rgba(232,86,58,.35)";
+  }
+
   if (blobURL&&wrap){
     if (noVid) noVid.style.display="none";
     var old=wrap.querySelector("video.pb"); if(old) old.remove();
     var v=document.createElement("video");
     v.className="pb"; v.src=blobURL;
-    v.setAttribute("playsinline",""); v.muted=false;
+    v.setAttribute("playsinline",""); v.muted=false; v.autoplay=true;
     v.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)";
     wrap.appendChild(v);
     v.play().catch(function(){ v.muted=true; v.play(); });
-    v.addEventListener("loadedmetadata",function(){
-      var dur=Math.max(Math.ceil(v.duration)||3,2);
-      startBtnTimer(dur);
-    });
-    setTimeout(function(){ if (!btnReady) startBtnTimer(3); },900);
+    // Quand la vidéo se termine → révéler carte
+    v.addEventListener("ended",function(){ revealCostCard(); });
+    // Fallback si la vidéo ne charge pas
+    setTimeout(function(){ if(!btnReady) startBtnTimer(3); },1200);
   } else {
+    // Pas de vidéo — afficher carte directement après 2s
     if (noVid) noVid.style.display="flex";
     if (wrap){ var pv=wrap.querySelector("video.pb"); if(pv) pv.remove(); }
-    startBtnTimer(3);
+    setTimeout(function(){ revealCostCard(); },2000);
+    startBtnTimer(2);
   }
 }
 
@@ -1177,34 +1415,137 @@ function startBtnTimer(totalSec){
     elapsed+=step;
     var pct=Math.min(elapsed/(totalSec*1000)*100,100);
     var bar=document.getElementById("btn-fill-bar");
-    var lbl=document.getElementById("btn-lbl");
     if (bar) bar.style.width=pct+"%";
-    var rem=Math.max(Math.ceil((totalSec*1000-elapsed)/1000),0);
-    if (lbl&&rem>0) lbl.textContent="Prendre "+getReflTime()+"s pour r\u00E9fl\u00E9chir ("+rem+"s)";
     if (pct>=100){
       stopBtnTimer(); btnReady=true;
       if (bar) bar.style.background="rgba(232,86,58,.35)";
-      if (lbl) lbl.textContent="Prendre "+getReflTime()+"s pour r\u00E9fl\u00E9chir \u2192";
+      var lbl=document.getElementById("btn-lbl");
+      if (lbl) lbl.textContent="Prendre 30s pour réfléchir \u2192";
     }
   },step);
 }
 
 function stopBtnTimer(){ clearInterval(btnTimerInt); }
-function tryNext(){ if (btnReady) go("s-ovl2"); }
+function tryNext(){ if (btnReady) go("s-ovl-emo"); }
 
-// ── OVERLAY 2 ──
+function pickEmo(el){
+  document.querySelectorAll(".emo-chip,.emo-s-chip").forEach(function(c){ c.classList.remove("on"); });
+  el.classList.add("on");
+  ST.selectedEmo=el.dataset.emo||el.textContent.trim();
+}
+
+// Slider émotion — tap simple ou tap-hold + glisser
+var emoSliderInited=false;
+function initEmoSlider(){
+  if (emoSliderInited) return;
+  emoSliderInited=true;
+  var slider=document.getElementById("emo-slider");
+  if (!slider) return;
+  var isDragging=false, startX=0, scrollStart=0, moved=false, holdTimer=null, activeChip=null;
+
+  slider.addEventListener("touchstart",function(e){
+    var touch=e.touches[0];
+    startX=touch.clientX;
+    scrollStart=slider.scrollLeft;
+    moved=false;
+    isDragging=false;
+    activeChip=e.target.closest(".emo-s-chip");
+    // hold timer — après 120ms on active le drag mode
+    holdTimer=setTimeout(function(){ isDragging=true; },120);
+  },{passive:true});
+
+  slider.addEventListener("touchmove",function(e){
+    var touch=e.touches[0];
+    var dx=touch.clientX-startX;
+    moved=Math.abs(dx)>6;
+    if (moved) clearTimeout(holdTimer);
+    // Toujours permettre le scroll horizontal
+    slider.scrollLeft=scrollStart-dx;
+    // Highlight la chip sous le doigt
+    var el=document.elementFromPoint(touch.clientX,touch.clientY);
+    if (el&&el.classList.contains("emo-s-chip")){
+      document.querySelectorAll(".emo-s-chip").forEach(function(c){ c.classList.remove("on"); });
+      el.classList.add("on");
+      ST.selectedEmo=el.dataset.emo||el.textContent.trim();
+    }
+  },{passive:true});
+
+  slider.addEventListener("touchend",function(e){
+    clearTimeout(holdTimer);
+    if (!moved&&activeChip){
+      pickEmo(activeChip);
+    }
+  },{passive:true});
+}
+
+// ── OVL EMO ──
+function renderOvlEmo(){
+  var k=ST.domains[ST.curD]||"delivery";
+  var d=DC[k];
+  var oi=document.getElementById("oe-ico"); if(oi) oi.textContent=d.e;
+  var oa=document.getElementById("oe-app"); if(oa) oa.textContent=d.a;
+  // Reset chips
+  document.querySelectorAll(".emo-big-chip").forEach(function(c){ c.classList.remove("on"); });
+  ST.selectedEmo="";
+}
+
+function pickEmoScreen(el){
+  document.querySelectorAll(".emo-big-chip").forEach(function(c){ c.classList.remove("on"); });
+  el.classList.add("on");
+  ST.selectedEmo=el.dataset.emo||"";
+  // Auto-avance vers ovl2 après 400ms
+  setTimeout(function(){ go("s-ovl2"); },400);
+}
+function getReflTime(){
+  if (ST.streak>=10) return 15;
+  if (ST.streak>=6)  return 20;
+  if (ST.streak>=3)  return 25;
+  return 30;
+}
+
 function renderOvl2(){
   var reflSec=getReflTime();
   var rc=document.getElementById("refl-comp"); if(rc) rc.innerHTML=svg(ST.comp,88);
-  var msg=document.getElementById("refl-msg"); if(msg) msg.innerHTML="Vraiment envie,<br>ou juste habitude ?";
-  var sn=document.getElementById("social-norm"); if(sn) sn.textContent=getSocialNorm();
-  var tl=document.getElementById("timer-label"); if(tl) tl.textContent=getTimerLabel(reflSec);
+  var k=ST.domains[ST.curD]||"delivery";
+  var d=DC[k];
+
+  // Message contextuel selon l'émotion choisie
+  var msg=document.getElementById("refl-msg");
+  var sub=document.getElementById("refl-sub");
+  var emoMsgs={
+    "😤 Stressée":"Le stress pousse vers l'immédiat.",
+    "😴 Fatiguée":"La fatigue amplifie les tentations — c'est biologique.",
+    "😑 Ennuyée":"L'ennui cherche une sortie rapide.",
+    "😔 Seule":"La solitude cherche du réconfort.",
+    "😋 Vraiment faim":""
+  };
+  var emoSubs={
+    "😤 Stressée":"Est-ce que "+d.a+" va vraiment réduire ton stress ?",
+    "😴 Fatiguée":"Demain matin, tu seras contente de ne pas avoir commandé.",
+    "😑 Ennuyée":"Il y a sûrement quelque chose de mieux à faire.",
+    "😔 Seule":"Cette commande ne change pas ça.",
+    "😋 Vraiment faim":"Dans ce cas, cuisinier vite quelque chose ?"
+  };
+
+  if (ST.selectedEmo&&emoMsgs[ST.selectedEmo]!==undefined){
+    if (msg) msg.textContent=emoMsgs[ST.selectedEmo]||"Est-ce que ça t'amène là où tu veux aller ?";
+    if (sub) sub.textContent=emoSubs[ST.selectedEmo]||"";
+  } else {
+    if (msg) msg.innerHTML="Est-ce que ça t'amène<br>là où tu veux aller ?";
+    if (sub) sub.textContent=d.avg>0?""+d.avg+"€ de moins vers tes ambitions.":"Du temps que tu ne récupères pas.";
+  }
+
+  var tl=document.getElementById("timer-label");
+  if (tl){
+    if (ST.streak>=6) tl.textContent=reflSec+"s — ton habitude se construit";
+    else tl.textContent=reflSec+"s pour te recentrer";
+  }
   var br=document.getElementById("btn-resist"); if(br) br.classList.add("btn-locked");
   var bs=document.getElementById("btn-slip");   if(bs) bs.classList.add("btn-locked");
   var bur=document.getElementById("bu-resist"); if(bur){ bur.style.width="0"; bur.style.transition="none"; }
   var bus=document.getElementById("bu-slip");   if(bus){ bus.style.width="0"; bus.style.transition="none"; }
   var ring=document.getElementById("refl-ring"); if(ring){ ring.style.strokeDashoffset="440"; ring.style.stroke="var(--fox)"; }
-  var cnt=document.getElementById("refl-cnt");   if(cnt){ cnt.textContent=reflSec; cnt.style.background="var(--fox)"; }
+  var cnt=document.getElementById("refl-cnt"); if(cnt){ cnt.textContent=reflSec; cnt.style.background="var(--fox)"; }
   startReflTimer(reflSec);
 }
 
@@ -1214,13 +1555,12 @@ function startReflTimer(totalSec){
   reflTimerInt=setInterval(function(){
     elapsed+=step;
     var pct=Math.min(elapsed/total,1);
-    var offset=440*(1-pct);
     var sec=Math.max(totalSec-Math.floor(elapsed/1000),0);
     var ring=document.getElementById("refl-ring");
     var cnt=document.getElementById("refl-cnt");
     var bur=document.getElementById("bu-resist");
     var bus=document.getElementById("bu-slip");
-    if (ring) ring.style.strokeDashoffset=offset;
+    if (ring) ring.style.strokeDashoffset=440*(1-pct);
     if (cnt)  cnt.textContent=sec;
     if (sec<=Math.floor(totalSec*0.33)){ if(ring) ring.style.stroke="var(--green)"; if(cnt) cnt.style.background="var(--green)"; }
     if (bur) bur.style.width=(pct*100)+"%";
@@ -1231,15 +1571,24 @@ function startReflTimer(totalSec){
       var bsl=document.getElementById("btn-slip");  if(bsl) bsl.classList.remove("btn-locked");
       if (bur) bur.style.width="0";
       if (bus) bus.style.width="0";
-      var msg=document.getElementById("refl-msg"); if(msg) msg.textContent="Tu as pris le temps de te poser la question.";
-      var tl=document.getElementById("timer-label"); if(tl) tl.textContent="C'est maintenant ton choix.";
+      var msg=document.getElementById("refl-msg");
+      if (msg) msg.textContent="C'est maintenant ton choix.";
     }
   },step);
 }
 
 function stopReflTimer(){ clearInterval(reflTimerInt); }
 
-// ── RESIST – RENFORCEMENT VARIABLE ──
+// ── REWARD ──
+function rollReward(){
+  var r=Math.random();
+  if (r<0.05) return "legendary";
+  if (r<0.15) return "rare";
+  if (r<0.40) return "bon";
+  return "normal";
+}
+
+// ── RESIST ──
 function resist(){
   stopReflTimer();
   pendingReward=rollReward();
@@ -1247,26 +1596,107 @@ function resist(){
   ST.xp=Math.min(100,ST.xp+rw.xp);
   ST.streak++;
   ST.weekResist++;
-  ST.allTimeResist++;
-  var d=DC[ST.domains[ST.curD]||"delivery"];
-  ST.journal.unshift({d:"MAINTENANT · "+getTime(),t:"r",x:"R\u00E9sist\u00E9 \u00E0 "+d.a+". +"+rw.xp+" xp."+(pendingReward!=="normal"?" "+rw.label:"")});
+  var k=ST.domains[ST.curD]||"delivery";
+  var d=DC[k];
+  var saved=d.avg;
+  ST.weekSaved+=saved;
+  ST.totalSaved+=saved;
+  ST.journal.unshift({d:"MAINTENANT · "+getTime(),t:"r",x:"Résisté à "+d.a+(saved>0?" — "+saved+"€ épargnés.":"."+" Temps protégé."),saved:saved});
   checkEvo();
-  if (pendingReward==="legendary"){
-    showLegendary();
-  } else {
-    go("s-ident");
+  if (pendingReward==="legendary") showLegendary();
+  else go("s-victory");
+}
+
+function renderSlip(){
+  var sc=document.getElementById("slip-comp"); if(sc) sc.innerHTML=svg(ST.comp,80,false,true);
+  var note=document.getElementById("slip-note"); if(note) note.value="";
+}
+
+function saveSlip(){
+  var note=document.getElementById("slip-note");
+  var text=note?note.value.trim():"";
+  var d=DC[ST.domains[ST.curD]||"delivery"];
+  ST.journal.unshift({d:"MAINTENANT · "+getTime(),t:"s",x:"Glissement "+d.a+(text?" — "+text:"")});
+  ST.xp=Math.min(100,ST.xp+3);
+  toast("Note enregistrée +3 xp"); go("s-dash");
+}
+
+// ── VICTORY ──
+function renderVictory(){
+  var vs=document.getElementById("vic-svg"); if(vs) vs.innerHTML=svg(ST.comp,110,true);
+  var rw=pendingReward?REWARDS[pendingReward]:REWARDS.normal;
+  var vt=document.getElementById("vic-title");
+  if (vt){
+    if (pendingReward==="rare"){ vt.textContent="Résistance rare ★"; vt.style.color="var(--purple)"; }
+    else if (pendingReward==="bon"){ vt.textContent="Bonne résistance ✦"; vt.style.color="var(--fox)"; }
+    else { vt.textContent="Tu as résisté ✦"; vt.style.color="var(--fox)"; }
+  }
+  var vx=document.getElementById("vic-xp"); if(vx) vx.textContent="+"+rw.xp+" xp · "+ST.xp+" / 100";
+
+  // Savings callout
+  var k=ST.domains[ST.curD]||"delivery";
+  var d=DC[k];
+  var vsav=document.getElementById("vic-saved");
+  if (vsav&&d.avg>0){
+    vsav.style.display="block";
+    vsav.textContent="+"+d.avg+"€ économisés · "+ST.weekSaved+"€ cette semaine";
+  } else if (vsav) { vsav.style.display="none"; }
+
+  // Toward message
+  var vto=document.getElementById("vic-toward");
+  if (vto){
+    var msgs=[];
+    if (ST.ambitions.indexOf("voyage")!==-1&&ST.goals.voyage>0){
+      var pct=Math.round(ST.totalSaved/ST.goals.voyage*100);
+      msgs.push("Tu es à "+pct+"% de ton voyage.");
+    }
+    if (ST.ambitions.indexOf("epargne")!==-1&&ST.goals.epargne>0){
+      msgs.push(ST.totalSaved+"€ épargnés au total.");
+    }
+    vto.textContent=msgs[0]||"Chaque résistance compte.";
   }
 }
 
-// ── LEGENDARY MODAL ──
+// ── COMP ──
+function renderComp(){
+  var big=document.getElementById("c-svg-big"); if(big) big.innerHTML=svg(ST.comp,120,true);
+  var sn=STAGES[ST.comp][ST.stage-1]||ST.comp;
+  var cn=document.getElementById("c-name"); if(cn) cn.textContent=sn;
+  var cs=document.getElementById("c-stage"); if(cs) cs.textContent=cap(ST.comp)+" · Stade "+ST.stage;
+  var cm=document.getElementById("c-mood"); if(cm) cm.textContent="État : "+(ST.xp>70?"Épanoui":ST.xp>40?"Tranquille":"Fatigué");
+  var cf=document.getElementById("c-xpf"); if(cf) cf.style.width=ST.xp+"%";
+  var cl=document.getElementById("c-xpl"); if(cl) cl.textContent=ST.xp+" xp";
+  var cd=document.getElementById("c-desc"); if(cd) cd.textContent="Ton "+ST.comp+" grandit avec chaque résistance. Il n'oublie jamais tes victoires.";
+}
+
+function pet(){
+  var big=document.getElementById("c-svg-big"); if(big) big.innerHTML=svg(ST.comp,120,true);
+  toast("✦ "+cap(ST.comp)+" est heureux !");
+  setTimeout(function(){ var b=document.getElementById("c-svg-big"); if(b) b.innerHTML=svg(ST.comp,120); },1800);
+}
+
+// ── EVO ──
+function checkEvo(){
+  if (ST.xp>=100&&ST.stage<5){
+    var before=STAGES[ST.comp][ST.stage-1];
+    ST.stage++; ST.xp=10;
+    var after=STAGES[ST.comp][ST.stage-1];
+    var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
+    var ico=icons[ST.comp]||"🦊";
+    var eb=document.getElementById("evo-b"); if(eb) eb.textContent=ico;
+    var ea=document.getElementById("evo-a"); if(ea) ea.textContent="✨"+ico;
+    var et=document.getElementById("evo-t"); if(et) et.textContent=before+" → "+after;
+    var es=document.getElementById("evo-s"); if(es) es.textContent="Ton compagnon a évolué grâce à ta constance.";
+    var evo=document.getElementById("evo"); if(evo) evo.classList.add("V");
+  }
+}
+function closeEvo(){ var e=document.getElementById("evo"); if(e) e.classList.remove("V"); }
+
+// ── LEGENDARY ──
 function showLegendary(){
   var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
   var ico=document.getElementById("leg-ico"); if(ico) ico.textContent=icons[ST.comp]||"🦊";
-  var msgs=[
-    "Une résistance sur 20 atteint ce niveau. C'est toi, ce soir.",
-    "Tu as changé quelque chose en toi. Pas juste dans l'app.",
-    "Ce moment compte vraiment. Ton "+ST.comp+" le sait."
-  ];
+  var msgs=["Une résistance sur 20 atteint ce niveau. C'est toi, ce soir.","Tu as changé quelque chose en toi. Pas juste dans l'app.","Ton "+ST.comp+" est fier de toi."];
   var lm=document.getElementById("leg-msg"); if(lm) lm.textContent=msgs[Math.floor(Math.random()*msgs.length)];
   var stars=document.getElementById("leg-stars");
   if (stars){
@@ -1281,167 +1711,87 @@ function showLegendary(){
   }
   var lm2=document.getElementById("leg-modal"); if(lm2) lm2.classList.add("V");
 }
-
-function closeLeg(){
-  var lm=document.getElementById("leg-modal"); if(lm) lm.classList.remove("V");
-  go("s-ident");
-}
-
-// ── CASCADE IDENTITAIRE ──
-function renderIdent(){
-  var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
-  var ico=document.getElementById("ident-comp-ico"); if(ico) ico.textContent=icons[ST.comp]||"🦊";
-  document.querySelectorAll(".ident-chip").forEach(function(c){ c.classList.remove("on"); });
-}
-
-function pickIdent(el){
-  document.querySelectorAll(".ident-chip").forEach(function(c){ c.classList.remove("on"); });
-  el.classList.add("on");
-  ST.lastIdentWord=el.textContent.trim();
-  ST.identWords.push(ST.lastIdentWord);
-  // Met à jour la phrase ikigai pour réinjecter le mot
-  if (ST.phrase&&ST.lastIdentWord){
-    var parts=ST.phrase.split(" · ");
-    parts[0]=ST.lastIdentWord.toLowerCase();
-    ST.phrase=parts.join(" · ");
-  }
-  ST.journal.unshift({d:"MAINTENANT · "+getTime(),t:"i",x:"Acte d'identit\u00E9 : je suis "+ST.lastIdentWord.toLowerCase()+"."});
-  setTimeout(function(){ go("s-victory"); },600);
-}
-
-// ── SLIP ──
-function renderSlip(){
-  var sc=document.getElementById("slip-comp"); if(sc) sc.innerHTML=svg(ST.comp,80,false,true);
-  var note=document.getElementById("slip-note"); if(note) note.value="";
-}
-
-function saveSlip(){
-  var note=document.getElementById("slip-note");
-  var text=note?note.value.trim():"";
-  var d=DC[ST.domains[ST.curD]||"delivery"];
-  ST.journal.unshift({d:"MAINTENANT · "+getTime(),t:"s",x:"Glissement "+d.a+(text?" \u2014 "+text:"")});
-  ST.xp=Math.min(100,ST.xp+3);
-  toast("Note enregistr\u00E9e +3 xp"); go("s-dash");
-}
-
-// ── COMPANION ──
-function renderComp(){
-  var big=document.getElementById("c-svg-big"); if(big) big.innerHTML=svg(ST.comp,120,true);
-  var sn=STAGES[ST.comp][ST.stage-1]||ST.comp;
-  var cn=document.getElementById("c-name");  if(cn)  cn.textContent=sn;
-  var cs=document.getElementById("c-stage"); if(cs)  cs.textContent=cap(ST.comp)+" · Stade "+ST.stage;
-  var cm=document.getElementById("c-mood");  if(cm)  cm.textContent="État : "+(ST.xp>70?"Épanoui":ST.xp>40?"Tranquille":"Fatigué");
-  var cf=document.getElementById("c-xpf");   if(cf)  cf.style.width=ST.xp+"%";
-  var cl=document.getElementById("c-xpl");   if(cl)  cl.textContent=ST.xp+" xp";
-  var cd=document.getElementById("c-desc");  if(cd)  cd.textContent="Ton "+ST.comp+" grandit avec chaque résistance. Il n'oublie jamais tes victoires.";
-  // Mots identité
-  var ciw=document.getElementById("c-ident-words");
-  if (ciw) ciw.innerHTML=ST.identWords.slice(-6).map(function(w){
-    return "<div style='font-size:11px;padding:3px 10px;border-radius:14px;border:1px solid rgba(167,139,250,.3);color:var(--purple);font-weight:600'>"+w+"</div>";
-  }).join("");
-}
-
-function pet(){
-  var big=document.getElementById("c-svg-big"); if(big) big.innerHTML=svg(ST.comp,120,true);
-  toast("✦ "+cap(ST.comp)+" est heureux !");
-  setTimeout(function(){ var b=document.getElementById("c-svg-big"); if(b) b.innerHTML=svg(ST.comp,120); },1800);
-}
-
-// ── VICTORY ──
-function renderVictory(){
-  var rw=pendingReward?REWARDS[pendingReward]:REWARDS.normal;
-  var vs=document.getElementById("vic-svg"); if(vs) vs.innerHTML=svg(ST.comp,110,true);
-  var vt=document.getElementById("vic-title");
-  if (vt){
-    if (pendingReward==="rare") { vt.textContent="Résistance rare ★"; vt.style.color="var(--purple)"; }
-    else if (pendingReward==="bon") { vt.textContent="Bonne résistance ✦"; vt.style.color="var(--fox)"; }
-    else { vt.textContent="Tu as résisté ✦"; vt.style.color="var(--fox)"; }
-  }
-  var vx=document.getElementById("vic-xp"); if(vx) vx.textContent="+"+rw.xp+" xp · "+ST.xp+" / 100";
-  var vb=document.getElementById("vic-reward-badge");
-  if (vb){
-    if (pendingReward!=="normal"&&pendingReward!=="legendary"){
-      vb.style.display="inline-flex"; vb.textContent=rw.label;
-      vb.style.background=pendingReward==="rare"?"rgba(167,139,250,.15)":"rgba(232,86,58,.12)";
-      vb.style.border="1px solid "+rw.color; vb.style.color=rw.color;
-    } else { vb.style.display="none"; }
-  }
-  var vp=document.getElementById("vic-phrase"); if(vp) vp.textContent=ST.phrase?"\u00AB "+ST.phrase+" \u00BB":"";
-  var vi=document.getElementById("vic-ident");
-  if (vi){
-    if (ST.lastIdentWord){ vi.style.display="block"; vi.textContent="Je suis "+ST.lastIdentWord.toLowerCase()+" \u2014 c'est moi qui l'ai choisi."; }
-    else { vi.style.display="none"; }
-  }
-}
-
-// ── EVO ──
-function checkEvo(){
-  if (ST.xp>=100&&ST.stage<5){
-    var before=STAGES[ST.comp][ST.stage-1];
-    ST.stage++; ST.xp=10;
-    var after=STAGES[ST.comp][ST.stage-1];
-    var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
-    var ico=icons[ST.comp]||"🦊";
-    var eb=document.getElementById("evo-b"); if(eb) eb.textContent=ico;
-    var ea=document.getElementById("evo-a"); if(ea) ea.textContent="✨"+ico;
-    var et=document.getElementById("evo-t"); if(et) et.textContent=before+" \u2192 "+after;
-    var es=document.getElementById("evo-s"); if(es) es.textContent="Ton compagnon a évolué grâce à ta constance.";
-    var evo=document.getElementById("evo"); if(evo) evo.classList.add("V");
-  }
-}
-
-function closeEvo(){ var e=document.getElementById("evo"); if(e) e.classList.remove("V"); }
+function closeLeg(){ var lm=document.getElementById("leg-modal"); if(lm) lm.classList.remove("V"); go("s-victory"); }
 
 // ── DEMO ──
 function demo(){
-  ST.domains=["fashion","delivery","shopping"]; ST.curD=0;
   ST.comp="renard"; ST.stage=1; ST.xp=68;
-  ST.streak=8; ST.weekResist=3; ST.allTimeResist=12;
-  ST.phrase="cohérente · ma créativité";
-  ST.scene="Ce dimanche matin où j'ai cuisiné seule, sans téléphone, en écoutant de la musique.";
-  ST.lastIdentWord="Cohérente";
-  ST.identWords=["Forte","Lucide","Cohérente"];
-  go("s-dash");
-  document.getElementById("bnav").classList.add("V");
-  document.querySelectorAll(".nb").forEach(function(n){ n.classList.remove("on"); });
-  var nb=document.getElementById("nb-dash"); if(nb) nb.classList.add("on");
+  ST.streak=8; ST.weekResist=3;
+  ST.ambitions=["epargne","voyage","ecologie"];
+  ST.goals={epargne:200,voyage:1500,projet:0,formation:0,sante:0,logement:0,impact:0};
+  ST.weekSaved=47; ST.totalSaved=124;
+  ST.lifePhrase="Je veux voyager au Japon l'année prochaine et être quelqu'un qui choisit où va son argent.";
+  // Calculer les domaines cohérents avec les ambitions de démo
+  var suggested={};
+  ST.ambitions.forEach(function(a){
+    (AMB_DOMAINS[a]||[]).forEach(function(d){ suggested[d]=(suggested[d]||0)+1; });
+  });
+  var pool=Object.keys(suggested);
+  // Tirer un domaine au hasard parmi ceux cohérents
+  var picked=pool[Math.floor(Math.random()*pool.length)]||"delivery";
+  ST.domains=pool.length?pool:["fashion","delivery","shopping"];
+  ST.curD=ST.domains.indexOf(picked);
+  if (ST.curD<0){ ST.domains.unshift(picked); ST.curD=0; }
+  startApp();
+  // Lancer la simulation après le rendu du dashboard
+  setTimeout(function(){ R.simT(); },400);
 }
 
 // ── HORLOGE ──
-function clocks(){
-  var t=getTime();
-  ["clk0","clk-d"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent=t; });
-}
+function clocks(){ var t=getTime(); ["clk0","clk-d"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent=t; }); }
 clocks(); setInterval(clocks,30000);
 
-// ── SCÈNE INPUT INIT ──
-initSceneInput();
+// ── MODE INTERCEPT (param URL ?intercept) ──
+// Utilisé par l'extension Chrome : ouvre directement l'écran vidéo d'engagement
+function interceptMode(){
+  ST.comp="renard"; ST.stage=1; ST.xp=68;
+  ST.streak=8; ST.weekResist=3;
+  ST.ambitions=["epargne","voyage","ecologie"];
+  ST.goals={epargne:200,voyage:1500,projet:0,formation:0,sante:0,logement:0,impact:0};
+  ST.weekSaved=47; ST.totalSaved=124;
+  ST.lifePhrase="Je veux voyager au Japon l\u2019ann\u00E9e prochaine et \u00EAtre quelqu\u2019un qui choisit o\u00F9 va son argent.";
+  var suggested={};
+  ST.ambitions.forEach(function(a){
+    (AMB_DOMAINS[a]||[]).forEach(function(d){ suggested[d]=(suggested[d]||0)+1; });
+  });
+  var pool=Object.keys(suggested);
+  var picked=pool[Math.floor(Math.random()*pool.length)]||"fashion";
+  ST.domains=pool.length?pool:["fashion","delivery","shopping"];
+  ST.curD=ST.domains.indexOf(picked);
+  if (ST.curD<0){ ST.domains.unshift(picked); ST.curD=0; }
+  document.getElementById("bnav").classList.add("V");
+  go("s-ovl1");
+}
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  if(params.has("intercept")) setTimeout(interceptMode,80);
+})();
 
-// ── API PUBLIQUE ──
+// ── API ──
 var R={
   go:go, nav:nav, demo:demo,
-  ikNext:ikNext, ikFinish:ikFinish,
-  saveDomains:saveDomains, pickComp:pickComp,
-  toggleRec:toggleRec,
+  saveAmb:saveAmb, saveGoals:saveGoals, saveDomains:saveDomains,
+  startApp:startApp, toggleRec:toggleRec, toggleDomChips:toggleDomChips,
+  pickComp:pickComp,
   simT:simT, goOverlay:goOverlay,
-  tryNext:tryNext, resist:resist,
-  saveSlip:saveSlip, pet:pet,
-  switchD:switchD, closeEvo:closeEvo,
-  pickIdent:pickIdent, closeLeg:closeLeg
+  tryNext:tryNext, pickEmo:pickEmo, pickEmoScreen:pickEmoScreen,
+  resist:resist, saveSlip:saveSlip, pet:pet,
+  closeEvo:closeEvo, closeLeg:closeLeg
 };
 
-// ── SCROLL BLOCKER ──
+// ── TOUCHMOVE ──
 document.addEventListener("touchmove",function(e){
   var ok=e.target.closest(".app-scroll")||
-    e.target.closest(".ik-chips")||
-    e.target.closest(".ik-body")||
+    e.target.closest(".chip-grid")||
     e.target.closest(".comp-grid")||
+    e.target.closest(".onb-scroll")||
     e.target.closest(".dash-scroll")||
-    e.target.closest(".dom-tabs")||
     e.target.closest(".tk-feed")||
     e.target.closest(".ig-stories")||
-    e.target.closest(".ident-chips")||
-    e.target.closest(".scene-ta");
+    e.target.closest(".emotion-chips")||
+    e.target.closest(".emo-slider")||
+    e.target.closest("[data-scroll]")||
+    e.target.closest("textarea");
   if (!ok) e.preventDefault();
 },{passive:false});
 </script>

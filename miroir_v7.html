@@ -233,6 +233,7 @@ input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px}
       <div class="amb-chip" data-a="sante" onclick="this.classList.toggle('on')"><span>💪</span>Prendre soin de moi</div>
       <div class="amb-chip" data-a="logement" onclick="this.classList.toggle('on')"><span>🏠</span>Mon logement</div>
       <div class="amb-chip" data-a="impact" onclick="this.classList.toggle('on')"><span>🤝</span>Avoir un impact</div>
+      <div class="amb-chip" data-a="esprit_critique" onclick="this.classList.toggle('on')"><span>🧠</span>Esprit critique</div>
     </div>
   </div>
   <div style="padding:12px 24px calc(20px + var(--safe));flex-shrink:0">
@@ -279,6 +280,34 @@ input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px}
   </div>
   <div style="padding:12px 24px calc(20px + var(--safe));flex-shrink:0">
     <button class="btn btn-r" onclick="R.saveDomains()">Continuer →</button>
+  </div>
+</div>
+
+<!-- ONB3b — Localisation & Transport -->
+<div class="scr" id="s-onb3b">
+  <div class="sb"><span id="clk-onb3b">22:47</span><span style="letter-spacing:2px">···</span></div>
+  <div class="onb-prog"><div class="onb-d done"></div><div class="onb-d done"></div><div class="onb-d done"></div><div class="onb-d done"></div><div class="onb-d cur"></div><div class="onb-d"></div><div class="onb-d"></div></div>
+  <div class="onb-scroll">
+    <div class="onb-kicker">Étape 4 · Alternatives locales</div>
+    <div class="onb-title">Où passes-tu tes journées ?</div>
+    <div class="onb-hint">Miroir cherchera des boutiques de seconde main, commerces locaux et options durables proches de toi.</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+      <input class="txt-input" id="loc-work-onb" placeholder="🎓 Lieu de travail ou d'études (ville, école…)" type="text">
+      <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-top:6px">MODE DE DÉPLACEMENT</div>
+      <div class="chip-grid" id="transport-chips">
+        <div class="amb-chip on" data-t="marche" onclick="R.pickTransport(this)"><span>🚶</span>À pied <span style="font-size:10px;color:var(--muted)">(1km)</span></div>
+        <div class="amb-chip" data-t="velo" onclick="R.pickTransport(this)"><span>🚲</span>Vélo <span style="font-size:10px;color:var(--muted)">(5km)</span></div>
+        <div class="amb-chip" data-t="transport" onclick="R.pickTransport(this)"><span>🚇</span>Transport <span style="font-size:10px;color:var(--muted)">(10km)</span></div>
+        <div class="amb-chip" data-t="voiture" onclick="R.pickTransport(this)"><span>🚗</span>Voiture <span style="font-size:10px;color:var(--muted)">(20km)</span></div>
+      </div>
+      <div style="background:rgba(66,196,126,.06);border:1px solid rgba(66,196,126,.2);border-radius:12px;padding:12px 14px;font-size:12px;color:rgba(66,196,126,.8);line-height:1.5;margin-top:4px">
+        🗺️ OpenStreetMap trouve les vrais commerces près de toi — gratuit, open source, aucune donnée envoyée sans ton accord.
+      </div>
+    </div>
+  </div>
+  <div style="padding:12px 24px calc(20px + var(--safe));flex-shrink:0;display:flex;flex-direction:column;gap:8px">
+    <button class="btn btn-r" onclick="R.saveLoc()">Continuer →</button>
+    <button class="btn btn-m" onclick="R.go('s-onb4-comp')" style="font-size:13px">Passer cette étape</button>
   </div>
 </div>
 
@@ -372,6 +401,29 @@ input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px}
         <div style="font-size:10px;color:var(--muted);display:flex;justify-content:space-between;margin-top:4px"><span id="d-xp-lbl">68 xp</span><span>100 xp</span></div>
       </div>
     </div>
+    <!-- Dark Patterns radar -->
+    <div id="dp-radar-card" style="background:var(--c2);border:1px solid rgba(167,139,250,.25);border-radius:14px;padding:14px 16px;cursor:pointer;display:none" onclick="R.go('s-radar')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div style="font-size:18px">🎯</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700">Dark patterns détectés</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px" id="dp-radar-sub">Cette semaine, l'extension a repéré des manipulations.</div>
+        </div>
+        <div style="color:var(--purple);font-size:18px">›</div>
+      </div>
+      <div id="dp-radar-pills" style="display:flex;flex-wrap:wrap;gap:5px"></div>
+    </div>
+
+    <!-- Alternatives locales banner -->
+    <div id="local-banner" style="background:var(--c2);border:1px solid rgba(66,196,126,.2);border-radius:14px;padding:14px 16px;display:none;align-items:center;gap:12px;cursor:pointer" onclick="R.go('s-local')">
+      <div style="font-size:22px">🗺️</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700">Alternatives locales</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="local-banner-sub">Commerces proches trouvés pour tes achats récents</div>
+      </div>
+      <div style="color:var(--green);font-size:18px">›</div>
+    </div>
+
     <!-- Sim banner -->
     <div style="background:var(--c2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="R.simT()">
       <div style="font-size:24px">🎲</div>
@@ -592,10 +644,48 @@ input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px}
 </div>
 
 <!-- BOTTOM NAV -->
+<!-- RADAR — Dark Patterns détectés par l'extension -->
+<div class="scr" id="s-radar">
+  <div class="sb">
+    <span onclick="R.go('s-dash')" style="cursor:pointer;color:var(--muted)">← Retour</span>
+    <span style="font-weight:700">Radar</span>
+    <span style="width:40px"></span>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:0 20px 20px">
+    <div style="font-family:var(--serif);font-size:26px;font-weight:700;margin-bottom:4px">Dark patterns<br>repérés</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:20px">Ce que l'extension a détecté sur tes sessions</div>
+    <div id="radar-list" style="display:flex;flex-direction:column;gap:10px">
+      <!-- Injecté dynamiquement -->
+    </div>
+    <div style="margin-top:20px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:14px;padding:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:8px">COMMENT ÇA FONCTIONNE</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6">Pikachu analyse chaque page avec Claude Vision IA. Il détecte les manipulations visuelles — prix barrés suspects, fausse urgence, pression sociale — et se positionne exactement à côté de l'élément concerné.</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOCAL — Alternatives locales OSM -->
+<div class="scr" id="s-local">
+  <div class="sb">
+    <span onclick="R.go('s-dash')" style="cursor:pointer;color:var(--muted)">← Retour</span>
+    <span style="font-weight:700">Alternatives</span>
+    <span style="width:40px"></span>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:0 20px 20px">
+    <div style="font-family:var(--serif);font-size:26px;font-weight:700;margin-bottom:4px">Près de chez toi</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px" id="local-loc-label">Basé sur ton lieu configuré</div>
+    <div id="local-transport-badge" style="display:inline-flex;align-items:center;gap:5px;background:rgba(66,196,126,.1);border:1px solid rgba(66,196,126,.2);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--green);margin-bottom:16px"></div>
+    <div id="local-list" style="display:flex;flex-direction:column;gap:10px">
+      <div style="text-align:center;padding:40px 0;color:var(--muted);font-size:13px">Configure ton lieu dans les paramètres<br>pour voir les alternatives locales.</div>
+    </div>
+  </div>
+</div>
+
 <div id="bnav">
   <div class="nb on" id="nb-dash" onclick="R.nav('s-dash','nb-dash')"><div class="nb-i">🏠</div><div class="nb-l">Accueil</div></div>
+  <div class="nb" id="nb-radar" onclick="R.nav('s-radar','nb-radar')"><div class="nb-i">🎯</div><div class="nb-l">Radar</div></div>
   <div class="nb" id="nb-sim" onclick="R.nav('s-sim','nb-sim');R.simT()"><div class="nb-i">▶</div><div class="nb-l">Simuler</div></div>
-  <div class="nb" id="nb-comp" onclick="R.nav('s-comp','nb-comp')"><div class="nb-i" id="nb-comp-ico">🦊</div><div class="nb-l">Compagnon</div></div>
+  <div class="nb" id="nb-comp" onclick="R.nav('s-comp','nb-comp')"><div class="nb-i" id="nb-comp-ico">🐾</div><div class="nb-l">Compagnon</div></div>
 </div>
 
 <script>
@@ -611,6 +701,15 @@ var ST = {
   goalNames:{ epargne:"Liberté financière", voyage:"Voyage", projet:"Mon projet", formation:"Formation", sante:"Santé", logement:"Logement", impact:"Impact" },
   weekSaved:47, totalSaved:124,
   lifePhrase:"Je veux voyager au Japon l'année prochaine et être quelqu'un qui choisit où va son argent.",
+  locWork:"", transport:"marche",
+  darkPatterns:[
+    {name:"Offre à durée limitée",type:"dark_pattern",description:"Badge rouge sans justification claire de l'urgence temporelle",confidence:"haute",site:"amazon.fr",date:"Aujourd'hui"},
+    {name:"Preuve sociale",type:"dark_pattern",description:"Plus de 400 achetés ce mois — chiffre conçu pour créer un effet de conformité",confidence:"haute",site:"amazon.fr",date:"Aujourd'hui"},
+    {name:"Prix barré suspect",type:"dark_pattern",description:"Ancien prix : 21,90€ — a-t-il jamais été affiché à ce tarif ?",confidence:"moyenne",site:"zalando.fr",date:"Hier"}
+  ],
+  localAlts:[],
+  nightScrollCount:0,
+  adDensityAlerts:0,
   blobs:{}, recording:false, mediaRecorder:null, chunks:[],
   journal:[
     {d:"AUJOURD'HUI · 14:20",t:"r",x:"Résisté à Shein — 34€ épargnés.",saved:34},
@@ -631,10 +730,10 @@ var DC = {
 };
 
 var STAGES={
-  renard:["Renardeau","Renard","Renard des bois","Renard Ancien","Renard des Étoiles"],
-  loutre:["Loutreau","Loutre","Loutre Sage","Grande Loutre","Loutre Céleste"],
-  cerf:  ["Faon","Jeune Cerf","Cerf","Grand Cerf","Cerf des Forêts"],
-  loup:  ["Louveton","Jeune Loup","Loup","Loup Alpha","Loup des Neiges"]
+  renard:["Pikachu","Pikachu ⚡","Pikachu Sauvage","Pikachu Maître","Pikachu Légendaire"],
+  loutre:["Pikachu","Pikachu ⚡","Pikachu Sauvage","Pikachu Maître","Pikachu Légendaire"],
+  cerf:  ["Pikachu","Pikachu ⚡","Pikachu Sauvage","Pikachu Maître","Pikachu Légendaire"],
+  loup:  ["Pikachu","Pikachu ⚡","Pikachu Sauvage","Pikachu Maître","Pikachu Légendaire"]
 };
 
 var REWARDS={
@@ -671,6 +770,8 @@ function go(id){
   if (id==="s-ovl2")    renderOvl2();
   if (id==="s-comp")    renderComp();
   if (id==="s-slip")    renderSlip();
+  if (id==="s-radar")   renderRadar();
+  if (id==="s-local")   renderLocalAlts();
   if (id==="s-victory") renderVictory();
   if (id==="s-onb2")    renderOnb2();
   if (id==="s-onb3")    renderOnb3();
@@ -700,57 +801,12 @@ function fmt(n){ return n>=1000?(n/1000).toFixed(1)+"k":String(n); }
 
 // ── SVG COMPAGNONS ──
 function svg(name,size,happy,tired){
-  var s=size||80; var h=!!happy; var t=!!tired;
-  var eye=h?"M-4,-2 Q0,-6 4,-2":(t?"M-4,0 Q0,2 4,0":"M-4,0 Q0,-3 4,0");
-  var smile=h?'<path d="M40,60 Q50,67 60,60" stroke-width="2.5" fill="none" stroke-linecap="round"/>':'';
-  var B={
-    renard:function(){
-      var c=t?"#A04428":"#E8763A";
-      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
-        +'<polygon points="25,35 15,10 38,28" fill="'+c+'"/><polygon points="75,35 85,10 62,28" fill="'+c+'"/>'
-        +'<polygon points="25,35 20,14 36,28" fill="#F5C8A0"/><polygon points="75,35 80,14 64,28" fill="#F5C8A0"/>'
-        +'<ellipse cx="50" cy="65" rx="28" ry="22" fill="'+c+'"/><circle cx="50" cy="42" r="22" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="52" rx="14" ry="10" fill="#F5C8A0"/><ellipse cx="50" cy="56" rx="6" ry="4" fill="#E87090"/>'
-        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g stroke="#E87090">'+smile+'</g></svg>';
-    },
-    loutre:function(){
-      var c=t?"#5A7A6A":"#7AB89A";
-      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
-        +'<ellipse cx="44" cy="35" rx="9" ry="7" fill="'+c+'"/><ellipse cx="56" cy="35" rx="9" ry="7" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="67" rx="24" ry="18" fill="'+c+'"/><circle cx="50" cy="42" r="22" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="52" rx="13" ry="9" fill="#C8E8D8"/><ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#4A3030"/>'
-        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#1a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#1a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g stroke="#4A9070">'+smile+'</g></svg>';
-    },
-    cerf:function(){
-      var c=t?"#7A5A30":"#A07840";
-      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
-        +'<path d="M30,20 Q20,5 15,2 Q25,8 28,18" fill="'+c+'"/><path d="M70,20 Q80,5 85,2 Q75,8 72,18" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="67" rx="24" ry="18" fill="'+c+'"/><circle cx="50" cy="42" r="22" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="52" rx="13" ry="9" fill="#E8D8B0"/><ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#7A3030"/>'
-        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#2a1a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#2a1a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g stroke="#C09050">'+smile+'</g></svg>';
-    },
-    loup:function(){
-      var c=t?"#4A4A5A":"#6A6A8A";
-      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
-        +'<polygon points="28,32 18,8 40,26" fill="'+c+'"/><polygon points="72,32 82,8 60,26" fill="'+c+'"/>'
-        +'<polygon points="28,32 22,12 38,26" fill="#C8C8D8"/><polygon points="72,32 78,12 62,26" fill="#C8C8D8"/>'
-        +'<ellipse cx="50" cy="67" rx="26" ry="19" fill="'+c+'"/><circle cx="50" cy="42" r="22" fill="'+c+'"/>'
-        +'<ellipse cx="50" cy="53" rx="14" ry="10" fill="#C8C8D8"/><ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#2A1A2A"/>'
-        +'<g transform="translate(38,40)"><path d="'+eye+'" stroke="#0a0a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g transform="translate(62,40)"><path d="'+eye+'" stroke="#0a0a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>'
-        +'<g stroke="#8A8AAA">'+smile+'</g></svg>';
-    }
-  };
-  return (B[name]||B.renard)();
+  // Pikachu remplace tous les compagnons
+  var s = size || 72;
+  return '<img src="assets/pikachu.gif" style="width:'+s+'px;height:'+s+'px;image-rendering:pixelated;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))" alt="Pikachu">';
 }
 
-// ── COÛT D'OPPORTUNITÉ ──
+
 function buildCostAlts(domKey){
   var d=DC[domKey]||DC.delivery;
   var avg=d.avg;
@@ -1003,7 +1059,7 @@ function saveDomains(){
   chips.forEach(function(c){ if(c.dataset.k) ST.domains.push(c.dataset.k); });
   if (!ST.domains.length) ST.domains=["delivery"];
   ST.curD=0;
-  go("s-onb4-comp");
+  go("s-onb3b");
 }
 
 function renderCompGrid(){
@@ -1017,15 +1073,144 @@ function pickComp(el){
   document.querySelectorAll(".comp-card").forEach(function(c){ c.classList.remove("on"); });
   el.classList.add("on");
   ST.comp=el.dataset.c;
-  var icons={renard:"🦊",loutre:"🦦",cerf:"🦌",loup:"🐺"};
   var ico=document.getElementById("nb-comp-ico");
-  if (ico) ico.textContent=icons[ST.comp]||"🦊";
+  if (ico) ico.textContent="🐾";
 }
 
+
+// ─── V7 : NOUVELLES FONCTIONNALITÉS ───
+
+// Sélection unique du transport
+function pickTransport(el){
+  document.querySelectorAll('#transport-chips .amb-chip').forEach(function(c){ c.classList.remove('on'); });
+  el.classList.add('on');
+  ST.transport = el.dataset.t;
+}
+
+// Sauvegarde localisation
+function saveLoc(){
+  var inp = document.getElementById('loc-work-onb');
+  if (inp) ST.locWork = inp.value.trim();
+  var sel = document.querySelector('#transport-chips .amb-chip.on');
+  if (sel) ST.transport = sel.dataset.t;
+  go('s-onb4-comp');
+}
+
+// Rendre le radar de dark patterns
+function renderRadar(){
+  var list = document.getElementById('radar-list');
+  if (!list) return;
+  if (!ST.darkPatterns.length){
+    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:13px">Aucun dark pattern détecté<br>pour l\'instant.</div>';
+    return;
+  }
+  var TYPE_COLOR = {dark_pattern:'var(--fox)', incoherence_produit:'var(--purple)'};
+  var CONF_COLOR = {haute:'var(--fox)', moyenne:'var(--gold)'};
+  list.innerHTML = ST.darkPatterns.map(function(p){
+    var col = TYPE_COLOR[p.type] || 'var(--fox)';
+    var cc = CONF_COLOR[p.confidence] || 'var(--muted)';
+    return '<div style="background:var(--c2);border:1px solid '+col.replace(')',', .25)').replace('var(','rgba(')+'rgba(255,255,255,.06);border-radius:14px;padding:14px 16px">'+
+      '<div style="display:flex;align-items:flex-start;gap:10px">'+
+      '<div style="width:8px;height:8px;border-radius:50%;background:'+cc+';margin-top:5px;flex-shrink:0"></div>'+
+      '<div style="flex:1">'+
+      '<div style="font-size:13px;font-weight:700;margin-bottom:3px">'+p.name+'</div>'+
+      '<div style="font-size:12px;color:var(--muted);line-height:1.5">'+p.description+'</div>'+
+      '<div style="display:flex;gap:8px;margin-top:6px">'+
+      '<span style="font-size:10px;background:rgba(255,255,255,.05);border-radius:8px;padding:2px 7px;color:var(--muted)">'+p.site+'</span>'+
+      '<span style="font-size:10px;color:var(--muted)">'+p.date+'</span>'+
+      '</div></div></div></div>';
+  }).join('');
+
+  // Mettre à jour le dashboard card
+  var rc = document.getElementById('dp-radar-card');
+  if (rc) rc.style.display = 'block';
+  var sub = document.getElementById('dp-radar-sub');
+  if (sub) sub.textContent = ST.darkPatterns.length + ' manipulation'+(ST.darkPatterns.length>1?'s':'')+' détectée'+(ST.darkPatterns.length>1?'s':'')+' cette semaine';
+  var pills = document.getElementById('dp-radar-pills');
+  if (pills){
+    pills.innerHTML = ST.darkPatterns.slice(0,3).map(function(p){
+      return '<span style="font-size:10px;background:rgba(232,86,58,.1);border-radius:8px;padding:3px 8px;color:var(--fox)">'+p.name+'</span>';
+    }).join('');
+  }
+}
+
+// Rendre les alternatives locales
+function renderLocalAlts(){
+  var lb = document.getElementById('local-transport-badge');
+  var TRANSPORT_LABELS = {marche:'🚶 À pied · 1km', velo:'🚲 Vélo · 5km', transport:'🚇 Transport · 10km', voiture:'🚗 Voiture · 20km'};
+  if (lb) lb.textContent = TRANSPORT_LABELS[ST.transport] || '📍 Localisation configurée';
+
+  var loc = document.getElementById('local-loc-label');
+  if (loc) loc.textContent = ST.locWork ? 'Autour de : '+ST.locWork : 'Configure ton lieu dans les paramètres';
+
+  var list = document.getElementById('local-list');
+  if (!list) return;
+  if (!ST.locWork){
+    list.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:13px">Configure ton lieu de travail<br>pour voir les commerces proches.</div>';
+    return;
+  }
+  if (!ST.localAlts.length){
+    list.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--muted);font-size:13px">Les alternatives locales apparaissent<br>quand l\'extension analyse un produit.</div>';
+    return;
+  }
+  list.innerHTML = ST.localAlts.map(function(a){
+    var ico = a.type==='seconde_main'?'♻️':a.type==='location'?'🔄':a.type==='reparation'?'🔧':'📍';
+    return '<div style="background:var(--c2);border:1px solid rgba(66,196,126,.15);border-radius:14px;padding:14px 16px;cursor:pointer" onclick="window.open(this.dataset.url,\'_blank\')" data-url="'+a.searchUrl+'">'+
+      '<div style="display:flex;gap:10px;align-items:flex-start">'+
+      '<div style="font-size:20px">'+ico+'</div>'+
+      '<div style="flex:1">'+
+      '<div style="font-size:13px;font-weight:700">'+a.label+'</div>'+
+      '<div style="font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4">'+a.description+'</div>'+
+      '<div style="display:flex;gap:8px;margin-top:6px">'+
+      (a.saving?'<span style="font-size:11px;color:var(--green)">'+a.saving+'</span>':'')+
+      (a.ecoImpact?'<span style="font-size:11px;color:#86EFAC">'+a.ecoImpact+'</span>':'')+
+      '</div></div></div></div>';
+  }).join('');
+
+  // Mettre à jour la bannière dashboard
+  var banner = document.getElementById('local-banner');
+  if (banner && ST.localAlts.length) banner.style.display = 'flex';
+  var bsub = document.getElementById('local-banner-sub');
+  if (bsub) bsub.textContent = ST.localAlts.length+' option'+(ST.localAlts.length>1?'s':'')+' trouvée'+(ST.localAlts.length>1?'s':'')+' près de '+ST.locWork;
+}
+
+// Réception des données de l'extension (via localStorage ou postMessage)
+function syncFromExtension(){
+  try {
+    var raw = localStorage.getItem('miroir_dark_patterns');
+    if (raw){ var dp = JSON.parse(raw); if(dp && dp.length) ST.darkPatterns = dp; }
+    var rawLoc = localStorage.getItem('miroir_local_alts');
+    if (rawLoc){ var la = JSON.parse(rawLoc); if(la && la.length) ST.localAlts = la; }
+    var rawProfile = localStorage.getItem('miroir_profile_sync');
+    if (rawProfile){
+      var p = JSON.parse(rawProfile);
+      if(p.locWork) ST.locWork = p.locWork;
+      if(p.transport) ST.transport = p.transport;
+      if(p.lifePhrase) ST.lifePhrase = p.lifePhrase;
+    }
+  } catch(e){}
+}
+
+// Écouter les messages de l'extension Chrome
+window.addEventListener('message', function(e){
+  if (e.data && e.data.type === 'MIROIR_DARK_PATTERNS') {
+    ST.darkPatterns = e.data.patterns || [];
+    renderRadar();
+  }
+  if (e.data && e.data.type === 'MIROIR_LOCAL_ALTS') {
+    ST.localAlts = e.data.alternatives || [];
+    renderLocalAlts();
+  }
+});
+
 function startApp(){
+  syncFromExtension();
   document.getElementById("bnav").classList.add("V");
   document.querySelectorAll(".nb").forEach(function(n){ n.classList.remove("on"); });
   var nb=document.getElementById("nb-dash"); if(nb) nb.classList.add("on");
+  renderDash();
+  renderRadar();
+  renderLocalAlts();
   go("s-dash");
 }
 
@@ -1108,8 +1293,8 @@ function stopRec(){
 }
 
 // ── DASHBOARD ──
-var AMB_COLORS={epargne:"var(--green)",voyage:"var(--teal)",ecologie:"#86EFAC",projet:"var(--fox)",formation:"var(--purple)",sante:"var(--gold)",logement:"#F97316",impact:"#38BDF8"};
-var AMB_ICOS={epargne:"💰",voyage:"🗺️",ecologie:"🌱",projet:"🚀",formation:"📚",sante:"💪",logement:"🏠",impact:"🤝"};
+var AMB_COLORS={epargne:"var(--green)",voyage:"var(--teal)",ecologie:"#86EFAC",projet:"var(--fox)",formation:"var(--purple)",sante:"var(--gold)",logement:"#F97316",impact:"#38BDF8",esprit_critique:"var(--purple)"};
+var AMB_ICOS={epargne:"💰",voyage:"🗺️",ecologie:"🌱",projet:"🚀",formation:"📚",sante:"💪",logement:"🏠",impact:"🤝",esprit_critique:"🧠"};
 
 function ambCard(a){
   var ico=AMB_ICOS[a]||"✦";
@@ -1206,10 +1391,10 @@ function renderDash(){
   var ds=document.getElementById("dash-streak"); if(ds) ds.textContent="🔥 "+ST.streak;
   var dsub=document.getElementById("dash-sub");
   if (dsub){
-    if (ST.weekSaved>0)
-      dsub.innerHTML="Tu as économisé <strong style='color:var(--green)'>"+ST.weekSaved+"€</strong> cette semaine";
-    else
-      dsub.textContent="Commence à simuler pour voir tes progrès";
+    var parts = [];
+    if (ST.weekSaved>0) parts.push("💚 <strong style='color:var(--green)'>"+ST.weekSaved+"€</strong> épargnés");
+    if (ST.darkPatterns.length) parts.push("🎯 <strong style='color:var(--purple)'>"+ST.darkPatterns.length+"</strong> dark pattern"+(ST.darkPatterns.length>1?"s":"")+" détecté"+(ST.darkPatterns.length>1?"s":""));
+    dsub.innerHTML = parts.length ? parts.join(" · ") : "Commence à simuler pour voir tes progrès";
   }
   // Ambitions — une card par ambition
   var da=document.getElementById("dash-amb");
@@ -1772,7 +1957,7 @@ var R={
   go:go, nav:nav, demo:demo,
   saveAmb:saveAmb, saveGoals:saveGoals, saveDomains:saveDomains,
   startApp:startApp, toggleRec:toggleRec, toggleDomChips:toggleDomChips,
-  pickComp:pickComp,
+  pickComp:pickComp, pickTransport:pickTransport, saveLoc:saveLoc,
   simT:simT, goOverlay:goOverlay,
   tryNext:tryNext, pickEmo:pickEmo, pickEmoScreen:pickEmoScreen,
   resist:resist, saveSlip:saveSlip, pet:pet,
