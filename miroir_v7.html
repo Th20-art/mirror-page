@@ -801,8 +801,12 @@ function fmt(n){ return n>=1000?(n/1000).toFixed(1)+"k":String(n); }
 
 // ── SVG COMPAGNONS ──
 function svg(name,size,happy,tired){
-  // Pikachu remplace tous les compagnons
   var s = size || 72;
+  // Renard pixel art — mascotte de l'extension
+  if (name === "renard") {
+    return '<img src="assets/fox.gif" style="width:'+s+'px;height:'+s+'px;image-rendering:pixelated;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))" alt="Renard">';
+  }
+  // Pikachu pour tous les autres compagnons
   return '<img src="assets/pikachu.gif" style="width:'+s+'px;height:'+s+'px;image-rendering:pixelated;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))" alt="Pikachu">';
 }
 
