@@ -1184,22 +1184,57 @@ function syncFromExtension(){
     var rawProfile = localStorage.getItem('miroir_profile_sync');
     if (rawProfile){
       var p = JSON.parse(rawProfile);
-      if(p.locWork) ST.locWork = p.locWork;
-      if(p.transport) ST.transport = p.transport;
+      if(p.locWork)    ST.locWork    = p.locWork;
+      if(p.transport)  ST.transport  = p.transport;
       if(p.lifePhrase) ST.lifePhrase = p.lifePhrase;
+      if(p.ambitions && p.ambitions.length) ST.ambitions = p.ambitions;
     }
   } catch(e){}
+  // Notifier l'extension qu'on est prêt
+  if (window.opener) {
+    try { window.opener.postMessage({ type: 'MIROIR_READY' }, '*'); } catch(e) {}
+  }
 }
 
 // Écouter les messages de l'extension Chrome
 window.addEventListener('message', function(e){
-  if (e.data && e.data.type === 'MIROIR_DARK_PATTERNS') {
+  if (!e.data) return;
+  // Vérifier l'origine (sécurité)
+  // Accepter depuis l'extension Chrome ou github.io
+  var origin = e.origin || "";
+  var ok = origin.indexOf('github.io') !== -1 ||
+            origin.indexOf('chrome-extension') !== -1 ||
+            origin === 'null'; // certains navigateurs envoient null pour les extensions
+
+  if (e.data.type === 'MIROIR_DARK_PATTERNS') {
     ST.darkPatterns = e.data.patterns || [];
     renderRadar();
+    renderDash();
   }
-  if (e.data && e.data.type === 'MIROIR_LOCAL_ALTS') {
+  if (e.data.type === 'MIROIR_LOCAL_ALTS') {
     ST.localAlts = e.data.alternatives || [];
     renderLocalAlts();
+    renderDash();
+  }
+  if (e.data.type === 'MIROIR_PROFILE') {
+    var p = e.data.profile || {};
+    if (p.lifePhrase) ST.lifePhrase = p.lifePhrase;
+    if (p.ambitions && p.ambitions.length) ST.ambitions = p.ambitions;
+    if (p.locWork) ST.locWork = p.locWork;
+    if (p.transport) ST.transport = p.transport;
+    renderDash();
+    renderLocalAlts();
+  }
+  // Signal que la PWA est prête à recevoir des données
+  if (e.data.type === 'MIROIR_PING') {
+    try { e.source.postMessage({ type: 'MIROIR_READY' }, e.origin); } catch(err) {}
+  }
+});
+
+// Signaler à l'extension que la PWA est chargée
+window.addEventListener('load', function() {
+  if (window.opener) {
+    try { window.opener.postMessage({ type: 'MIROIR_READY' }, '*'); } catch(e) {}
   }
 });
 
